@@ -414,6 +414,7 @@ figcaption {
       }
     });
     ai.loadAppInsights();
+    window.appInsights = ai;
     ai.trackPageView();
   };
   document.head.appendChild(s);
@@ -1506,6 +1507,9 @@ figcaption {
     lightbox.classList.add('is-open');
     document.body.style.overflow = 'hidden';
     lbClose.focus();
+    if (window.appInsights) {
+      window.appInsights.trackEvent({ name: 'Painting Opened', properties: { title: clickedFrame.dataset.title, meta: clickedFrame.dataset.meta } });
+    }
   }
 
   function closeLightbox() {

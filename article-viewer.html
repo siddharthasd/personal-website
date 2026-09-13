@@ -182,7 +182,12 @@ body.loaded { opacity: 1; }
       }
     });
     ai.loadAppInsights();
-    ai.trackPageView();
+    window.appInsights = ai;
+    if (window._aiTitle) {
+      ai.trackPageView({ name: window._aiTitle });
+    } else {
+      ai.trackPageView();
+    }
   };
   document.head.appendChild(s);
 }());
@@ -261,6 +266,8 @@ body.loaded { opacity: 1; }
     const pdfPath = 'technology-articles/' + filename;
 
     document.title = title + ' — Siddhartha Dhamankar';
+    window._aiTitle = title;
+    if (window.appInsights) { window.appInsights.trackPageView({ name: title }); }
     document.getElementById('article-title').textContent  = title;
     document.getElementById('mobile-title').textContent   = title;
 

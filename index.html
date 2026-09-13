@@ -318,6 +318,7 @@ body.loaded { opacity: 1; }
       }
     });
     ai.loadAppInsights();
+    window.appInsights = ai;
     ai.trackPageView();
   };
   document.head.appendChild(s);
