@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Article — Siddhartha Dhamankar</title>
+<style>
+:root {
+  --gold:          #C49A1A;
+  --gold-light:    #E8D5A0;
+  --ink:           #1C1712;
+  --parchment:     #FAF7F0;
+  --parchment-mid: #F2EBE0;
+  --text:          #2A2118;
+  --text-muted:    #6B5848;
+  --green:         #7DBF8E;
+  --green-dark:    #4E8C5F;
+  --border:        #D4C9B0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; }
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+body.loaded { opacity: 1; }
+
+/* ─── HEADER ──────────────────────────────────────── */
+.site-header {
+  background: var(--ink);
+  padding: 16px 48px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 19px, rgba(196,154,26,0.05) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
+  pointer-events: none;
+}
+.header-inner {
+  position: relative; z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.medallion-link { display: flex; flex-shrink: 0; }
+.medallion { width: 48px; height: 48px; }
+.brand-text { flex: 1; min-width: 0; }
+.article-title-header {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.article-label {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 10px;
+  color: rgba(232,213,160,0.45);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.back-link, .download-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid rgba(196,154,26,0.35);
+  padding: 5px 12px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.back-link {
+  color: var(--gold-light);
+}
+.back-link::before { content: '←'; font-size: 13px; }
+.back-link:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.7);
+  color: #fff;
+}
+.download-link {
+  color: var(--green);
+  border-color: rgba(125,191,142,0.35);
+}
+.download-link::after { content: '↓'; font-size: 13px; }
+.download-link:hover {
+  background: rgba(78,140,95,0.2);
+  border-color: var(--green);
+  color: #fff;
+}
+
+/* ─── PDF VIEWER ──────────────────────────────────── */
+.pdf-frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  display: block;
+  min-height: 0;
+}
+
+/* ─── MOBILE FALLBACK ─────────────────────────────── */
+.mobile-fallback {
+  display: none;
+  flex: 1;
+  background: var(--parchment);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 60px 32px;
+  text-align: center;
+}
+.mobile-fallback h2 {
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-muted);
+}
+.mobile-fallback p {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 360px;
+}
+.mobile-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: var(--green-dark);
+  color: #fff;
+  padding: 12px 24px;
+  transition: background 0.2s;
+}
+.mobile-cta:hover { background: var(--ink); }
+.mobile-cta::after { content: '↓'; font-size: 14px; }
+
+@media (max-width: 700px) {
+  .site-header { padding: 14px 20px; }
+  .article-title-header { font-size: 14px; }
+  .download-link { display: none; }
+  .pdf-frame { display: none; }
+  .mobile-fallback { display: flex; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="medallion-link" aria-label="Home">
+      <svg class="medallion" viewBox="0 0 108 108" aria-label="SD monogram">
+        <circle cx="54" cy="54" r="51" fill="none" stroke="#C49A1A" stroke-width="0.8" stroke-dasharray="4 3.5" opacity="0.45"/>
+        <circle cx="54" cy="54" r="45" fill="none" stroke="#C49A1A" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="54" cy="54" r="39" fill="#3A5C42"/>
+        <circle cx="54" cy="54" r="35" fill="none" stroke="#7DBF8E" stroke-width="0.7" opacity="0.45"/>
+        <ellipse cx="54" cy="10"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="98" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="54" cy="98"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="10" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+        <polygon points="23,23 26,20 29,23 26,26" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="79,23 82,20 85,23 82,26" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="79,82 82,79 85,82 82,85" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="23,82 26,79 29,82 26,85" fill="#C49A1A" opacity="0.5"/>
+        <text x="54" y="63" text-anchor="middle"
+              font-family="Georgia, serif" font-size="26" font-weight="700"
+              fill="#FFFFFF" letter-spacing="3">SD</text>
+      </svg>
+    </a>
+    <div class="brand-text">
+      <p class="article-label">Technology article</p>
+      <h1 class="article-title-header" id="article-title">Loading&hellip;</h1>
+    </div>
+    <div class="header-actions">
+      <a href="technology-articles.html" class="back-link">Articles</a>
+      <a href="#" class="download-link" id="download-link" download>Download</a>
+    </div>
+  </div>
+</header>
+
+<iframe class="pdf-frame" id="pdf-frame" title="Article PDF"></iframe>
+
+<div class="mobile-fallback" id="mobile-fallback">
+  <h2 id="mobile-title">Article</h2>
+  <p>PDF viewing works best on desktop. Download the article to read it on this device.</p>
+  <a href="#" class="mobile-cta" id="mobile-download" download>Download PDF</a>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const ACRONYMS = { genai: 'GenAI', a2a: 'A2A', mcp: 'MCP', ai: 'AI', hr: 'HR' };
+  const MINOR = new Set(['a', 'an', 'the', 'to', 'for', 'of', 'in', 'from', 'at', 'by', 'with', 'and', 'but', 'or']);
+
+  function parseTitle(filename) {
+    const base = filename.replace(/\.pdf$/, '').replace(/-v\d+$/, '');
+    return base.split('-').map(function (w, i) {
+      const lo = w.toLowerCase();
+      if (ACRONYMS[lo]) return ACRONYMS[lo];
+      if (i > 0 && MINOR.has(lo)) return lo;
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    }).join(' ');
+  }
+
+  function init() {
+    const params   = new URLSearchParams(window.location.search);
+    const filename = params.get('f');
+
+    if (!filename || !filename.endsWith('.pdf')) {
+      document.getElementById('article-title').textContent = 'Article not found';
+      document.body.classList.add('loaded');
+      return;
+    }
+
+    const title   = parseTitle(filename);
+    const pdfPath = 'technology-articles/' + filename;
+
+    document.title = title + ' — Siddhartha Dhamankar';
+    document.getElementById('article-title').textContent  = title;
+    document.getElementById('mobile-title').textContent   = title;
+
+    const dlLink   = document.getElementById('download-link');
+    const mobileDl = document.getElementById('mobile-download');
+    dlLink.href   = pdfPath;
+    mobileDl.href = pdfPath;
+
+    document.getElementById('pdf-frame').src = pdfPath;
+    document.body.classList.add('loaded');
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+}());
+</script>
+</body>
+</html>

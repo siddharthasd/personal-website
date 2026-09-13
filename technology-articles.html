@@ -28,6 +28,7 @@ body {
 }
 body.loaded { opacity: 1; }
 
+/* ─── HEADER ──────────────────────────────────────── */
 .site-header {
   background: var(--ink);
   padding: 16px 48px;
@@ -59,6 +60,14 @@ body.loaded { opacity: 1; }
   letter-spacing: 0.07em;
   line-height: 1.2;
 }
+.page-subtitle {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  color: rgba(232,213,160,0.5);
+  letter-spacing: 0.2em;
+  font-style: italic;
+  margin-top: 2px;
+}
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -80,69 +89,99 @@ body.loaded { opacity: 1; }
   color: #fff;
 }
 .back-link::before { content: '←'; font-size: 13px; }
-.page-subtitle {
-  font-family: Georgia, serif;
-  font-size: 11px;
-  color: rgba(232,213,160,0.5);
-  letter-spacing: 0.2em;
-  font-style: italic;
-  margin-top: 2px;
-}
 
+/* ─── MAIN ────────────────────────────────────────── */
 .site-main {
-  max-width: 800px;
+  max-width: 1020px;
   margin: 0 auto;
-  padding: 80px 48px 80px;
-  text-align: center;
-}
-.placeholder-frame {
-  display: inline-block;
-  border: 1px solid var(--border);
-  padding: 56px 64px;
-  background: var(--parchment-mid);
-  position: relative;
-}
-.placeholder-frame::before,
-.placeholder-frame::after {
-  content: '';
-  position: absolute;
-  width: 24px; height: 24px;
-  border-color: var(--gold);
-  border-style: solid;
-  opacity: 0.5;
-}
-.placeholder-frame::before { top: 8px; left: 8px; border-width: 1.5px 0 0 1.5px; }
-.placeholder-frame::after  { bottom: 8px; right: 8px; border-width: 0 1.5px 1.5px 0; }
-.placeholder-ornament { margin-bottom: 28px; }
-.placeholder-heading {
-  font-size: 22px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--text-muted);
-  margin-bottom: 16px;
-}
-.placeholder-body {
-  font-size: 14px;
-  color: var(--text-muted);
-  line-height: 1.8;
-  max-width: 400px;
-  margin: 0 auto;
+  padding: 56px 48px 80px;
 }
 
+.loading-msg {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 80px 0;
+}
+
+/* ─── ARTICLE GRID ────────────────────────────────── */
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.article-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-top-color 0.2s;
+}
+.article-card:hover {
+  box-shadow: 0 4px 20px rgba(28,23,18,0.1);
+  border-top-color: var(--green-dark);
+}
+.article-num {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 10px;
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+.article-title {
+  font-family: Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.45;
+  flex: 1;
+}
+.article-rule {
+  width: 32px;
+  height: 1px;
+  background: var(--border);
+}
+.article-cta {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--green-dark);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.article-cta::after { content: '→'; font-size: 12px; }
+
+/* ─── FOOTER ──────────────────────────────────────── */
 .site-footer {
   background: var(--ink);
   color: rgba(232,213,160,0.5);
   text-align: center;
-  padding: 40px;
+  padding: 44px 40px;
   font-family: Georgia, serif;
   font-size: 13px;
   font-style: italic;
   letter-spacing: 0.07em;
   line-height: 2.2;
 }
-.site-footer a { color: rgba(232,213,160,0.7); text-decoration: none; }
+.site-footer a { color: rgba(232,213,160,0.72); text-decoration: none; transition: color 0.2s; }
 .site-footer a:hover { color: var(--gold-light); }
-.footer-rule { width: 80px; height: 1px; background: rgba(196,154,26,0.3); margin: 14px auto; }
+.footer-rule { width: 80px; height: 1px; background: rgba(196,154,26,0.35); margin: 16px auto; }
+
+@media (max-width: 600px) {
+  .site-header { padding: 14px 20px; }
+  .site-main   { padding: 40px 20px 64px; }
+  .articles-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -177,23 +216,8 @@ body.loaded { opacity: 1; }
 </header>
 
 <main class="site-main">
-  <div class="placeholder-frame">
-
-    <div class="placeholder-ornament" aria-hidden="true">
-      <svg width="60" height="24" viewBox="0 0 60 24">
-        <path d="M4,12 Q14,3 22,12 Q30,19 38,12 Q46,3 56,12"
-              fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
-        <circle cx="4"  cy="12" r="2" fill="#C49A1A" opacity="0.55"/>
-        <circle cx="56" cy="12" r="2" fill="#C49A1A" opacity="0.55"/>
-      </svg>
-    </div>
-
-    <h2 class="placeholder-heading">Articles in preparation</h2>
-    <p class="placeholder-body">
-      Published essays on AI, agentic systems, and the future of work are being collected here.
-      Each article will be presented with full text and downloadable PDF.
-    </p>
-
+  <div id="articles-grid" class="articles-grid">
+    <p class="loading-msg">Loading articles&hellip;</p>
   </div>
 </main>
 
@@ -204,9 +228,63 @@ body.loaded { opacity: 1; }
 </footer>
 
 <script>
+(function () {
+  'use strict';
+
+  const REPO = 'siddharthasd/personal-website';
+  const ACRONYMS = { genai: 'GenAI', a2a: 'A2A', mcp: 'MCP', ai: 'AI', hr: 'HR' };
+  const MINOR = new Set(['a', 'an', 'the', 'to', 'for', 'of', 'in', 'from', 'at', 'by', 'with', 'and', 'but', 'or']);
+
+  function parseTitle(filename) {
+    const base = filename.replace(/\.pdf$/, '').replace(/-v\d+$/, '');
+    return base.split('-').map(function (w, i) {
+      const lo = w.toLowerCase();
+      if (ACRONYMS[lo]) return ACRONYMS[lo];
+      if (i > 0 && MINOR.has(lo)) return lo;
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    }).join(' ');
+  }
+
+  async function load() {
+    const grid = document.getElementById('articles-grid');
+    try {
+      const res = await fetch(
+        'https://api.github.com/repos/' + REPO + '/contents/technology-articles',
+        { headers: { Accept: 'application/vnd.github.v3+json' } }
+      );
+      if (!res.ok) throw new Error('API ' + res.status);
+      const files = (await res.json())
+        .filter(function (f) { return f.type === 'file' && f.name.endsWith('.pdf'); })
+        .sort(function (a, b) { return a.name.localeCompare(b.name); });
+
+      if (!files.length) {
+        grid.innerHTML = '<p class="loading-msg">No articles found.</p>';
+        return;
+      }
+
+      grid.innerHTML = files.map(function (f, i) {
+        const title = parseTitle(f.name);
+        const url   = 'article-viewer.html?f=' + encodeURIComponent(f.name);
+        const num   = 'Article ' + String(i + 1).padStart(2, '0');
+        return '<a href="' + url + '" class="article-card">'
+          + '<span class="article-num">' + num + '</span>'
+          + '<h2 class="article-title">' + title + '</h2>'
+          + '<div class="article-rule"></div>'
+          + '<span class="article-cta">Read article</span>'
+          + '</a>';
+      }).join('');
+
+    } catch (err) {
+      grid.innerHTML = '<p class="loading-msg">Could not load articles.</p>';
+      console.error(err);
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     document.body.classList.add('loaded');
+    load();
   });
+}());
 </script>
 </body>
 </html>
