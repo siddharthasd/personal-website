@@ -29,6 +29,10 @@
     --space-md:  24px;
     --space-lg:  40px;
     --space-xl:  56px;
+    /* Site-wide brand tokens shared with personal-website */
+    --gold:           #C49A1A;
+    --gold-light:     #E8D5A0;
+    --ink:            #1C1712;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,22 +45,105 @@
     line-height: 1.6;
   }
 
-  /* Banner */
-  .banner {
-    background: var(--color-primary-light);
-    padding: var(--space-md) var(--space-lg);
-    border-bottom: 3px solid var(--color-primary);
+  /* ── Site header (matches personal-website) ───────────── */
+  .site-header {
+    background: var(--ink);
+    padding: 18px 48px;
+    position: relative;
+    overflow: hidden;
   }
-  .banner-inner { display: flex; align-items: center; gap: var(--space-sm); }
-  .banner-mark {
-    width: 44px; height: 44px; border-radius: 50%;
-    background: var(--color-primary); color: #fff;
-    font-size: 15px; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    letter-spacing: 0.05em; flex-shrink: 0;
+  .site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg,  transparent, transparent 19px, rgba(196,154,26,0.05) 20px),
+      repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
+    pointer-events: none;
   }
-  .banner-text h1 { color: var(--color-text); font-size: 22px; font-weight: 700; }
-  .banner-text .subtitle { color: var(--color-text-muted); font-size: 13px; margin-top: 2px; }
+  .header-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1020px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .medallion { width: 56px; height: 56px; flex-shrink: 0; }
+  .brand-text { display: flex; flex-direction: column; flex: 1; }
+  .site-name {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold-light);
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+  }
+  .site-tagline {
+    font-family: Georgia, serif;
+    font-size: 11px;
+    color: rgba(232,213,160,0.55);
+    letter-spacing: 0.22em;
+    font-style: italic;
+    margin-top: 3px;
+  }
+  .page-label {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 11px;
+    color: rgba(125,191,142,0.75);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    font-style: normal;
+  }
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 16px;
+    border-radius: 5px;
+    border: 1px solid rgba(196,154,26,0.4);
+    background: transparent;
+    color: var(--gold-light);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .home-btn:hover {
+    background: rgba(196,154,26,0.12);
+    border-color: rgba(196,154,26,0.7);
+  }
+  .home-btn svg { width: 13px; height: 13px; }
+
+  /* ── Site footer (matches personal-website) ───────────── */
+  .site-footer {
+    background: var(--ink);
+    color: rgba(232,213,160,0.5);
+    text-align: center;
+    padding: 44px 40px;
+    font-family: Georgia, serif;
+    font-size: 13px;
+    font-style: italic;
+    letter-spacing: 0.07em;
+    line-height: 2.2;
+  }
+  .site-footer a {
+    color: rgba(232,213,160,0.72);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .site-footer a:hover { color: var(--gold-light); }
+  .footer-rule {
+    width: 80px;
+    height: 1px;
+    background: rgba(196,154,26,0.35);
+    margin: 16px auto;
+  }
 
   /* Layout */
   .page-body {
@@ -285,16 +372,6 @@
   .status-confirmed { background: var(--color-success-bg); color: var(--color-success); }
   .status-projected { background: var(--color-secondary-light); color: var(--color-secondary-dark); }
   .status-watch     { background: var(--color-warning-bg); color: var(--color-warning); }
-
-  /* Footer */
-  .page-footer {
-    text-align: center;
-    margin-top: var(--space-xl);
-    padding-top: var(--space-md);
-    border-top: 1px solid var(--color-border);
-    font-size: 12px;
-    color: var(--color-text-muted);
-  }
 
   /* Market data table */
   .mds {
@@ -1246,16 +1323,40 @@
 </head>
 <body>
 
-<!-- Banner -->
-<div class="banner">
-  <div class="banner-inner">
-    <div class="banner-mark">SD</div>
-    <div class="banner-text">
-      <h1>Silver thesis — key milestones timeline</h1>
-      <p class="subtitle">Highest-probability scenario based on all nine drivers. Month-level grain. Updated August 2026.</p>
+<!-- Site header -->
+<header class="site-header">
+  <div class="header-inner">
+    <svg class="medallion" viewBox="0 0 108 108" aria-label="SD monogram">
+      <circle cx="54" cy="54" r="51" fill="none" stroke="#C49A1A" stroke-width="0.8" stroke-dasharray="4 3.5" opacity="0.45"/>
+      <circle cx="54" cy="54" r="45" fill="none" stroke="#C49A1A" stroke-width="0.5" opacity="0.3"/>
+      <circle cx="54" cy="54" r="39" fill="#3A5C42"/>
+      <circle cx="54" cy="54" r="35" fill="none" stroke="#7DBF8E" stroke-width="0.7" opacity="0.45"/>
+      <ellipse cx="54" cy="10"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+      <ellipse cx="98" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+      <ellipse cx="54" cy="98"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+      <ellipse cx="10" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+      <polygon points="23,23 26,20 29,23 26,26" fill="#C49A1A" opacity="0.5"/>
+      <polygon points="79,23 82,20 85,23 82,26" fill="#C49A1A" opacity="0.5"/>
+      <polygon points="79,82 82,79 85,82 82,85" fill="#C49A1A" opacity="0.5"/>
+      <polygon points="23,82 26,79 29,82 26,85" fill="#C49A1A" opacity="0.5"/>
+      <text x="54" y="63" text-anchor="middle"
+            font-family="Georgia, serif" font-size="26" font-weight="700"
+            fill="#FFFFFF" letter-spacing="3">SD</text>
+    </svg>
+    <div class="brand-text">
+      <div class="site-name">Siddhartha Dhamankar</div>
+      <p class="site-tagline">Artist &nbsp;&middot;&nbsp; Writer &nbsp;&middot;&nbsp; Technologist</p>
+      <p class="page-label">Silver Thesis &nbsp;&middot;&nbsp; Key Milestones</p>
     </div>
+    <a href="https://siddharthasd.github.io/personal-website/" class="home-btn" aria-label="Back to home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
+        <polyline points="9 21 9 13 15 13 15 21"/>
+      </svg>
+      Home
+    </a>
   </div>
-</div>
+</header>
 
 <!-- Tab navigation -->
 <div class="page-tabs">
@@ -2220,12 +2321,6 @@
 
   </div>
 
-  <!-- Footer -->
-  <div class="page-footer">
-    <p>Silver thesis — key milestones timeline. Personal investment reference document.</p>
-    <p>Last updated: August 2026. All projections are working assumptions based on available information. Update monthly as new data arrives.</p>
-    <p style="margin-top:8px">Contact: siddhartha.dhamankar@icloud.com</p>
-  </div>
 
 </div>
 </div><!-- end tab-timeline -->
@@ -3534,6 +3629,15 @@
 
 </div><!-- /.ds-page -->
 </div><!-- end tab-ds -->
+
+<!-- Site footer -->
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar &nbsp;&middot;&nbsp; Mumbai</p>
+  <div class="footer-rule"></div>
+  <p>Silver thesis &nbsp;&middot;&nbsp; Personal investment reference. All projections are working assumptions.</p>
+  <div class="footer-rule"></div>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
 
 <script>
 (function () {
