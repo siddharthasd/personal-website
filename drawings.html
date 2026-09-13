@@ -36,8 +36,7 @@ body.loaded { opacity: 1; }
 /* ─── HEADER ──────────────────────────────────────── */
 .site-header {
   background: var(--ink);
-  padding: 48px 40px 44px;
-  text-align: center;
+  padding: 16px 48px;
   position: relative;
   overflow: hidden;
 }
@@ -49,46 +48,76 @@ body.loaded { opacity: 1; }
     repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
   pointer-events: none;
 }
-.header-inner { position: relative; z-index: 1; }
-
+.header-inner {
+  position: relative; z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.medallion-link { display: flex; flex-shrink: 0; }
+.medallion { width: 48px; height: 48px; }
+.brand-text { flex: 1; }
+.page-title {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.07em;
+  line-height: 1.2;
+}
+.page-subtitle {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  color: rgba(232,213,160,0.5);
+  letter-spacing: 0.2em;
+  font-style: italic;
+  margin-top: 2px;
+}
 .back-link {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-family: 'Segoe UI', system-ui, sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.18em;
+  font-size: 11px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--gold-light);
   text-decoration: none;
-  margin-bottom: 24px;
   border: 1px solid rgba(196,154,26,0.35);
-  padding: 6px 14px;
+  padding: 5px 12px;
   transition: background 0.2s, color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
 }
 .back-link:hover {
   background: rgba(196,154,26,0.15);
   border-color: rgba(196,154,26,0.7);
   color: #fff;
 }
-.back-link::before { content: '←'; font-size: 14px; }
+.back-link::before { content: '←'; font-size: 13px; }
 
-.header-ornament { margin-bottom: 16px; }
-
-.page-title {
-  font-family: Georgia, serif;
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--gold-light);
-  letter-spacing: 0.1em;
-  margin-bottom: 10px;
-}
-.page-subtitle {
+/* ─── FOOTER ──────────────────────────────────────── */
+.site-footer {
+  background: var(--ink);
+  color: rgba(232,213,160,0.5);
+  text-align: center;
+  padding: 44px 40px;
   font-family: Georgia, serif;
   font-size: 13px;
-  color: rgba(232,213,160,0.52);
-  letter-spacing: 0.25em;
   font-style: italic;
+  letter-spacing: 0.07em;
+  line-height: 2.2;
+}
+.site-footer a {
+  color: rgba(232,213,160,0.72);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-footer a:hover { color: var(--gold-light); }
+.footer-rule {
+  width: 80px;
+  height: 1px;
+  background: rgba(196,154,26,0.35);
+  margin: 16px auto;
 }
 
 /* ─── FILTER BAR ──────────────────────────────────── */
@@ -364,7 +393,7 @@ figcaption {
 
 @media (max-width: 520px) {
   .gallery-grid { column-count: 1; }
-  .page-title   { font-size: 28px; }
+  .page-title   { font-size: 20px; }
   .lightbox-prev { left: 4px; }
   .lightbox-next { right: 4px; }
 }
@@ -377,19 +406,30 @@ figcaption {
 ══════════════════════════════════════ -->
 <header class="site-header">
   <div class="header-inner">
-    <div><a href="index.html" class="back-link">Home</a></div>
-
-    <svg class="header-ornament" width="200" height="14" viewBox="0 0 200 14" aria-hidden="true">
-      <line x1="0" y1="7" x2="76" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
-      <polygon points="82,7 88,3 94,7 88,11" fill="#C49A1A" opacity="0.6"/>
-      <line x1="96" y1="3" x2="96" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
-      <line x1="104" y1="3" x2="104" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
-      <polygon points="106,7 112,3 118,7 112,11" fill="#C49A1A" opacity="0.6"/>
-      <line x1="124" y1="7" x2="200" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
-    </svg>
-
-    <h1 class="page-title">Drawings</h1>
-    <p class="page-subtitle">Pencil &amp; charcoal &nbsp;&middot;&nbsp; 1988 to 2000</p>
+    <a href="index.html" class="medallion-link" aria-label="Home">
+      <svg class="medallion" viewBox="0 0 108 108" aria-label="SD monogram">
+        <circle cx="54" cy="54" r="51" fill="none" stroke="#C49A1A" stroke-width="0.8" stroke-dasharray="4 3.5" opacity="0.45"/>
+        <circle cx="54" cy="54" r="45" fill="none" stroke="#C49A1A" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="54" cy="54" r="39" fill="#3A5C42"/>
+        <circle cx="54" cy="54" r="35" fill="none" stroke="#7DBF8E" stroke-width="0.7" opacity="0.45"/>
+        <ellipse cx="54" cy="10"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="98" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="54" cy="98"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="10" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+        <polygon points="23,23 26,20 29,23 26,26" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="79,23 82,20 85,23 82,26" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="79,82 82,79 85,82 82,85" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="23,82 26,79 29,82 26,85" fill="#C49A1A" opacity="0.5"/>
+        <text x="54" y="63" text-anchor="middle"
+              font-family="Georgia, serif" font-size="26" font-weight="700"
+              fill="#FFFFFF" letter-spacing="3">SD</text>
+      </svg>
+    </a>
+    <div class="brand-text">
+      <h1 class="page-title">Drawings</h1>
+      <p class="page-subtitle">Pencil &amp; charcoal &nbsp;&middot;&nbsp; 1988 to 2000</p>
+    </div>
+    <a href="index.html" class="back-link">Home</a>
   </div>
 </header>
 
