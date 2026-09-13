@@ -1,0 +1,1498 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paintings — Siddhartha Dhamankar</title>
+<style>
+:root {
+  --gold:           #C49A1A;
+  --gold-light:     #E8D5A0;
+  --ink:            #1C1712;
+  --parchment:      #FAF7F0;
+  --parchment-mid:  #F2EBE0;
+  --parchment-dark: #E6DDD0;
+  --text:           #2A2118;
+  --text-muted:     #6B5848;
+  --green:          #7DBF8E;
+  --green-dark:     #4E8C5F;
+  --violet:         #A89BC9;
+  --violet-dark:    #6B5A9E;
+  --border:         #D4C9B0;
+  --mat:            #F5F0E8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; }
+
+body {
+  background: var(--parchment);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+body.loaded { opacity: 1; }
+
+/* ─── HEADER ──────────────────────────────────────── */
+.site-header {
+  background: var(--ink);
+  padding: 48px 40px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 19px, rgba(196,154,26,0.05) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
+  pointer-events: none;
+}
+.header-inner { position: relative; z-index: 1; }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-decoration: none;
+  margin-bottom: 24px;
+  border: 1px solid rgba(196,154,26,0.35);
+  padding: 6px 14px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.back-link:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.7);
+  color: #fff;
+}
+.back-link::before { content: '←'; font-size: 14px; }
+
+.header-ornament { margin-bottom: 16px; }
+
+.page-title {
+  font-family: Georgia, serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.page-subtitle {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: rgba(232,213,160,0.52);
+  letter-spacing: 0.25em;
+  font-style: italic;
+}
+
+/* ─── FILTER BAR ──────────────────────────────────── */
+.filter-section {
+  background: var(--parchment-mid);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  line-height: 1;
+}
+.filter-btn:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
+.filter-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold-light);
+}
+
+.gallery-count {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ─── GALLERY ─────────────────────────────────────── */
+.gallery-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 40px 64px;
+}
+
+.gallery-grid {
+  column-count: 3;
+  column-gap: 24px;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+.gallery-item.hidden {
+  display: none;
+}
+
+/* ─── PICTURE FRAME ───────────────────────────────── */
+.painting-frame {
+  background: var(--mat);
+  border: 1px solid var(--border);
+  cursor: zoom-in;
+  position: relative;
+  box-shadow: 2px 3px 10px rgba(28,23,18,0.13);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.painting-frame:hover {
+  box-shadow: 5px 8px 28px rgba(28,23,18,0.22);
+  transform: translateY(-2px);
+}
+
+/* Gold corner brackets */
+.painting-frame::before,
+.painting-frame::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.5;
+  z-index: 2;
+  pointer-events: none;
+}
+.painting-frame::before { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
+.painting-frame::after  { bottom: 34px; right: 6px; border-width: 0 1.5px 1.5px 0; }
+
+/* Parchment mat */
+.painting-mat {
+  padding: 12px 12px 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.painting-mat::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(196,154,26,0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.painting-mat img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* Hover overlay */
+.painting-overlay {
+  position: absolute;
+  inset: 12px 12px 10px;
+  background: rgba(28,23,18,0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.painting-overlay span {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.18em;
+  color: var(--gold-light);
+  border-bottom: 1px solid rgba(232,213,160,0.5);
+  padding-bottom: 3px;
+}
+.painting-frame:hover .painting-overlay { opacity: 1; }
+.painting-frame:hover .painting-mat img { transform: scale(1.02); }
+
+/* Caption */
+figcaption {
+  padding: 8px 14px 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.caption-title {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text);
+  flex: 1;
+}
+.caption-series {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 2px;
+}
+.caption-series--landscape  { background: var(--parchment-dark); color: var(--green-dark); }
+.caption-series--still-life { background: #EDE2F5; color: #6B4F9E; }
+.caption-series--postcard   { background: #D6EFDB; color: var(--green-dark); }
+.caption-series--portrait   { background: #F5EDCE; color: #8A6D0A; }
+.caption-year {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+/* ─── LIGHTBOX ────────────────────────────────────── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox.open { display: flex; }
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(28,23,18,0.93);
+  cursor: zoom-out;
+}
+
+.lightbox-content {
+  position: relative;
+  z-index: 1;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+}
+
+.lightbox-info {
+  text-align: center;
+}
+.lightbox-info strong {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+.lightbox-info span {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  color: rgba(232,213,160,0.55);
+  letter-spacing: 0.14em;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 20px; right: 24px;
+  background: none;
+  border: none;
+  color: rgba(232,213,160,0.7);
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  transition: color 0.2s;
+  z-index: 1001;
+}
+.lightbox-close:hover { color: #fff; }
+
+.lightbox-prev,
+.lightbox-next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(28,23,18,0.5);
+  border: 1px solid rgba(196,154,26,0.25);
+  color: var(--gold-light);
+  font-size: 22px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  z-index: 1001;
+  line-height: 1;
+}
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.6);
+}
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+
+@media (max-width: 520px) {
+  .gallery-grid { column-count: 1; }
+  .page-title   { font-size: 28px; }
+  .lightbox-prev { left: 4px; }
+  .lightbox-next { right: 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div><a href="main.html" class="back-link">Home</a></div>
+
+    <svg class="header-ornament" width="200" height="14" viewBox="0 0 200 14" aria-hidden="true">
+      <line x1="0" y1="7" x2="76" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
+      <polygon points="82,7 88,3 94,7 88,11" fill="#C49A1A" opacity="0.6"/>
+      <line x1="96" y1="3" x2="96" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
+      <line x1="104" y1="3" x2="104" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
+      <polygon points="106,7 112,3 118,7 112,11" fill="#C49A1A" opacity="0.6"/>
+      <line x1="124" y1="7" x2="200" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
+    </svg>
+
+    <h1 class="page-title">Paintings</h1>
+    <p class="page-subtitle">Watercolour &nbsp;&middot;&nbsp; 2008 to 2025</p>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     FILTER
+══════════════════════════════════════ -->
+<div class="filter-section">
+  <div class="filter-bar" role="group" aria-label="Filter by series">
+    <button class="filter-btn active" data-filter="all">All works</button>
+    <button class="filter-btn" data-filter="landscape">Landscapes</button>
+    <button class="filter-btn" data-filter="still-life">Still life</button>
+    <button class="filter-btn" data-filter="postcard">Postcards</button>
+    <button class="filter-btn" data-filter="portrait">Portraits</button>
+  </div>
+  <p class="gallery-count" aria-live="polite">
+    <span id="visible-count">54</span> works
+  </p>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     GALLERY
+══════════════════════════════════════ -->
+<main class="gallery-wrap">
+  <div class="gallery-grid" id="gallery">
+
+    <!-- ── PORTRAITS ───────────────────────────────── -->
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="painting-frame"
+              data-src="paintings/portraits/vaidehi-2008.jpg"
+              data-title="Vaidehi"
+              data-meta="Watercolour · 2008">
+        <div class="painting-mat">
+          <img src="paintings/portraits/vaidehi-2008.jpg" alt="Watercolour portrait of Vaidehi, 2008" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Vaidehi</span>
+          <span class="caption-series caption-series--portrait">Portrait</span>
+          <span class="caption-year">2008</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="painting-frame"
+              data-src="paintings/portraits/baba-2009.jpg"
+              data-title="Baba"
+              data-meta="Watercolour · 2009">
+        <div class="painting-mat">
+          <img src="paintings/portraits/baba-2009.jpg" alt="Watercolour portrait, Baba, 2009" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Baba</span>
+          <span class="caption-series caption-series--portrait">Portrait</span>
+          <span class="caption-year">2009</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="painting-frame"
+              data-src="paintings/portraits/varun--2012.jpg"
+              data-title="Varun"
+              data-meta="Watercolour · 2012">
+        <div class="painting-mat">
+          <img src="paintings/portraits/varun--2012.jpg" alt="Watercolour portrait of Varun, 2012" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Varun</span>
+          <span class="caption-series caption-series--portrait">Portrait</span>
+          <span class="caption-year">2012</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="painting-frame"
+              data-src="paintings/portraits/varun-2015.jpg"
+              data-title="Varun"
+              data-meta="Watercolour · 2015">
+        <div class="painting-mat">
+          <img src="paintings/portraits/varun-2015.jpg" alt="Watercolour portrait of Varun, 2015" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Varun</span>
+          <span class="caption-series caption-series--portrait">Portrait</span>
+          <span class="caption-year">2015</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- ── LANDSCAPES ──────────────────────────────── -->
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/after-the-showers-2010.jpg"
+              data-title="After the Showers"
+              data-meta="Watercolour · 2010">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/after-the-showers-2010.jpg" alt="After the Showers, watercolour, 2010" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">After the Showers</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2010</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/coorg-lake-2011.jpg"
+              data-title="Coorg Lake"
+              data-meta="Watercolour · 2011">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/coorg-lake-2011.jpg" alt="Coorg Lake, watercolour, 2011" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Coorg Lake</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2011</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/monsoon-forest-2012.jpg"
+              data-title="Monsoon Forest"
+              data-meta="Watercolour · 2012">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/monsoon-forest-2012.jpg" alt="Monsoon Forest, watercolour, 2012" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Monsoon Forest</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2012</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/gadi-sagar-lake-2012.jpg"
+              data-title="Gadi Sagar Lake"
+              data-meta="Watercolour · 2012">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/gadi-sagar-lake-2012.jpg" alt="Gadi Sagar Lake, watercolour, 2012" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Gadi Sagar Lake</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2012</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/amer-fort-2012.jpg"
+              data-title="Amer Fort"
+              data-meta="Watercolour · 2012">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/amer-fort-2012.jpg" alt="Amer Fort, watercolour, 2012" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Amer Fort</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2012</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/amer-fort-battlements-2012.jpg"
+              data-title="Amer Fort Battlements"
+              data-meta="Watercolour · 2012">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/amer-fort-battlements-2012.jpg" alt="Amer Fort Battlements, watercolour, 2012" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Amer Fort Battlements</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2012</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/siddhi-surul-tomb-janjira-2012.jpg"
+              data-title="Siddhi Surul Tomb, Janjira"
+              data-meta="Watercolour · 2012">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/siddhi-surul-tomb-janjira-2012.jpg" alt="Siddhi Surul Tomb at Janjira, watercolour, 2012" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Siddhi Surul Tomb, Janjira</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2012</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/wai-temple-2013.jpeg"
+              data-title="Wai Temple"
+              data-meta="Watercolour · 2013">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/wai-temple-2013.jpeg" alt="Wai Temple, watercolour, 2013" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Wai Temple</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2013</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/kanchanjunga-mountain-range-2013.jpg"
+              data-title="Kanchanjunga Mountain Range"
+              data-meta="Watercolour · 2013">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/kanchanjunga-mountain-range-2013.jpg" alt="Kanchanjunga Mountain Range, watercolour, 2013" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Kanchanjunga Range</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2013</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/narnala-fort-entrance-2013.jpg"
+              data-title="Narnala Fort Entrance"
+              data-meta="Watercolour · 2013">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/narnala-fort-entrance-2013.jpg" alt="Narnala Fort Entrance, watercolour, 2013" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Narnala Fort Entrance</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2013</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/bharatpur-marsh-2013.jpg"
+              data-title="Bharatpur Marsh"
+              data-meta="Watercolour · 2013">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/bharatpur-marsh-2013.jpg" alt="Bharatpur Marsh, watercolour, 2013" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Bharatpur Marsh</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2013</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/harishchandragad-temple-2013.jpeg"
+              data-title="Harishchandragad Temple"
+              data-meta="Watercolour · 2013">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/harishchandragad-temple-2013.jpeg" alt="Harishchandragad Temple, watercolour, 2013" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Harishchandragad Temple</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2013</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/bijapur-fort-2014.jpeg"
+              data-title="Bijapur Fort"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/bijapur-fort-2014.jpeg" alt="Bijapur Fort, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Bijapur Fort</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/panhala-ruins-2014.jpeg"
+              data-title="Panhala Ruins"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/panhala-ruins-2014.jpeg" alt="Panhala Ruins, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Panhala Ruins</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/farmland-ruins-2014.jpeg"
+              data-title="Farmland Ruins"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/farmland-ruins-2014.jpeg" alt="Farmland Ruins, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Farmland Ruins</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/bhaja-caves-2014.jpg"
+              data-title="Bhaja Caves"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/bhaja-caves-2014.jpg" alt="Bhaja Caves, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Bhaja Caves</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/needle-point-sunrise-2014.jpg"
+              data-title="Needle Point Sunrise"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/needle-point-sunrise-2014.jpg" alt="Needle Point Sunrise, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Needle Point Sunrise</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/sikkim-waterfall-2014.jpg"
+              data-title="Sikkim Waterfall"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/sikkim-waterfall-2014.jpg" alt="Sikkim Waterfall, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Sikkim Waterfall</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- Blenheim%20Garden.jpg — filename contains a literal %20, encoded here as %2520 -->
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/Blenheim%2520Garden.jpg"
+              data-title="Blenheim Garden"
+              data-meta="Watercolour">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/Blenheim%2520Garden.jpg" alt="Blenheim Garden, watercolour" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Blenheim Garden</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">n.d.</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/jogi-mahal-2016.jpg"
+              data-title="Jogi Mahal"
+              data-meta="Watercolour · 2016">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/jogi-mahal-2016.jpg" alt="Jogi Mahal, watercolour, 2016" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Jogi Mahal</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2016</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/sikkim-waterfall-2016.jpeg"
+              data-title="Sikkim Waterfall"
+              data-meta="Watercolour · 2016">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/sikkim-waterfall-2016.jpeg" alt="Sikkim Waterfall, watercolour, 2016" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Sikkim Waterfall</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2016</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/monsoon-forest-2016.jpg"
+              data-title="Monsoon Forest"
+              data-meta="Watercolour · 2016">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/monsoon-forest-2016.jpg" alt="Monsoon Forest, watercolour, 2016" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Monsoon Forest</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2016</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/jaipur-sumberged-ruins-2016.jpeg"
+              data-title="Jaipur Submerged Ruins"
+              data-meta="Watercolour · 2016">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/jaipur-sumberged-ruins-2016.jpeg" alt="Jaipur Submerged Ruins, watercolour, 2016" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Jaipur Submerged Ruins</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2016</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/mosque-on-lohagad-2016.jpeg"
+              data-title="Mosque on Lohagad"
+              data-meta="Watercolour · 2016">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/mosque-on-lohagad-2016.jpeg" alt="Mosque on Lohagad, watercolour, 2016" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Mosque on Lohagad</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2016</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/kumbharghar-rice-fields-2016.jpeg"
+              data-title="Kumbharghar Rice Fields"
+              data-meta="Watercolour · 2016">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/kumbharghar-rice-fields-2016.jpeg" alt="Kumbharghar Rice Fields, watercolour, 2016" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Kumbharghar Rice Fields</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2016</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/konkan-rail-bridge-2016.jpeg"
+              data-title="Konkan Rail Bridge"
+              data-meta="Watercolour · 2016">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/konkan-rail-bridge-2016.jpeg" alt="Konkan Rail Bridge, watercolour, 2016" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Konkan Rail Bridge</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2016</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/sahyadri-mountains-2018.jpeg"
+              data-title="Sahyadri Mountains"
+              data-meta="Watercolour · 2018">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/sahyadri-mountains-2018.jpeg" alt="Sahyadri Mountains, watercolour, 2018" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Sahyadri Mountains</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2018</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="painting-frame"
+              data-src="paintings/landscapes/lament-of-civilizations-2025.PNG"
+              data-title="Lament of Civilizations"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/landscapes/lament-of-civilizations-2025.PNG" alt="Lament of Civilizations, watercolour, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Lament of Civilizations</span>
+          <span class="caption-series caption-series--landscape">Landscape</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- ── STILL LIFE ───────────────────────────────── -->
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/still-life-copy-2012.jpg"
+              data-title="Still Life (after)"
+              data-meta="Watercolour · 2012">
+        <div class="painting-mat">
+          <img src="paintings/still-life/still-life-copy-2012.jpg" alt="Still life study after a master, watercolour, 2012" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Still Life (after)</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2012</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/onions-2014.jpg"
+              data-title="Onions"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/onions-2014.jpg" alt="Onions, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Onions</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/coffee-mug-2014.jpg"
+              data-title="Coffee Mug"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/coffee-mug-2014.jpg" alt="Coffee mug, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Coffee Mug</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/paint-tubes-2014.jpg"
+              data-title="Paint Tubes"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/paint-tubes-2014.jpg" alt="Paint tubes, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Paint Tubes</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/keys-2014.jpg"
+              data-title="Keys"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/keys-2014.jpg" alt="Keys, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Keys</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/ghee-2014.jpg"
+              data-title="Ghee"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/ghee-2014.jpg" alt="Ghee, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Ghee</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/chutney-2014.jpg"
+              data-title="Chutney"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/chutney-2014.jpg" alt="Chutney, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Chutney</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/jnb-whiskey-2014.jpg"
+              data-title="JNB Whiskey"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/jnb-whiskey-2014.jpg" alt="JNB whiskey bottle, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">JNB Whiskey</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/shavings-2014.jpg"
+              data-title="Shavings"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/shavings-2014.jpg" alt="Shavings, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Shavings</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/soap-2014.jpg"
+              data-title="Soap"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/soap-2014.jpg" alt="Soap, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Soap</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/tissues-2014.jpg"
+              data-title="Tissues"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/tissues-2014.jpg" alt="Tissues, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Tissues</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/wallet-2014.jpg"
+              data-title="Wallet"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/wallet-2014.jpg" alt="Wallet, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Wallet</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/belt-2014.jpg"
+              data-title="Belt"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/belt-2014.jpg" alt="Belt, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Belt</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="still-life">
+      <figure class="painting-frame"
+              data-src="paintings/still-life/umbrella-2014.jpg"
+              data-title="Umbrella"
+              data-meta="Watercolour · 2014">
+        <div class="painting-mat">
+          <img src="paintings/still-life/umbrella-2014.jpg" alt="Umbrella, watercolour, 2014" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Umbrella</span>
+          <span class="caption-series caption-series--still-life">Still life</span>
+          <span class="caption-year">2014</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- ── POSTCARDS ────────────────────────────────── -->
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/poppy-flower-2025.jpg"
+              data-title="Poppy"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/poppy-flower-2025.jpg" alt="Poppy, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Poppy</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/tulip-flower-2025.jpg"
+              data-title="Tulip"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/tulip-flower-2025.jpg" alt="Tulip, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Tulip</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/saffron-flower-2025.jpg"
+              data-title="Saffron Flower"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/saffron-flower-2025.jpg" alt="Saffron flower, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Saffron Flower</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/anthurium-leaf-2025.jpg"
+              data-title="Anthurium Leaf"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/anthurium-leaf-2025.jpg" alt="Anthurium leaf, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Anthurium Leaf</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/pea-pod-2025.jpg"
+              data-title="Pea Pod"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/pea-pod-2025.jpg" alt="Pea pod, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Pea Pod</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/trees-2025.jpg"
+              data-title="Trees"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/trees-2025.jpg" alt="Trees, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Trees</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/forest-2025.jpg"
+              data-title="Forest"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/forest-2025.jpg" alt="Forest, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Forest</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="postcard">
+      <figure class="painting-frame"
+              data-src="paintings/postcards/winter-forest-2025.jpg"
+              data-title="Winter Forest"
+              data-meta="Watercolour · 2025">
+        <div class="painting-mat">
+          <img src="paintings/postcards/winter-forest-2025.jpg" alt="Winter forest, watercolour postcard, 2025" loading="lazy">
+          <div class="painting-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Winter Forest</span>
+          <span class="caption-series caption-series--postcard">Postcard</span>
+          <span class="caption-year">2025</span>
+        </figcaption>
+      </figure>
+    </div>
+
+  </div><!-- /gallery-grid -->
+</main>
+
+
+<!-- ══════════════════════════════════════
+     LIGHTBOX
+══════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Painting viewer">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous painting">&#8249;</button>
+  <button class="lightbox-next" id="lightbox-next" aria-label="Next painting">&#8250;</button>
+
+  <div class="lightbox-inner">
+    <div class="lightbox-frame">
+      <div class="lightbox-img-wrap">
+        <img id="lightbox-img" src="" alt="">
+      </div>
+      <div class="lightbox-caption">
+        <span id="lightbox-title"></span>
+        <span id="lightbox-meta"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar &nbsp;&middot;&nbsp; Mumbai</p>
+  <div class="footer-rule"></div>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+
+<script>
+(function () {
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('loaded');
+  });
+
+  // ── Filter ───────────────────────────────────────
+  var filterBtns   = document.querySelectorAll('.filter-btn');
+  var galleryItems = document.querySelectorAll('.gallery-item');
+  var countEl      = document.getElementById('visible-count');
+
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var filter = this.dataset.filter;
+      filterBtns.forEach(function (b) { b.classList.remove('active'); });
+      this.classList.add('active');
+      var visible = 0;
+      galleryItems.forEach(function (item) {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.classList.remove('hidden');
+          visible++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+      countEl.textContent = visible;
+    });
+  });
+
+  // ── Lightbox ─────────────────────────────────────
+  var lightbox = document.getElementById('lightbox');
+  var lbImg    = document.getElementById('lightbox-img');
+  var lbTitle  = document.getElementById('lightbox-title');
+  var lbMeta   = document.getElementById('lightbox-meta');
+  var lbClose  = document.getElementById('lightbox-close');
+  var lbPrev   = document.getElementById('lightbox-prev');
+  var lbNext   = document.getElementById('lightbox-next');
+
+  var currentItems = [];
+  var currentIndex = 0;
+
+  function getVisibleFrames() {
+    return Array.from(
+      document.querySelectorAll('.gallery-item:not(.hidden) .painting-frame')
+    );
+  }
+
+  function showImage(idx) {
+    var frame = currentItems[idx];
+    lbImg.src            = frame.dataset.src;
+    lbImg.alt            = frame.querySelector('img').alt;
+    lbTitle.textContent  = frame.dataset.title;
+    lbMeta.textContent   = frame.dataset.meta;
+  }
+
+  function openLightbox(clickedFrame) {
+    currentItems = getVisibleFrames();
+    currentIndex = currentItems.indexOf(clickedFrame);
+    if (currentIndex === -1) currentIndex = 0;
+    showImage(currentIndex);
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length;
+    showImage(currentIndex);
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % currentItems.length;
+    showImage(currentIndex);
+  }
+
+  document.querySelectorAll('.painting-frame').forEach(function (frame) {
+    frame.addEventListener('click', function () { openLightbox(this); });
+    frame.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(this); }
+    });
+    frame.setAttribute('tabindex', '0');
+    frame.setAttribute('role', 'button');
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click',  prevImage);
+  lbNext.addEventListener('click',  nextImage);
+
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  prevImage();
+    if (e.key === 'ArrowRight') nextImage();
+  });
+
+}());
+</script>
+</body>
+</html>

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poetry — Siddhartha Dhamankar</title>
+<style>
+:root {
+  --gold:          #C49A1A;
+  --gold-light:    #E8D5A0;
+  --gold-pale:     #F5EDCE;
+  --ink:           #1C1712;
+  --parchment:     #FAF7F0;
+  --parchment-mid: #F2EBE0;
+  --parchment-warm:#EDE4D4;
+  --text:          #2A2118;
+  --text-muted:    #6B5848;
+  --violet:        #A89BC9;
+  --violet-dark:   #6B5A9E;
+  --border:        #D4C9B0;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; }
+
+body {
+  background: var(--parchment);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+body.loaded { opacity: 1; }
+
+/* ─── HEADER ──────────────────────────────────────── */
+.site-header {
+  background: var(--ink);
+  padding: 48px 40px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 19px, rgba(196,154,26,0.05) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
+  pointer-events: none;
+}
+.header-inner { position: relative; z-index: 1; }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-decoration: none;
+  margin-bottom: 24px;
+  border: 1px solid rgba(196,154,26,0.35);
+  padding: 6px 14px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.back-link:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.7);
+  color: #fff;
+}
+.back-link::before { content: '←'; font-size: 14px; }
+
+.header-ornament { margin-bottom: 16px; }
+
+.page-title {
+  font-family: Georgia, serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.page-subtitle {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: rgba(232,213,160,0.52);
+  letter-spacing: 0.25em;
+  font-style: italic;
+}
+
+/* ─── POEM NAV (sticky jump bar) ─────────────────── */
+.poem-nav-bar {
+  background: var(--parchment-mid);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: 0 40px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.poem-nav-bar::-webkit-scrollbar { display: none; }
+
+.poem-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  white-space: nowrap;
+}
+
+.poem-nav a {
+  display: inline-block;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 14px 20px;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.poem-nav a:hover {
+  color: var(--text);
+  border-bottom-color: var(--gold);
+}
+.poem-nav a.is-active {
+  color: var(--ink);
+  border-bottom-color: var(--gold);
+}
+
+/* ─── MAIN CONTENT ────────────────────────────────── */
+.site-main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 72px 40px 80px;
+}
+
+/* ─── BAROQUE ORNAMENTAL DIVIDER ─────────────────── */
+.baroque-divider {
+  text-align: center;
+  margin: 64px 0 56px;
+  position: relative;
+}
+.baroque-divider::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 0; right: 0;
+  height: 1px;
+  background: var(--border);
+}
+.baroque-divider svg {
+  position: relative;
+  background: var(--parchment);
+  padding: 0 20px;
+}
+.baroque-divider:first-child { margin-top: 0; }
+
+/* ─── POEM CARD ───────────────────────────────────── */
+.poem-card {
+  scroll-margin-top: 60px;
+}
+
+.poem-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.poem-ornament { margin-bottom: 20px; }
+
+.poem-title {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+
+.poem-year {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ─── POEM BODY ───────────────────────────────────── */
+.poem-body {
+  background: var(--parchment-mid);
+  border: 1px solid var(--border);
+  padding: 44px 52px;
+  position: relative;
+}
+
+/* Gold corner brackets */
+.poem-body::before,
+.poem-body::after {
+  content: '';
+  position: absolute;
+  width: 22px; height: 22px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.5;
+}
+.poem-body::before { top: 8px; left: 8px; border-width: 1.5px 0 0 1.5px; }
+.poem-body::after  { bottom: 8px; right: 8px; border-width: 0 1.5px 1.5px 0; }
+
+/* Stanza */
+.stanza {
+  font-family: Georgia, serif;
+  font-size: 17px;
+  line-height: 2;
+  color: var(--text);
+  margin-bottom: 32px;
+  font-style: normal;
+}
+.stanza:last-child { margin-bottom: 0; }
+
+/* Indented lines (used in the eulogy) */
+.stanza .indent {
+  display: block;
+  padding-left: 1.5em;
+}
+
+/* Forthcoming placeholder */
+.poem-forthcoming {
+  font-family: Georgia, serif;
+  font-size: 15px;
+  font-style: italic;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 8px 0;
+}
+
+/* ─── FOOTER ──────────────────────────────────────── */
+.site-footer {
+  background: var(--ink);
+  color: rgba(232,213,160,0.5);
+  text-align: center;
+  padding: 40px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.07em;
+  line-height: 2.2;
+}
+.site-footer a { color: rgba(232,213,160,0.7); text-decoration: none; }
+.site-footer a:hover { color: var(--gold-light); }
+.footer-rule { width: 80px; height: 1px; background: rgba(196,154,26,0.3); margin: 14px auto; }
+
+/* ─── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 600px) {
+  .site-main    { padding: 48px 20px 64px; }
+  .poem-body    { padding: 32px 28px; }
+  .poem-title   { font-size: 22px; }
+  .stanza       { font-size: 16px; }
+  .poem-nav-bar { padding: 0 16px; }
+  .poem-nav a   { padding: 14px 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div><a href="main.html" class="back-link">Home</a></div>
+
+    <svg class="header-ornament" width="200" height="14" viewBox="0 0 200 14" aria-hidden="true">
+      <line x1="0" y1="7" x2="76" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
+      <polygon points="82,7 88,3 94,7 88,11" fill="#C49A1A" opacity="0.6"/>
+      <line x1="96" y1="3" x2="96" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
+      <line x1="104" y1="3" x2="104" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
+      <polygon points="106,7 112,3 118,7 112,11" fill="#C49A1A" opacity="0.6"/>
+      <line x1="124" y1="7" x2="200" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
+    </svg>
+
+    <h1 class="page-title">Poetry</h1>
+    <p class="page-subtitle">Verse &nbsp;&middot;&nbsp; 2003 to 2025</p>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     POEM NAVIGATION
+══════════════════════════════════════ -->
+<div class="poem-nav-bar" role="navigation" aria-label="Jump to poem">
+  <nav class="poem-nav">
+    <a href="#memories">Memories</a>
+    <a href="#eulogy">A Eulogy on the Death of a Seeker</a>
+    <a href="#fear-of-death">The Fear of Death</a>
+    <a href="#bound-from-the-start">Bound from the Start</a>
+    <a href="#mirror-in-me">The Mirror in Me</a>
+    <a href="#as-my-son-sleeps">As My Son Sleeps</a>
+  </nav>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     POEMS
+══════════════════════════════════════ -->
+<main class="site-main">
+
+
+  <!-- ── MEMORIES ──────────────────────────────────── -->
+  <article class="poem-card" id="memories">
+    <header class="poem-header">
+      <div class="poem-ornament" aria-hidden="true">
+        <svg width="80" height="26" viewBox="0 0 80 26">
+          <path d="M8,13 Q20,3 30,13 Q40,21 50,13 Q60,3 72,13"
+                fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="8"  cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="72" cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="40" cy="14" r="2"   fill="#C49A1A" opacity="0.5"/>
+        </svg>
+      </div>
+      <h2 class="poem-title">Memories</h2>
+      <p class="poem-year">2003</p>
+    </header>
+    <div class="poem-body">
+      <p class="stanza">
+        Time heals the deepest of wounds<br>
+        though memories remain like scars<br>
+        like the trail of an ant that has walked upon the sands<br>
+        and left forever at last.
+      </p>
+    </div>
+  </article>
+
+
+  <!-- ── BAROQUE DIVIDER ─────────────────────────────── -->
+  <div class="baroque-divider" aria-hidden="true">
+    <svg width="80" height="26" viewBox="0 0 80 26">
+      <line x1="0"  y1="13" x2="16" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <line x1="64" y1="13" x2="80" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <path d="M18,13 Q28,4 40,13 Q52,22 62,13"
+            fill="none" stroke="#C49A1A" stroke-width="1.1" opacity="0.65"/>
+      <circle cx="40" cy="13" r="2" fill="#C49A1A" opacity="0.5"/>
+    </svg>
+  </div>
+
+
+  <!-- ── AN EULOGY ON THE DEATH OF A SEEKER ────────── -->
+  <article class="poem-card" id="eulogy">
+    <header class="poem-header">
+      <div class="poem-ornament" aria-hidden="true">
+        <svg width="80" height="26" viewBox="0 0 80 26">
+          <path d="M8,13 Q20,3 30,13 Q40,21 50,13 Q60,3 72,13"
+                fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="8"  cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="72" cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="40" cy="14" r="2"   fill="#C49A1A" opacity="0.5"/>
+        </svg>
+      </div>
+      <h2 class="poem-title">A Eulogy on the Death of a Seeker</h2>
+      <p class="poem-year">2004</p>
+    </header>
+    <div class="poem-body">
+      <p class="stanza">
+        The search had begun,<br>
+        every-where was the destination<br>
+        and every-way was the road.
+      </p>
+      <p class="stanza">
+        His name was the reason,<br>
+        for the beginning and the end of his woes.
+      </p>
+      <p class="stanza">
+        As babble became words<br>
+        and poets touched the soul,<br>
+        questions became thorns,<br>
+        bled thoughts through every pore.
+      </p>
+      <p class="stanza">
+        The sweet ignorance of childhood was torn to bits,<br>
+        by the dogs of rhyme and reason.<br>
+        Yet the search would not end,<br>
+        as the yearning drove through his body, like an electric jolt.
+      </p>
+      <p class="stanza">
+        A cushion of velvet money made he,<br>
+        to comfort him on his dreadful journey.<br>
+        lest be-knownst no merchant would trade,<br>
+        a single grain for all his money.
+      </p>
+      <p class="stanza">
+        Years became eons,<br>
+        the pain untold.
+      </p>
+      <p class="stanza">
+        Learnt of a currency then he,<br>
+        that would buy all the grain in eternity.
+      </p>
+      <p class="stanza">
+        A mystic man spoke to him, of love and divinity.<br>
+        wisdom has become me, thought he,<br>
+        and left in search of love and divinity,<br>
+        only to trip over an earthly beauty,<br>
+        into the ghastly valley of lust&hellip;
+      </p>
+    </div>
+  </article>
+
+
+  <!-- ── BAROQUE DIVIDER ─────────────────────────────── -->
+  <div class="baroque-divider" aria-hidden="true">
+    <svg width="80" height="26" viewBox="0 0 80 26">
+      <line x1="0"  y1="13" x2="16" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <line x1="64" y1="13" x2="80" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <path d="M18,13 Q28,4 40,13 Q52,22 62,13"
+            fill="none" stroke="#C49A1A" stroke-width="1.1" opacity="0.65"/>
+      <circle cx="40" cy="13" r="2" fill="#C49A1A" opacity="0.5"/>
+    </svg>
+  </div>
+
+
+  <!-- ── THE FEAR OF DEATH ──────────────────────────── -->
+  <article class="poem-card" id="fear-of-death">
+    <header class="poem-header">
+      <div class="poem-ornament" aria-hidden="true">
+        <svg width="80" height="26" viewBox="0 0 80 26">
+          <path d="M8,13 Q20,3 30,13 Q40,21 50,13 Q60,3 72,13"
+                fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="8"  cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="72" cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="40" cy="14" r="2"   fill="#C49A1A" opacity="0.5"/>
+        </svg>
+      </div>
+      <h2 class="poem-title">The Fear of Death</h2>
+      <p class="poem-year">2005</p>
+    </header>
+    <div class="poem-body">
+      <p class="stanza">
+        For long I wept in silent haze<br>
+        The inevitable fact of death<br>
+        I could not imagine, I could not face.
+      </p>
+      <p class="stanza">
+        My mothers voice, my fathers smile<br>
+        my brothers rolling laughter<br>
+        The warm presence of my mother's mother<br>
+        will all be lost in times race.
+      </p>
+      <p class="stanza">
+        I run to the Buddha, plead to the Jesus<br>
+        peered into Vishnus eternal gaze.
+      </p>
+      <p class="stanza">
+        Oh tell me why you've torn me apart<br>
+        and tortured me with loves grace.
+      </p>
+    </div>
+  </article>
+
+
+  <!-- ── BAROQUE DIVIDER ─────────────────────────────── -->
+  <div class="baroque-divider" aria-hidden="true">
+    <svg width="80" height="26" viewBox="0 0 80 26">
+      <line x1="0"  y1="13" x2="16" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <line x1="64" y1="13" x2="80" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <path d="M18,13 Q28,4 40,13 Q52,22 62,13"
+            fill="none" stroke="#C49A1A" stroke-width="1.1" opacity="0.65"/>
+      <circle cx="40" cy="13" r="2" fill="#C49A1A" opacity="0.5"/>
+    </svg>
+  </div>
+
+
+  <!-- ── BOUND FROM THE START ───────────────────────── -->
+  <article class="poem-card" id="bound-from-the-start">
+    <header class="poem-header">
+      <div class="poem-ornament" aria-hidden="true">
+        <svg width="80" height="26" viewBox="0 0 80 26">
+          <path d="M8,13 Q20,3 30,13 Q40,21 50,13 Q60,3 72,13"
+                fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="8"  cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="72" cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="40" cy="14" r="2"   fill="#C49A1A" opacity="0.5"/>
+        </svg>
+      </div>
+      <h2 class="poem-title">Bound from the Start</h2>
+      <p class="poem-year">2025</p>
+    </header>
+    <div class="poem-body">
+      <p class="stanza">
+        I struggle to abandon attachment,<br>
+        yet I desire renunciation in my heart.<br>
+        In aloneness I experience fear,<br>
+        yet in detachment, there is art.
+      </p>
+      <p class="stanza">
+        I find grief in separation<br>
+        Yet solitude brings peace.<br>
+        I find comfort in sorrow,<br>
+        While happiness quickly flees.
+      </p>
+      <p class="stanza">
+        How comes this sadness into my heart,<br>
+        While the world is bursting with life?<br>
+        Why is comfort found in sadness?<br>
+        And happiness comes with strife
+      </p>
+      <p class="stanza">
+        Solitude and separation are not the same<br>
+        Yet something binds them from the start<br>
+        Comfort and sorrow are not the same<br>
+        Yet something binds them at the heart
+      </p>
+    </div>
+  </article>
+
+
+  <!-- ── BAROQUE DIVIDER ─────────────────────────────── -->
+  <div class="baroque-divider" aria-hidden="true">
+    <svg width="80" height="26" viewBox="0 0 80 26">
+      <line x1="0"  y1="13" x2="16" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <line x1="64" y1="13" x2="80" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <path d="M18,13 Q28,4 40,13 Q52,22 62,13"
+            fill="none" stroke="#C49A1A" stroke-width="1.1" opacity="0.65"/>
+      <circle cx="40" cy="13" r="2" fill="#C49A1A" opacity="0.5"/>
+    </svg>
+  </div>
+
+
+  <!-- ── THE MIRROR IN ME ───────────────────────────── -->
+  <article class="poem-card" id="mirror-in-me">
+    <header class="poem-header">
+      <div class="poem-ornament" aria-hidden="true">
+        <svg width="80" height="26" viewBox="0 0 80 26">
+          <path d="M8,13 Q20,3 30,13 Q40,21 50,13 Q60,3 72,13"
+                fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="8"  cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="72" cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="40" cy="14" r="2"   fill="#C49A1A" opacity="0.5"/>
+        </svg>
+      </div>
+      <h2 class="poem-title">The Mirror in Me</h2>
+      <p class="poem-year">2025</p>
+    </header>
+    <div class="poem-body">
+      <p class="stanza">
+        I look at the mirror to find meaning<br>
+        I look at the sky and wonder why
+      </p>
+      <p class="stanza">
+        I am a speck on a speck<br>
+        At the mercy of everything but I
+      </p>
+      <p class="stanza">
+        I am a miracle of chaos and chance<br>
+        Yet here I stand gleaming
+      </p>
+      <p class="stanza">
+        I'm euphoric at my luck<br>
+        And horrified that I am dreaming
+      </p>
+      <p class="stanza">
+        For how long will I hold<br>
+        The reflection of my hand
+      </p>
+      <p class="stanza">
+        For how long do I wonder<br>
+        This universe will stand
+      </p>
+    </div>
+  </article>
+
+
+  <!-- ── BAROQUE DIVIDER ─────────────────────────────── -->
+  <div class="baroque-divider" aria-hidden="true">
+    <svg width="80" height="26" viewBox="0 0 80 26">
+      <line x1="0"  y1="13" x2="16" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <line x1="64" y1="13" x2="80" y2="13" stroke="#C49A1A" stroke-width="0.7" opacity="0.45"/>
+      <path d="M18,13 Q28,4 40,13 Q52,22 62,13"
+            fill="none" stroke="#C49A1A" stroke-width="1.1" opacity="0.65"/>
+      <circle cx="40" cy="13" r="2" fill="#C49A1A" opacity="0.5"/>
+    </svg>
+  </div>
+
+
+  <!-- ── AS MY SON SLEEPS ───────────────────────────── -->
+  <article class="poem-card" id="as-my-son-sleeps">
+    <header class="poem-header">
+      <div class="poem-ornament" aria-hidden="true">
+        <svg width="80" height="26" viewBox="0 0 80 26">
+          <path d="M8,13 Q20,3 30,13 Q40,21 50,13 Q60,3 72,13"
+                fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.7"/>
+          <circle cx="8"  cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="72" cy="13" r="2.5" fill="#C49A1A" opacity="0.6"/>
+          <circle cx="40" cy="14" r="2"   fill="#C49A1A" opacity="0.5"/>
+        </svg>
+      </div>
+      <h2 class="poem-title">As My Son Sleeps</h2>
+      <p class="poem-year">2025</p>
+    </header>
+    <div class="poem-body">
+      <p class="stanza">
+        We love but once,<br>
+        till eternity<br>
+        pries us apart.
+      </p>
+      <p class="stanza">
+        My heart aches<br>
+        to think<br>
+        I will hold him<br>
+        only while I last.
+      </p>
+      <p class="stanza">
+        Perhaps<br>
+        eternal separation<br>
+        is what makes this bond<br>
+        so deep
+      </p>
+      <p class="stanza">
+        perhaps<br>
+        the body's fragile existence<br>
+        is what makes sorrow<br>
+        steep.
+      </p>
+      <p class="stanza">
+        If eternity were gifted to me,<br>
+        would I love<br>
+        so fiercely?
+      </p>
+      <p class="stanza">
+        If immortality were mine,<br>
+        would sorrow<br>
+        cut<br>
+        so clean?
+      </p>
+      <p class="stanza">
+        Is it better to have loved<br>
+        and lost?
+      </p>
+      <p class="stanza">
+        Is it better to have lived<br>
+        and suffered?
+      </p>
+      <p class="stanza">
+        I will never know<br>
+        for certain<br>
+        for this fear<br>
+        makes me weak.
+      </p>
+      <p class="stanza">
+        It fills my heart<br>
+        with longing,<br>
+        as I watch<br>
+        my son<br>
+        sleep.
+      </p>
+    </div>
+  </article>
+
+
+</main>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar &nbsp;&middot;&nbsp; Mumbai</p>
+  <div class="footer-rule"></div>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+
+<script>
+(function () {
+  'use strict';
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('loaded');
+  });
+
+  // Highlight active nav link on scroll
+  var navLinks = document.querySelectorAll('.poem-nav a');
+  var poems    = document.querySelectorAll('.poem-card');
+
+  function updateActiveLink() {
+    var scrollY = window.scrollY + 100;
+    var active  = null;
+
+    poems.forEach(function (poem) {
+      if (poem.offsetTop <= scrollY) {
+        active = poem.id;
+      }
+    });
+
+    navLinks.forEach(function (link) {
+      var href = link.getAttribute('href').replace('#', '');
+      if (href === active) {
+        link.classList.add('is-active');
+      } else {
+        link.classList.remove('is-active');
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  updateActiveLink();
+
+  // Smooth scroll for nav links
+  navLinks.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+}());
+</script>
+</body>
+</html>

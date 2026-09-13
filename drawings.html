@@ -1,0 +1,1012 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drawings — Siddhartha Dhamankar</title>
+<style>
+:root {
+  --gold:           #C49A1A;
+  --gold-light:     #E8D5A0;
+  --gold-pale:      #F5EDCE;
+  --ink:            #1C1712;
+  --parchment:      #FAF7F0;
+  --parchment-mid:  #F2EBE0;
+  --parchment-dark: #E6DDD0;
+  --text:           #2A2118;
+  --text-muted:     #6B5848;
+  --green:          #7DBF8E;
+  --green-dark:     #4E8C5F;
+  --border:         #D4C9B0;
+  --mat:            #F5F0E8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; }
+
+body {
+  background: var(--parchment);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+body.loaded { opacity: 1; }
+
+/* ─── HEADER ──────────────────────────────────────── */
+.site-header {
+  background: var(--ink);
+  padding: 48px 40px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 19px, rgba(196,154,26,0.05) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
+  pointer-events: none;
+}
+.header-inner { position: relative; z-index: 1; }
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-decoration: none;
+  margin-bottom: 24px;
+  border: 1px solid rgba(196,154,26,0.35);
+  padding: 6px 14px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.back-link:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.7);
+  color: #fff;
+}
+.back-link::before { content: '←'; font-size: 14px; }
+
+.header-ornament { margin-bottom: 16px; }
+
+.page-title {
+  font-family: Georgia, serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.page-subtitle {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: rgba(232,213,160,0.52);
+  letter-spacing: 0.25em;
+  font-style: italic;
+}
+
+/* ─── FILTER BAR ──────────────────────────────────── */
+.filter-section {
+  background: var(--parchment-mid);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  line-height: 1;
+}
+.filter-btn:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
+.filter-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold-light);
+}
+
+.gallery-count {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ─── GALLERY ─────────────────────────────────────── */
+.gallery-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 40px 64px;
+}
+
+.gallery-grid {
+  column-count: 3;
+  column-gap: 24px;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 24px;
+  transition: opacity 0.3s ease;
+}
+.gallery-item.hidden {
+  display: none;
+}
+
+/* ─── PICTURE FRAME ───────────────────────────────── */
+.drawing-frame {
+  background: var(--mat);
+  border: 1px solid var(--border);
+  cursor: zoom-in;
+  position: relative;
+  box-shadow: 2px 3px 10px rgba(28,23,18,0.13);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.drawing-frame:hover {
+  box-shadow: 5px 8px 24px rgba(28,23,18,0.2);
+  transform: translateY(-2px);
+}
+
+/* Gold corner brackets */
+.drawing-frame::before,
+.drawing-frame::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.5;
+  z-index: 2;
+  pointer-events: none;
+}
+.drawing-frame::before { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
+.drawing-frame::after  { bottom: 34px; right: 6px; border-width: 0 1.5px 1.5px 0; }
+
+/* Parchment mat around image */
+.drawing-mat {
+  padding: 12px 12px 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hairline inner border on mat */
+.drawing-mat::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(196,154,26,0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.drawing-mat img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: sepia(8%) contrast(0.97);
+  transition: filter 0.3s ease;
+}
+
+/* Hover overlay */
+.drawing-overlay {
+  position: absolute;
+  inset: 12px 12px 10px;
+  background: rgba(28,23,18,0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.drawing-overlay span {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.18em;
+  color: var(--gold-light);
+  border-bottom: 1px solid rgba(232,213,160,0.5);
+  padding-bottom: 3px;
+}
+.drawing-frame:hover .drawing-overlay { opacity: 1; }
+.drawing-frame:hover .drawing-mat img { filter: sepia(0%) contrast(1); }
+
+/* Caption */
+figcaption {
+  padding: 8px 14px 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.caption-title {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text);
+}
+.caption-year {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+/* ─── LIGHTBOX ────────────────────────────────────── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  background: rgba(28,23,18,0.93);
+  cursor: zoom-out;
+}
+.lightbox.is-open { display: flex; }
+
+.lightbox-inner {
+  position: relative;
+  z-index: 1;
+  cursor: default;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.lightbox-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.lightbox-img-wrap {
+  position: relative;
+  max-width: 100%;
+  line-height: 0;
+}
+
+#lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+}
+
+.lightbox-caption {
+  text-align: center;
+}
+
+#lightbox-title {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+#lightbox-meta {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  color: rgba(232,213,160,0.55);
+  letter-spacing: 0.14em;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 20px; right: 24px;
+  background: none;
+  border: none;
+  color: rgba(232,213,160,0.7);
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  transition: color 0.2s;
+  z-index: 1001;
+}
+.lightbox-close:hover { color: #fff; }
+
+.lightbox-prev,
+.lightbox-next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(28,23,18,0.5);
+  border: 1px solid rgba(196,154,26,0.25);
+  color: var(--gold-light);
+  font-size: 22px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  z-index: 1001;
+  line-height: 1;
+}
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.6);
+}
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+
+@media (max-width: 520px) {
+  .gallery-grid { column-count: 1; }
+  .page-title   { font-size: 28px; }
+  .lightbox-prev { left: 4px; }
+  .lightbox-next { right: 4px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div><a href="main.html" class="back-link">Home</a></div>
+
+    <svg class="header-ornament" width="200" height="14" viewBox="0 0 200 14" aria-hidden="true">
+      <line x1="0" y1="7" x2="76" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
+      <polygon points="82,7 88,3 94,7 88,11" fill="#C49A1A" opacity="0.6"/>
+      <line x1="96" y1="3" x2="96" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
+      <line x1="104" y1="3" x2="104" y2="11" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
+      <polygon points="106,7 112,3 118,7 112,11" fill="#C49A1A" opacity="0.6"/>
+      <line x1="124" y1="7" x2="200" y2="7" stroke="#C49A1A" stroke-width="0.7" opacity="0.4"/>
+    </svg>
+
+    <h1 class="page-title">Drawings</h1>
+    <p class="page-subtitle">Pencil &amp; charcoal &nbsp;&middot;&nbsp; 1988 to 2000</p>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     FILTER
+══════════════════════════════════════ -->
+<div class="filter-section">
+  <div class="filter-bar" role="group" aria-label="Filter by category">
+    <button class="filter-btn active" data-filter="all">All works</button>
+    <button class="filter-btn" data-filter="portrait">Portraits</button>
+    <button class="filter-btn" data-filter="landscape">Landscapes</button>
+    <button class="filter-btn" data-filter="study">Studies</button>
+    <button class="filter-btn" data-filter="character">Characters</button>
+    <button class="filter-btn" data-filter="animal">Animals</button>
+  </div>
+  <p class="gallery-count" aria-live="polite">
+    <span id="visible-count">27</span> works
+  </p>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     GALLERY
+══════════════════════════════════════ -->
+<main class="gallery-wrap">
+  <div class="gallery-grid" id="gallery">
+
+    <!-- 1988 ──────────────────── -->
+    <div class="gallery-item" data-category="study">
+      <figure class="drawing-frame"
+              data-src="drawings/vase - 1988.jpeg"
+              data-title="Vase"
+              data-meta="Pencil · 1988">
+        <div class="drawing-mat">
+          <img src="drawings/vase - 1988.jpeg" alt="Pencil drawing of a vase, 1988" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Vase</span>
+          <span class="caption-year">1988</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- 1992 ──────────────────── -->
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/windmill - 1992.jpg"
+              data-title="Windmill"
+              data-meta="Pencil · 1992">
+        <div class="drawing-mat">
+          <img src="drawings/windmill - 1992.jpg" alt="Pencil drawing of a windmill, 1992" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Windmill</span>
+          <span class="caption-year">1992</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/gate - 1992.jpg"
+              data-title="Gate"
+              data-meta="Pencil · 1992">
+        <div class="drawing-mat">
+          <img src="drawings/gate - 1992.jpg" alt="Pencil drawing of a gate, 1992" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Gate</span>
+          <span class="caption-year">1992</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="drawing-frame"
+              data-src="drawings/maid01 - 1992.jpg"
+              data-title="Figure I"
+              data-meta="Pencil · 1992">
+        <div class="drawing-mat">
+          <img src="drawings/maid01 - 1992.jpg" alt="Pencil figure study I, 1992" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Figure I</span>
+          <span class="caption-year">1992</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="drawing-frame"
+              data-src="drawings/maid02 - 1992.jpg"
+              data-title="Figure II"
+              data-meta="Pencil · 1992">
+        <div class="drawing-mat">
+          <img src="drawings/maid02 - 1992.jpg" alt="Pencil figure study II, 1992" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Figure II</span>
+          <span class="caption-year">1992</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="drawing-frame"
+              data-src="drawings/maid04 - 1992.jpg.jpeg"
+              data-title="Figure IV"
+              data-meta="Pencil · 1992">
+        <div class="drawing-mat">
+          <img src="drawings/maid04 - 1992.jpg.jpeg" alt="Pencil figure study IV, 1992" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Figure IV</span>
+          <span class="caption-year">1992</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- 1995 ──────────────────── -->
+    <div class="gallery-item" data-category="study">
+      <figure class="drawing-frame"
+              data-src="drawings/practice06 - 1995.jpeg"
+              data-title="Study VI"
+              data-meta="Pencil · 1995">
+        <div class="drawing-mat">
+          <img src="drawings/practice06 - 1995.jpeg" alt="Pencil practice study VI, 1995" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Study VI</span>
+          <span class="caption-year">1995</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="study">
+      <figure class="drawing-frame"
+              data-src="drawings/practice08 - 1995.jpeg"
+              data-title="Study VIII"
+              data-meta="Pencil · 1995">
+        <div class="drawing-mat">
+          <img src="drawings/practice08 - 1995.jpeg" alt="Pencil practice study VIII, 1995" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Study VIII</span>
+          <span class="caption-year">1995</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="drawing-frame"
+              data-src="drawings/cousin - 1995.jpeg"
+              data-title="Cousin"
+              data-meta="Pencil · 1995">
+        <div class="drawing-mat">
+          <img src="drawings/cousin - 1995.jpeg" alt="Pencil portrait of cousin, 1995" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Cousin</span>
+          <span class="caption-year">1995</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="drawing-frame"
+              data-src="drawings/einstein - 1995.jpeg"
+              data-title="Einstein"
+              data-meta="Pencil · 1995">
+        <div class="drawing-mat">
+          <img src="drawings/einstein - 1995.jpeg" alt="Pencil portrait of Einstein, 1995" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Einstein</span>
+          <span class="caption-year">1995</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="drawing-frame"
+              data-src="drawings/mariecurie - 1995.jpeg"
+              data-title="Marie Curie"
+              data-meta="Pencil · 1995">
+        <div class="drawing-mat">
+          <img src="drawings/mariecurie - 1995.jpeg" alt="Pencil portrait of Marie Curie, 1995" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Marie Curie</span>
+          <span class="caption-year">1995</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- 1996 ──────────────────── -->
+    <div class="gallery-item" data-category="character">
+      <figure class="drawing-frame"
+              data-src="drawings/Ship and Squid - 1996.jpeg"
+              data-title="Ship and Squid"
+              data-meta="Pencil · 1996">
+        <div class="drawing-mat">
+          <img src="drawings/Ship and Squid - 1996.jpeg" alt="Pencil drawing of a ship and squid, 1996" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Ship and Squid</span>
+          <span class="caption-year">1996</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- 1998 ──────────────────── -->
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/landscape01 - 1998.jpeg"
+              data-title="Landscape I"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/landscape01 - 1998.jpeg" alt="Pencil landscape I, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Landscape I</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/landscape02 - 1998.jpeg"
+              data-title="Landscape II"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/landscape02 - 1998.jpeg" alt="Pencil landscape II, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Landscape II</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/landscape03 - 1998.jpeg"
+              data-title="Landscape III"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/landscape03 - 1998.jpeg" alt="Pencil landscape III, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Landscape III</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/landscape04 - 1998.jpeg"
+              data-title="Landscape IV"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/landscape04 - 1998.jpeg" alt="Pencil landscape IV, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Landscape IV</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/landscape05 - 1998.jpeg"
+              data-title="Landscape V"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/landscape05 - 1998.jpeg" alt="Pencil landscape V, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Landscape V</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/landscape06 - 1998.jpeg"
+              data-title="Landscape VI"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/landscape06 - 1998.jpeg" alt="Pencil landscape VI, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Landscape VI</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="landscape">
+      <figure class="drawing-frame"
+              data-src="drawings/landscape07 - 1998.jpeg"
+              data-title="Landscape VII"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/landscape07 - 1998.jpeg" alt="Pencil landscape VII, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Landscape VII</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="animal">
+      <figure class="drawing-frame"
+              data-src="drawings/labrador - 1998.jpeg"
+              data-title="Labrador"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/labrador - 1998.jpeg" alt="Pencil drawing of a labrador, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Labrador</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="animal">
+      <figure class="drawing-frame"
+              data-src="drawings/labrador 02 - 1998.jpeg"
+              data-title="Labrador II"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/labrador 02 - 1998.jpeg" alt="Pencil drawing of a labrador II, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Labrador II</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="portrait">
+      <figure class="drawing-frame"
+              data-src="drawings/maid03 - 1998.jpg.jpeg"
+              data-title="Figure III"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/maid03 - 1998.jpg.jpeg" alt="Pencil figure study III, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Figure III</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="character">
+      <figure class="drawing-frame"
+              data-src="drawings/superhero02 - 1998.jpeg"
+              data-title="Superhero II"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/superhero02 - 1998.jpeg" alt="Pencil drawing of superhero II, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Superhero II</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="character">
+      <figure class="drawing-frame"
+              data-src="drawings/superhero03 - 1998.jpeg"
+              data-title="Superhero III"
+              data-meta="Pencil · 1998">
+        <div class="drawing-mat">
+          <img src="drawings/superhero03 - 1998.jpeg" alt="Pencil drawing of superhero III, 1998" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Superhero III</span>
+          <span class="caption-year">1998</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <!-- 2000 ──────────────────── -->
+    <div class="gallery-item" data-category="study">
+      <figure class="drawing-frame"
+              data-src="drawings/practice10 - 2000.jpeg"
+              data-title="Study X"
+              data-meta="Pencil · 2000">
+        <div class="drawing-mat">
+          <img src="drawings/practice10 - 2000.jpeg" alt="Pencil practice study X, 2000" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Study X</span>
+          <span class="caption-year">2000</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="study">
+      <figure class="drawing-frame"
+              data-src="drawings/practice11 - 2000.jpeg"
+              data-title="Study XI"
+              data-meta="Pencil · 2000">
+        <div class="drawing-mat">
+          <img src="drawings/practice11 - 2000.jpeg" alt="Pencil practice study XI, 2000" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Study XI</span>
+          <span class="caption-year">2000</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="study">
+      <figure class="drawing-frame"
+              data-src="drawings/practice12 - 2000.jpeg"
+              data-title="Study XII"
+              data-meta="Pencil · 2000">
+        <div class="drawing-mat">
+          <img src="drawings/practice12 - 2000.jpeg" alt="Pencil practice study XII, 2000" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Study XII</span>
+          <span class="caption-year">2000</span>
+        </figcaption>
+      </figure>
+    </div>
+
+  </div><!-- /gallery-grid -->
+</main>
+
+
+<!-- ══════════════════════════════════════
+     LIGHTBOX
+══════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Drawing viewer">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous drawing">&#8249;</button>
+  <button class="lightbox-next" id="lightbox-next" aria-label="Next drawing">&#8250;</button>
+
+  <div class="lightbox-inner">
+    <div class="lightbox-frame">
+      <div class="lightbox-img-wrap">
+        <img id="lightbox-img" src="" alt="">
+      </div>
+      <div class="lightbox-caption">
+        <span id="lightbox-title"></span>
+        <span id="lightbox-meta"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar &nbsp;&middot;&nbsp; Mumbai</p>
+  <div class="footer-rule"></div>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Fade in ────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('loaded');
+  });
+
+  // ── Filter ────────────────────────────────────────
+  const filterBtns   = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const countEl      = document.getElementById('visible-count');
+
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const filter = this.dataset.filter;
+
+      filterBtns.forEach(function (b) { b.classList.remove('active'); });
+      this.classList.add('active');
+
+      let visible = 0;
+      galleryItems.forEach(function (item) {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.classList.remove('hidden');
+          visible++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      countEl.textContent = visible;
+    });
+  });
+
+  // ── Lightbox ──────────────────────────────────────
+  const lightbox     = document.getElementById('lightbox');
+  const lbImg        = document.getElementById('lightbox-img');
+  const lbTitle      = document.getElementById('lightbox-title');
+  const lbMeta       = document.getElementById('lightbox-meta');
+  const lbClose      = document.getElementById('lightbox-close');
+  const lbPrev       = document.getElementById('lightbox-prev');
+  const lbNext       = document.getElementById('lightbox-next');
+
+  let currentItems = [];
+  let currentIndex = 0;
+
+  function getVisibleFrames() {
+    return Array.from(
+      document.querySelectorAll('.gallery-item:not(.hidden) .drawing-frame')
+    );
+  }
+
+  function showImage(idx) {
+    const frame = currentItems[idx];
+    lbImg.src   = frame.dataset.src;
+    lbImg.alt   = frame.querySelector('img').alt;
+    lbTitle.textContent = frame.dataset.title;
+    lbMeta.textContent  = frame.dataset.meta;
+  }
+
+  function openLightbox(clickedFrame) {
+    currentItems = getVisibleFrames();
+    currentIndex = currentItems.indexOf(clickedFrame);
+    if (currentIndex === -1) currentIndex = 0;
+    showImage(currentIndex);
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length;
+    showImage(currentIndex);
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % currentItems.length;
+    showImage(currentIndex);
+  }
+
+  // Open on frame click
+  document.querySelectorAll('.drawing-frame').forEach(function (frame) {
+    frame.addEventListener('click', function () { openLightbox(this); });
+    frame.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(this); }
+    });
+    frame.setAttribute('tabindex', '0');
+    frame.setAttribute('role', 'button');
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click',  prevImage);
+  lbNext.addEventListener('click',  nextImage);
+
+  // Click backdrop to close
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  prevImage();
+    if (e.key === 'ArrowRight') nextImage();
+  });
+
+}());
+</script>
+</body>
+</html>

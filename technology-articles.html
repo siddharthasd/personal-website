@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Technology articles — Siddhartha Dhamankar</title>
+<style>
+:root {
+  --gold:          #C49A1A;
+  --gold-light:    #E8D5A0;
+  --ink:           #1C1712;
+  --parchment:     #FAF7F0;
+  --parchment-mid: #F2EBE0;
+  --text:          #2A2118;
+  --text-muted:    #6B5848;
+  --green:         #7DBF8E;
+  --green-dark:    #4E8C5F;
+  --border:        #D4C9B0;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; }
+body {
+  background: var(--parchment);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+body.loaded { opacity: 1; }
+
+.site-header {
+  background: var(--ink);
+  padding: 48px 40px 44px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 19px, rgba(196,154,26,0.05) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
+  pointer-events: none;
+}
+.header-inner { position: relative; z-index: 1; }
+.back-link {
+  display: inline-block;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(232,213,160,0.55);
+  text-decoration: none;
+  margin-bottom: 28px;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--gold-light); }
+.back-link::before { content: '← '; }
+.page-title {
+  font-family: Georgia, serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.page-subtitle {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  color: rgba(232,213,160,0.55);
+  letter-spacing: 0.25em;
+  font-style: italic;
+}
+
+.site-main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 48px 80px;
+  text-align: center;
+}
+.placeholder-frame {
+  display: inline-block;
+  border: 1px solid var(--border);
+  padding: 56px 64px;
+  background: var(--parchment-mid);
+  position: relative;
+}
+.placeholder-frame::before,
+.placeholder-frame::after {
+  content: '';
+  position: absolute;
+  width: 24px; height: 24px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.5;
+}
+.placeholder-frame::before { top: 8px; left: 8px; border-width: 1.5px 0 0 1.5px; }
+.placeholder-frame::after  { bottom: 8px; right: 8px; border-width: 0 1.5px 1.5px 0; }
+.placeholder-ornament { margin-bottom: 28px; }
+.placeholder-heading {
+  font-size: 22px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.placeholder-body {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.site-footer {
+  background: var(--ink);
+  color: rgba(232,213,160,0.5);
+  text-align: center;
+  padding: 40px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.07em;
+  line-height: 2.2;
+}
+.site-footer a { color: rgba(232,213,160,0.7); text-decoration: none; }
+.site-footer a:hover { color: var(--gold-light); }
+.footer-rule { width: 80px; height: 1px; background: rgba(196,154,26,0.3); margin: 14px auto; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div><a href="main.html" class="back-link">Home</a></div>
+    <h1 class="page-title">Technology articles</h1>
+    <p class="page-subtitle">AI &nbsp;&middot;&nbsp; Agentic systems &nbsp;&middot;&nbsp; Future of work</p>
+  </div>
+</header>
+
+<main class="site-main">
+  <div class="placeholder-frame">
+
+    <div class="placeholder-ornament" aria-hidden="true">
+      <svg width="60" height="24" viewBox="0 0 60 24">
+        <path d="M4,12 Q14,3 22,12 Q30,19 38,12 Q46,3 56,12"
+              fill="none" stroke="#C49A1A" stroke-width="1.2" opacity="0.65"/>
+        <circle cx="4"  cy="12" r="2" fill="#C49A1A" opacity="0.55"/>
+        <circle cx="56" cy="12" r="2" fill="#C49A1A" opacity="0.55"/>
+      </svg>
+    </div>
+
+    <h2 class="placeholder-heading">Articles in preparation</h2>
+    <p class="placeholder-body">
+      Published essays on AI, agentic systems, and the future of work are being collected here.
+      Each article will be presented with full text and downloadable PDF.
+    </p>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar &nbsp;&middot;&nbsp; Mumbai</p>
+  <div class="footer-rule"></div>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('loaded');
+  });
+</script>
+</body>
+</html>
