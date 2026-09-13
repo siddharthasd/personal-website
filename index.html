@@ -307,6 +307,22 @@ body.loaded { opacity: 1; }
   .panel-body  { padding: 22px 20px 20px; }
 }
 </style>
+<script>
+(function () {
+  var s = document.createElement('script');
+  s.src = 'https://js.monitor.azure.com/scripts/b/ai.2.min.js';
+  s.onload = function () {
+    var ai = new Microsoft.ApplicationInsights.ApplicationInsights({
+      config: {
+        connectionString: 'InstrumentationKey=5e195bbe-749f-4621-b80f-6f8faeea6b69;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/;ApplicationId=114f921c-1c00-4b3e-a988-120dce7b5392'
+      }
+    });
+    ai.loadAppInsights();
+    ai.trackPageView();
+  };
+  document.head.appendChild(s);
+}());
+</script>
 </head>
 <body>
 
