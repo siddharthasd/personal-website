@@ -2504,6 +2504,24 @@
               <td class="col-current">4.44</td><td>~4.30</td><td>4.32</td><td>4.18</td><td>4.12</td><td>4.00</td><td>3.86</td><td>4.22</td><td class="col-divider">4.35</td>
               <td>4.11</td><td>4.00</td><td>4.05</td><td>3.86</td><td>3.85</td><td>4.01</td><td>3.95</td><td>4.05</td><td>3.92</td><td>3.98</td><td>4.05</td><td>4.27</td>
             </tr>
+                        <!-- METRIC: Fed Funds Rate (%)
+              Source : Federal Reserve — federalreserve.gov/monetarypolicy/openmarket.htm
+                       FOMC press releases state the new target range after each meeting.
+                       Upper bound of FOMC target range is the market convention (e.g., 3.50–3.75% → report 3.75).
+                       CME FedWatch (cmegroup.com/trading/interest-rates/countdown-to-fomc.html) for expected path.
+              Format : %, upper bound of target range, 2 decimal places. No ~ if confirmed from FOMC statement.
+                       Carry-forward: hold at current target until next confirmed FOMC decision.
+                       FOMC meets ~8x/year; meeting calendar at federalreserve.gov/monetarypolicy/fomccalendars.htm.
+              Dir    : ↑ rising = tighter monetary policy = headwind for silver. warn ≥4.50%. alarm ≥5.00%.
+              Notes  : Always report UPPER BOUND of target range. Do NOT use EFFR (effective rate, typically 5–10bps lower).
+                       Current: 3.75% (held at 3.50–3.75% — Jul 29, 2026 FOMC; Sep 16–17 FOMC live with ~70% hike odds).
+                       KNOWN ANCHORS: Jan 2025 = 4.50 confirmed | Jan 2026 = 3.75 (after 3 cuts: May 25, Sep 25, Jan 26).
+                       NEVER extrapolate between meetings — rate is a step function, not a ramp. -->
+<tr class="row-fx">
+              <td>Fed Funds Rate (%)<span class="mds-dir bear">&#8593; higher = tighter policy &middot; warn &#8805;4.50 &middot; alarm &#8805;5.00</span></td>
+              <td class="col-current">3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td class="col-divider">3.75</td>
+              <td>~4.00</td><td>~4.00</td><td>~4.00</td><td>~4.00</td><td>~4.25</td><td>~4.25</td><td>~4.25</td><td>~4.25</td><td>~4.50</td><td>~4.50</td><td>~4.50</td><td>4.50</td>
+            </tr>
             <!-- Silver -->
             <tr class="row-group"><td colspan="22">Silver</td></tr>
                         <!-- METRIC: Silver COMEX ($/oz)
@@ -3077,6 +3095,11 @@
             </tr>
 
             <tr class="row-group"><td colspan="22">Funding Pressure</td></tr>
+            <tr>
+              <td>Fed Funds Rate &#8212; upper bound (%)<span class="ust-dir">&#8593; higher = tighter policy &middot; rising rate = higher debt-service cost &middot; watch &#8805;4.50 &middot; warn &#8805;5.00</span></td>
+              <td class="col-current">3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td class="col-divider">3.75</td>
+              <td>~4.00</td><td>~4.00</td><td>~4.00</td><td>~4.00</td><td>~4.25</td><td>~4.25</td><td>~4.25</td><td>~4.25</td><td class="watch-v">~4.50</td><td class="watch-v">~4.50</td><td class="watch-v">~4.50</td><td class="watch-v">4.50</td>
+            </tr>
             <tr>
               <td>Net bill issuance ($bn, monthly)<span class="ust-dir">&#8593; above $150B sustained = watch &middot; above $250B = warn</span></td>
               <td class="col-current watch-v">+145</td><td class="watch-v">+192</td><td class="watch-v">+148</td><td class="watch-v">+160</td><td class="watch-v">+172</td><td>+138</td><td>+102</td><td>+128</td><td class="col-divider watch-v">+152</td>
@@ -4244,6 +4267,7 @@
       { key: 'UST 30Y',                     dir: 'up',   warn: 5.0,   alarm: 5.5  },
       { key: 'UST 10Y',                     dir: 'up',   warn: 4.7,   alarm: 5.0  },
       { key: 'UST 3Y',                      dir: 'up',   warn: 4.4,   alarm: 4.8  },
+      { key: 'Fed Funds Rate',              dir: 'up',   warn: 4.50,  alarm: 5.00 },
       // Silver / Gold prices — no fixed control limit
       { key: 'Silver COMEX',               dir: 'none'                            },
       { key: 'Silver Shanghai',            dir: 'none'                            },
