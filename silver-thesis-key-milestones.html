@@ -1999,7 +1999,7 @@
             <span class="event-badge badge--credit">Private credit</span>
             <div class="event-title">2027 maturity cohort crosses 12-month threshold <span class="status-pill status-projected">Projected</span></div>
           </div>
-          <div class="event-detail">2022-vintage private credit loans with Q4 2027 maturities are now within 12 months. Accounting reclassification from long-term to short-term debt begins. Ratings agencies start systematic reviews. BDC quarterly filings (Q3 2026, released October-November) will show the first public signal of nonaccrual acceleration. Fitch reported headline default rate already at 6% with 65% of 2025 defaults being quiet restructurings.</div>
+          <div class="event-detail">2022-vintage private credit loans with Q4 2027 maturities are now within 12 months. Accounting reclassification from long-term to short-term debt begins. Ratings agencies start systematic reviews. BDC quarterly filings (Q3 2026, released October-November) will show the first public signal of nonaccrual acceleration. Fitch all-inclusive rate hit ~6% for 2025 (broad methodology, ~65% via quiet restructurings/LMEs). PitchBook LCD dual-track rate (standard measure) peaked at ~4.2% in late 2025 and has since declined to ~2.87–3.88% through 2026 — still elevated vs history but not in alarm territory on the dual-track measure.</div>
           <div class="event-signal risk">Watch: Q3 2026 BDC filings in October-November for nonaccrual rate trends. This is the first public signal before the crisis becomes visible.</div>
         </div>
 
@@ -2590,8 +2590,8 @@
               <td><span class="pc-warn">~2.2</span></td><td><span class="pc-warn">~2.1</span></td><td>~1.9</td><td>~1.8</td><td>~1.7</td><td>~1.6</td><td>~1.5</td><td>~1.4</td><td>~1.4</td><td>~1.3</td><td>~1.2</td><td>~1.2</td>
             </tr>
             <tr class="row-pc">
-              <td>Leveraged-loan default rate (%, trailing 12M)<span class="mds-dir bear">↑ above 3% = warning; above 5% = alarm. Fitch: 6% reported, ~65% via quiet restructuring</span></td>
-              <td class="col-current"><span class="pc-stress">~6.0</span></td><td><span class="pc-stress">~6.0</span></td><td><span class="pc-stress">~5.9</span></td><td><span class="pc-stress">~5.8</span></td><td><span class="pc-stress">~5.5</span></td><td><span class="pc-stress">~5.2</span></td><td><span class="pc-warn">~4.9</span></td><td><span class="pc-warn">~4.6</span></td><td class="col-divider"><span class="pc-warn">~4.4</span></td>
+              <td>Leveraged-loan dual-track default rate (%, T12M)<span class="mds-dir bear">↑ above 3% = warning; above 5% = alarm. PitchBook LCD dual-track (payment defaults + distressed LMEs). Payment-only Aug 26: 0.87%; dual-track Aug 26: ~2.87%. Declined from 2025 peak ~4.2%.</span></td>
+              <td class="col-current">~2.9</td><td>~2.9</td><td><span class="pc-warn">~3.0</span></td><td><span class="pc-warn">~3.2</span></td><td><span class="pc-warn">~3.3</span></td><td><span class="pc-warn">~3.5</span></td><td><span class="pc-warn">~3.7</span></td><td><span class="pc-warn">~3.8</span></td><td class="col-divider"><span class="pc-warn">~3.9</span></td>
               <td><span class="pc-warn">~4.2</span></td><td><span class="pc-warn">~4.0</span></td><td>~3.8</td><td>~3.6</td><td>~3.5</td><td>~3.4</td><td>~3.3</td><td>~3.2</td><td>~3.0</td><td>~2.8</td><td>~2.6</td><td>~2.5</td>
             </tr>
             <tr class="row-pc">
@@ -3942,7 +3942,7 @@
       { key: 'LSTA distress',              dir: 'up',   warn: 5,     alarm: 7    },
       { key: 'HY OAS',                     dir: 'up',   warn: 400,   alarm: 600  },
       { key: 'Private-credit non-accruals',dir: 'up',   warn: 2,     alarm: 3    },
-      { key: 'Leveraged-loan default rate',dir: 'up',   warn: 3,     alarm: 5    },
+      { key: 'Leveraged-loan dual-track default rate',dir: 'up',   warn: 3,     alarm: 5    },
       { key: 'HY distress ratio',          dir: 'up',   warn: 8,     alarm: 12   },
       { key: 'Avg leveraged loan bid',     dir: 'down', warn: 96,    alarm: 93   },
       { key: 'CLO equity',                 dir: 'down', warn: 5,     alarm: 0    },
@@ -4151,9 +4151,9 @@
               <td>Weighted-average non-accrual rate across publicly reporting BDCs (e.g., Ares Capital, Blue Owl, FS KKR, Golub) as disclosed in quarterly 10-Qs. Non-accruals lag actual credit impairment by 1–2 quarters due to manager discretion in classification. Rising non-accruals in consecutive quarters are the clearest leading indicator of broader private-credit defaults. Q3 2026 BDC filings (Oct–Nov 2026) will be the first public confirmation of the Q2→Q3 2026 acceleration. Sources: SEC EDGAR BDC 10-Q filings, Octus (formerly Reorg), PitchBook LCD.</td>
             </tr>
             <tr>
-              <td>Leveraged-loan default rate (%, trailing 12M)</td>
+              <td>Leveraged-loan dual-track default rate (%, T12M)</td>
               <td>Normal &lt;2%<br>Warn &gt;3%<br>Alarm &gt;5%</td>
-              <td>Trailing 12-month leveraged loan default rate by principal amount (Fitch Ratings monthly report). Includes Chapter 11, distressed exchanges, and missed payments. Fitch reported headline rate at ~6% as of mid-2026 with ~65% of 2025 defaults classified as quiet restructurings (distressed exchanges not visible in bankruptcy counts). The divergence between the official default rate and the proportion of quiet restructurings is itself a stress signal — it indicates managers are preferring non-disclosure to formal default. Sources: Fitch Ratings Leveraged Finance Default Monitor, PitchBook LCD.</td>
+              <td>Trailing 12-month leveraged loan default rate — dual-track methodology (PitchBook LCD): counts payment defaults AND distressed liability management exercises (LMEs, amend-and-extend, out-of-court restructurings). Distinct from: (1) payment-only rate (PitchBook LCD by amount: 0.87% Aug 2026, 0.93% Jul 2026 — very low); (2) Fitch all-inclusive rate, which uses a broader distressed-exchange definition and reported ~6% for 2025 with ~65% via quiet restructurings. The dual-track measure (2.87–3.88% through 2026) is the standard comparator for private credit cycle monitoring. It peaked at ~4.2% in late 2025 and has been declining. Note: the divergence between payment-only (0.87%) and dual-track (2.87%) reflects the scale of LME activity — a structural stress signal even as headline defaults stay low. Sources: PitchBook LCD Monthly Default Report, Fitch Ratings Leveraged Finance Default Monitor.</td>
             </tr>
             <tr>
               <td>HY distress ratio (% bonds trading &gt;1000bps OAS)</td>
