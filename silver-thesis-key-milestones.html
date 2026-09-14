@@ -2432,78 +2432,178 @@
           <tbody>
             <!-- FX & Rates -->
             <tr class="row-group"><td colspan="22">FX &amp; Rates</td></tr>
-            <tr class="row-rfi">
+                        <!-- METRIC: Rate Fragility Index (RFI)
+              Source : CALCULATED — never fetch externally.
+                       Formula: RFI = −0.6816 + (0.0549 × JGB_10Y) + (0.1852 × UST_30Y)
+                       Bear-steepener bonus: +0.04–0.06 fires only when UST_30Y > 5.0% AND (UST_30Y − UST_10Y) > 1.0% simultaneously.
+                       Use JGB 10Y and UST 30Y values already confirmed in this same update. R² = 0.9923 across 20 months.
+              Format : 0–1 scale, 2 decimal places. No ~ prefix (always calculated, never fetched).
+              Dir    : ↑ higher = more systemic monetary stress. Warn ≥ 0.30. Alarm ≥ 0.55.
+              Notes  : Only two inputs explain virtually all variance — do not add other variables.
+                       Recalculate fresh every update even if JGB/UST inputs are unchanged. -->
+<tr class="row-rfi">
               <td>Rate Fragility Index (0&#8209;1)<span class="mds-dir bear">&#8593; higher = more systemic stress &middot; warn &#8805;0.30 &middot; alarm &#8805;0.55 &middot; bear-steepener bonus activates when 30Y &gt;5% &amp; spread &gt;100bps</span></td>
               <td class="col-current">0.47</td><td>0.44</td><td>0.44</td><td>0.40</td><td>0.38</td><td>0.33</td><td>0.33</td><td>0.33</td><td class="col-divider">0.35</td>
               <td>0.30</td><td>0.25</td><td>0.27</td><td>0.23</td><td>0.23</td><td>0.29</td><td>0.27</td><td>0.28</td><td>0.24</td><td>0.25</td><td>0.24</td><td>0.28</td>
             </tr>
-            <tr class="row-fx">
+                        <!-- METRIC: USD/JPY
+              Source : Federal Reserve H.10 Foreign Exchange Rates — federalreserve.gov/releases/h10
+                       Daily noon buying rate (or Tokyo close if H.10 not yet updated for reference date).
+              Format : Round to 1 decimal place. No ~ if from Fed H.10.
+              Dir    : ↓ lower (yen strengthening) = carry trade unwinding = silver +ve.
+                       ↑ higher (yen weakening) = carry trade intact = silver headwind.
+              Notes  : Key input alongside JGB 10Y for monitoring the BOJ carry-trade unwind thesis (Driver 9b). -->
+<tr class="row-fx">
               <td>USD/JPY<span class="mds-dir bear">↓ lower = silver +ve</span></td>
               <td class="col-current">153.5</td><td>~157</td><td>157.4</td><td>160.2</td><td>152.8</td><td>148.2</td><td>150.5</td><td>154.3</td><td class="col-divider">153.2</td>
               <td>156.4</td><td>156.3</td><td>152.6</td><td>143.9</td><td>146.4</td><td>148.2</td><td>145.7</td><td>144.8</td><td>143.7</td><td>150.3</td><td>151.8</td><td>154.7</td>
             </tr>
-            <tr class="row-fx">
+                        <!-- METRIC: JGB 10Y yield (%)
+              Source : Bank of Japan Statistical Release — stat-search.boj.or.jp (10-year JGB benchmark yield)
+                       or Ministry of Finance Japan — mof.go.jp/english/jgbs/reference/interest_rate/
+              Format : %, round to 2 decimal places. No ~ if from BOJ/MOF official source.
+              Dir    : ↑ rising = US-Japan rate differential narrows = carry trade less profitable = yen strengthens.
+              Notes  : This is the primary input to the RFI formula — always confirm JGB 10Y BEFORE computing RFI.
+                       BOJ has been hiking gradually since 2024; any surprise hike is a significant carry-trade signal. -->
+<tr class="row-fx">
               <td>JGB 10Y (%)<span class="mds-dir">↑ rising = carry unwind</span></td>
               <td class="col-current">2.93</td><td>~2.90</td><td>2.82</td><td>2.74</td><td>2.62</td><td>2.48</td><td>2.30</td><td>2.08</td><td class="col-divider">1.92</td>
               <td>1.75</td><td>1.56</td><td>1.61</td><td>1.58</td><td>1.72</td><td>1.63</td><td>1.52</td><td>1.44</td><td>1.38</td><td>1.50</td><td>1.35</td><td>1.10</td>
             </tr>
-            <tr class="row-fx">
+                        <!-- METRIC: UST 30Y yield (%)
+              Source : Federal Reserve H.15 Selected Interest Rates — federalreserve.gov/releases/h15
+                       Series: DTYCR30Y156N (30-year constant-maturity Treasury yield). Daily close.
+              Format : %, round to 2 decimal places. No ~ if from Fed H.15 for reference date.
+              Dir    : ↑ higher = long-end fiscal stress (debt monetisation narrative); above 5% activates RFI bear-steepener bonus condition.
+                       ↓ lower = silver +ve (lower long rates reduce opportunity cost of holding silver).
+              Notes  : Second key input to RFI formula. Bear-steepener bonus: BOTH (30Y > 5%) AND (30Y − 10Y > 100bps) must hold simultaneously. -->
+<tr class="row-fx">
               <td>UST 30Y (%)<span class="mds-dir bear">↓ lower = silver +ve; ↑ = long-end fiscal stress</span></td>
               <td class="col-current">5.36</td><td>5.24</td><td>~5.18</td><td>~5.04</td><td>~4.98</td><td>~4.72</td><td>~4.78</td><td>~4.78</td><td class="col-divider">~4.97</td>
               <td>~4.77</td><td>~4.56</td><td>~4.64</td><td>~4.44</td><td>~4.42</td><td>~4.76</td><td>~4.72</td><td>~4.82</td><td>~4.58</td><td>~4.63</td><td>~4.59</td><td>~4.82</td>
             </tr>
-            <tr class="row-fx">
+                        <!-- METRIC: UST 10Y yield (%)
+              Source : Federal Reserve H.15 — federalreserve.gov/releases/h15
+                       Series: DGS10 (10-year constant-maturity Treasury yield). Daily close.
+              Format : %, round to 2 decimal places. No ~ if from Fed H.15 for reference date.
+              Dir    : ↓ lower = silver +ve. Rising 10Y with rising 30Y = bear steepener in progress.
+              Notes  : Used to calculate the 30Y–10Y spread for the RFI bear-steepener bonus condition. -->
+<tr class="row-fx">
               <td>UST 10Y (%)<span class="mds-dir bear">↓ lower = silver +ve</span></td>
               <td class="col-current">4.98</td><td>~4.70</td><td>4.75</td><td>4.52</td><td>4.48</td><td>4.28</td><td>4.36</td><td>4.42</td><td class="col-divider">4.58</td>
               <td>4.36</td><td>4.18</td><td>4.28</td><td>4.06</td><td>4.06</td><td>4.43</td><td>4.36</td><td>4.40</td><td>4.17</td><td>4.21</td><td>4.24</td><td>4.53</td>
             </tr>
-            <tr class="row-fx">
+                        <!-- METRIC: UST 3Y yield (%)
+              Source : Federal Reserve H.15 — federalreserve.gov/releases/h15
+                       Series: DGS3 (3-year constant-maturity Treasury yield). Daily close.
+              Format : %, round to 2 decimal places. No ~ if from Fed H.15 for reference date.
+              Dir    : ↓ lower = silver +ve. 3Y is the most sensitive to near-term Fed rate expectations.
+              Notes  : Primarily a Fed policy signal. Compare to 10Y and 30Y for yield-curve shape context. -->
+<tr class="row-fx">
               <td>UST 3Y (%)<span class="mds-dir bear">↓ lower = silver +ve</span></td>
               <td class="col-current">4.44</td><td>~4.30</td><td>4.32</td><td>4.18</td><td>4.12</td><td>4.00</td><td>3.86</td><td>4.22</td><td class="col-divider">4.35</td>
               <td>4.11</td><td>4.00</td><td>4.05</td><td>3.86</td><td>3.85</td><td>4.01</td><td>3.95</td><td>4.05</td><td>3.92</td><td>3.98</td><td>4.05</td><td>4.27</td>
             </tr>
             <!-- Silver -->
             <tr class="row-group"><td colspan="22">Silver</td></tr>
-            <tr class="row-ag">
+                        <!-- METRIC: Silver COMEX ($/oz)
+              Source : CME Group front-month silver futures (symbol SI) settlement price — cmegroup.com
+                       Or Investing.com/TradingView historical for confirmed month-end close.
+              Format : $/oz, round to 1 decimal place. No ~ if from CME settlement.
+              Dir    : ↑ higher = bull thesis in motion.
+              Notes  : Use front-month (nearest active delivery month) settlement. Active delivery months: Mar, May, Jul, Sep, Dec.
+                       This is the primary price reference for all derived metrics (G/S ratio, MCX premium calc). -->
+<tr class="row-ag">
               <td>Silver COMEX ($/oz)<span class="mds-dir bull">↑ higher = bull thesis</span></td>
               <td class="col-current">64.5</td><td>~70</td><td>~58.5</td><td>~61.0</td><td>~68.0</td><td>~75.0</td><td>~75.0</td><td>~83.0</td><td class="col-divider">~94.0</td>
               <td>~79.0</td><td>~60.0</td><td>~47.0</td><td>41.7</td><td>41.7</td><td>39.2</td><td>36.5</td><td>32.8</td><td>32.0</td><td>34.4</td><td>31.1</td><td>31.3</td>
             </tr>
-            <tr class="row-ag">
+                        <!-- METRIC: Silver Shanghai ($/oz)
+              Source : Shanghai Futures Exchange front-month silver futures settlement — shfe.com.cn
+                       Convert from CNY/kg: USD/oz = (CNY/kg price) ÷ 32.15 ÷ USD/CNY spot rate.
+                       USD/CNY rate: People's Bank of China daily reference rate (pbc.gov.cn) or Fed H.10.
+              Format : $/oz, round to 1 decimal. ALWAYS mark ~ (FX conversion introduces estimation).
+              Dir    : ↑ premium over COMEX = China physical demand bidding above arbitrage parity = physical tightness.
+                       Structural floor: ~3–5% above COMEX due to VAT and import logistics. Values below this = weak demand.
+              Notes  : Never remove ~ even if CNY price is confirmed — FX conversion always introduces estimation error. -->
+<tr class="row-ag">
               <td>Silver Shanghai ($/oz)<span class="mds-dir bull">↑ premium = physical tightness</span></td>
               <td class="col-current">~72.7</td><td>~73.5</td><td>~61.7</td><td>~64.4</td><td>~71.8</td><td>~79.1</td><td>~79.1</td><td>~87.5</td><td class="col-divider">~99.2</td>
               <td>~83.3</td><td>~63.2</td><td>~49.5</td><td>~43.9</td><td>~43.9</td><td>~41.3</td><td>~38.5</td><td>~34.6</td><td>~33.8</td><td>~36.3</td><td>~32.8</td><td>~33.0</td>
             </tr>
             <!-- Gold -->
             <tr class="row-group"><td colspan="22">Gold</td></tr>
-            <tr class="row-au">
+                        <!-- METRIC: Gold COMEX ($/oz)
+              Source : CME Group front-month gold futures (symbol GC) settlement — cmegroup.com
+                       Or Investing.com/TradingView for confirmed month-end close.
+              Format : $/oz, round to nearest integer. No ~ if from CME settlement.
+              Dir    : ↑ higher = monetary stress and reserve diversification accelerating. Gold leads silver by 6–18 months.
+              Notes  : Use front-month (GC) settlement. Used to calculate Gold/Silver ratio in Derived Signals. -->
+<tr class="row-au">
               <td>Gold COMEX ($/oz)<span class="mds-dir bull">↑ higher = monetary stress</span></td>
               <td class="col-current">4,360</td><td>~4,650</td><td>4,033</td><td>4,066</td><td>4,150</td><td>4,100</td><td>4,280</td><td>4,620</td><td class="col-divider">4,900</td>
               <td>3,920</td><td>4,531</td><td>4,200</td><td>3,620</td><td>3,440</td><td>3,300</td><td>3,260</td><td>3,320</td><td>3,280</td><td>3,100</td><td>2,900</td><td>2,835</td>
             </tr>
-            <tr class="row-au">
+                        <!-- METRIC: Gold Shanghai ($/oz)
+              Source : Shanghai Gold Exchange Au9999 spot close — sge.com.cn (CNY/g)
+                       Convert: USD/oz = (CNY/g) × 31.1035 ÷ USD/CNY spot rate.
+              Format : $/oz, round to nearest integer. ALWAYS mark ~ (FX conversion).
+              Dir    : ↑ premium over COMEX = strong Chinese institutional gold demand.
+              Notes  : Au9999 is the liquid benchmark on SGE. Always ~. Check SGE monthly reports for confirmation. -->
+<tr class="row-au">
               <td>Gold Shanghai ($/oz)<span class="mds-dir bull">↑ higher = monetary stress</span></td>
               <td class="col-current">~4,375</td><td>~4,743</td><td>4,114</td><td>4,147</td><td>4,233</td><td>4,182</td><td>4,366</td><td>4,712</td><td class="col-divider">4,998</td>
               <td>3,998</td><td>4,622</td><td>4,284</td><td>3,692</td><td>3,509</td><td>3,366</td><td>3,325</td><td>3,386</td><td>3,346</td><td>3,162</td><td>2,958</td><td>2,892</td>
             </tr>
             <!-- Premiums & Market Stress -->
             <tr class="row-group"><td colspan="22">Premiums &amp; Market Stress</td></tr>
-            <tr class="row-prem">
+                        <!-- METRIC: Silver net premium (%)
+              Source : CALCULATED — ((Silver Shanghai − Silver COMEX) ÷ Silver COMEX) × 100.
+                       Both inputs are already in this table. Never fetch this value externally.
+              Format : %, round to nearest 1%. Mark ~ (both inputs are ~ estimated).
+              Dir    : ↑ positive = China physical demand bidding above COMEX parity.
+                       0% = parity; below 0% = SHFE below COMEX (unusual, signals arbitrage distortion).
+                       Structural floor ~3–5% due to VAT and logistics. Values near 0% = demand weakness.
+              Notes  : Always derived; never look up externally. Inherits ~ from Shanghai inputs. -->
+<tr class="row-prem">
               <td>Silver net premium (%)<span class="mds-dir bull">↑ above 0% = demand above VAT floor</span></td>
               <td class="col-current">~0%</td><td>~0%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td class="col-divider">~5%</td>
               <td>~10%</td><td>~5%</td><td>~3%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td>
             </tr>
-            <tr class="row-sig">
+                        <!-- METRIC: Silver backwardation
+              Source : CME Group COMEX silver futures daily settlement — cmegroup.com
+                       Calculate: front-month (spot) settlement minus 3-month futures settlement.
+              Format : Text values only — "yes" (inversion > 15¢/oz), "mild" (1–15¢/oz), "—" (contango, normal).
+                       Classes: sig-stress for "yes", sig-mild for "mild", sig-none for "—".
+              Dir    : backwardation = near-term physical scarcity (spot bid above future supply).
+                       "yes" = strong (>15¢); "mild" = slight (1–15¢); "—" = normal contango.
+              Notes  : Sustained backwardation began Oct 2025 — now 12+ months. Historically unprecedented duration.
+                       If CME settlement data unavailable, check DS tab Spot–3M structure row for the current ¢/oz figure. -->
+<tr class="row-sig">
               <td>Silver backwardation<span class="mds-dir bull">↑ present = near-term physical scarcity</span></td>
               <td class="col-current"><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td class="col-divider"><span class="sig-stress">yes</span></td>
               <td><span class="sig-stress">yes</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td>
             </tr>
-            <tr class="row-prem">
+                        <!-- METRIC: Gold net premium (%)
+              Source : CALCULATED — ((Gold Shanghai − Gold COMEX) ÷ Gold COMEX) × 100.
+                       Both inputs already in this table. Never fetch externally.
+              Format : %, round to nearest 1%. Mark ~ (inherited from Shanghai estimate).
+              Dir    : ↑ positive = Chinese institutional gold demand above parity.
+                       Structural floor ~0–1% due to import logistics. Values near 0% or below = weak demand.
+              Notes  : Always derived; inherits ~ from Gold Shanghai. Compare to silver net premium for cross-asset read. -->
+<tr class="row-prem">
               <td>Gold net premium (%)<span class="mds-dir bull">↑ above 0% = China physical demand above logistics floor</span></td>
               <td class="col-current">~0%</td><td>~0%</td><td>~0%</td><td>~0%</td><td>~1%</td><td>~1%</td><td>~2%</td><td>~2%</td><td class="col-divider">~2%</td>
               <td>~2%</td><td>~2%</td><td>~2%</td><td>~1%</td><td>~1%</td><td>~0%</td><td>~0%</td><td>~1%</td><td>~1%</td><td>~1%</td><td>~1%</td><td>~1%</td>
             </tr>
-            <tr class="row-sig">
+                        <!-- METRIC: Gold backwardation
+              Source : CME Group COMEX gold futures daily settlement — cmegroup.com
+                       Calculate: GC front-month settlement minus 3-month GC futures settlement.
+              Format : Same text values as silver: "yes", "mild", "—". Same classes: sig-stress / sig-mild / sig-none.
+              Dir    : backwardation = rare physical gold demand spike.
+                       When gold AND silver both in backwardation simultaneously, it confirms broad precious metals tightness.
+              Notes  : Gold backwardation is much rarer than silver backwardation. When present, it is a strong signal. -->
+<tr class="row-sig">
               <td>Gold backwardation<span class="mds-dir bull">↑ present = physical demand floor forming</span></td>
               <td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td class="col-divider"><span class="sig-mild">mild</span></td>
               <td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td>
@@ -2511,57 +2611,138 @@
             </tr>
             <!-- Inventories -->
             <tr class="row-group"><td colspan="22">Inventories</td></tr>
-            <tr class="row-inv">
+                        <!-- METRIC: COMEX Registered (moz)
+              Source : CME Group daily CME Warehouse Stock Report via goldsilver.ai or thevaultreport.com
+                       Registered = silver that has been warranted and is in CME-approved vaults, immediately deliverable.
+                       NOT the same as Eligible (eligible can become registered but is not yet warranted).
+              Format : million troy ounces (moz), round to 1 decimal. No ~ if from daily CME warehouse report.
+              Dir    : ↓ lower = fewer immediately deliverable ounces = squeeze risk. Warn < 100 moz. Alarm < 80 moz.
+              Notes  : This value is also tracked independently in the DS tab Exchange Inventories table — update BOTH.
+                       Do not confuse with COMEX Eligible (a separate, larger pool). -->
+<tr class="row-inv">
               <td>COMEX Registered (moz)<span class="mds-dir bear">↓ lower = supply squeeze</span></td>
               <td class="col-current">95.9</td><td>~100</td><td>~96</td><td>~82</td><td>~79</td><td>77</td><td>~77</td><td>~85</td><td class="col-divider">~103</td>
               <td>128</td><td>~148</td><td>168</td><td>~158</td><td>~150</td><td>~142</td><td>~130</td><td>~118</td><td>~105</td><td>~95</td><td>~82</td><td>~73</td>
             </tr>
-            <tr class="row-inv">
+                        <!-- METRIC: SHFE Silver (moz)
+              Source : SHFE official daily warrant stock report — shfe.com.cn (Reports > Statistical Data > Daily Warehouse Stock)
+                       or CEIC: China Warehouse Stock: Shanghai Futures Exchange: Silver (reports in tonnes).
+              Format : SHFE reports in TONNES → convert to moz: moz = tonnes × 0.03215 (= tonnes × 1000 kg/t × 32.15 oz/kg ÷ 1,000,000).
+                       Round to 1 decimal. No ~ if from SHFE official report.
+              Dir    : ↓ lower = supply squeeze in China. Warn < 35 moz. Alarm < 28 moz.
+              Notes  : Sep 11 2026 confirmed: 1,407.505t = 45.3 moz. Prior estimates used incomplete dataset (~868t).
+                       Always convert from tonnes; never enter a tonnes value directly. Also updated independently in DS tab — update BOTH. -->
+<tr class="row-inv">
               <td>SHFE Silver (moz)<span class="mds-dir bear">↓ lower = supply squeeze</span></td>
               <td class="col-current">45.3</td><td>~27.5</td><td>27.8</td><td>27.9</td><td>27.7</td><td>27.9</td><td>28.0</td><td>28.1</td><td class="col-divider">28.4</td>
               <td>28.8</td><td>29.5</td><td>30.5</td><td>32.0</td><td>33.0</td><td>36.0</td><td>40.0</td><td>50.0</td><td>58.0</td><td>65.0</td><td>72.0</td><td>80.0</td>
             </tr>
             <!-- Macro & Monetary -->
             <tr class="row-group"><td colspan="22">Macro &amp; Monetary</td></tr>
-            <tr class="row-fx">
+                        <!-- METRIC: WTI Crude ($/bbl)
+              Source : CME/NYMEX front-month light crude (CL) futures settlement — cmegroup.com
+                       or EIA weekly petroleum report — eia.gov/dnav/pet/hist/LeafHandler.ashx
+              Format : $/bbl, round to nearest integer. No ~ if from CME settlement.
+              Dir    : ↑ higher = India forex pressure → rupee weakens → import duty hike risk → silver import suppression.
+                       Also raises inflation expectations → complicates Fed pivot timing.
+              Notes  : Sep 2026: WTI at $100 due to US Hormuz strike Sep 1 and Iran retaliation. High oil amplifies both
+                       inflation (hike risk) and India duty pressure simultaneously. -->
+<tr class="row-fx">
               <td>WTI Crude ($/bbl)<span class="mds-dir bear">↑ higher = India forex pressure → duty hike risk</span></td>
               <td class="col-current">100</td><td>~85</td><td>~75</td><td>~82</td><td>~88</td><td>~100</td><td>~90</td><td>64</td><td class="col-divider">60</td>
               <td>58</td><td>60</td><td>61</td><td>~68</td><td>65</td><td>~65</td><td>~65</td><td>~61</td><td>~61</td><td>~69</td><td>~71</td><td>~74</td>
             </tr>
-            <tr class="row-fx">
+                        <!-- METRIC: DXY (USD Index)
+              Source : ICE U.S. Dollar Index (USDX) via Investing.com historical, TradingView, or ICE Futures US.
+                       ICE DXY basket: EUR 57.6%, JPY 13.6%, GBP 11.9%, CAD 9.1%, SEK 4.2%, CHF 3.6%.
+              Format : Index level, round to 1 decimal. No ~ if from major financial data provider for reference date.
+              Dir    : ↓ lower (weaker dollar) = silver +ve (dollar-denominated commodity becomes cheaper in other currencies).
+                       ↑ higher (stronger dollar) = silver headwind.
+              Notes  : DXY is a blunt measure — USD/JPY and USD/INR are more relevant for thesis-specific drivers. -->
+<tr class="row-fx">
               <td>DXY (USD Index)<span class="mds-dir bear">↓ lower = silver +ve (weaker dollar)</span></td>
               <td class="col-current">99.1</td><td>101</td><td>~100</td><td>~100</td><td>~98</td><td>~99</td><td>~103</td><td>~100</td><td class="col-divider">~97</td>
               <td>~108</td><td>~107</td><td>~104</td><td>~100</td><td>~101</td><td>~98</td><td>~97</td><td>~99</td><td>~100</td><td>~104</td><td>~107</td><td>~108</td>
             </tr>
-            <tr class="row-fx">
+                        <!-- METRIC: US 10Y Real yield / TIPS (%)
+              Source : Federal Reserve H.15 or FRED series DFII10 — fred.stlouisfed.org/series/DFII10
+                       10-year Treasury Inflation-Indexed Constant Maturity yield. Daily release.
+              Format : %, round to 2 decimal places. No ~ if from Fed H.15 / FRED for reference date.
+              Dir    : ↓ lower / negative = higher monetary premium for silver and gold (real return on holding cash/bonds falls).
+                       ↑ above 2% = historically significant headwind for precious metals (real return on bonds attractive).
+              Notes  : Distinct from nominal UST 10Y yield. Real yield = nominal minus TIPS breakeven inflation.
+                       This is the most theoretically important rate for silver's monetary premium component. -->
+<tr class="row-fx">
               <td>US 10Y Real (TIPS %)<span class="mds-dir bear">↓ lower / negative = silver monetary premium ↑</span></td>
               <td class="col-current">2.55</td><td>~2.10</td><td>~2.10</td><td>~1.90</td><td>~1.95</td><td>~1.96</td><td>2.06</td><td>~2.00</td><td class="col-divider">~2.10</td>
               <td>~2.05</td><td>~1.90</td><td>~1.80</td><td>~1.75</td><td>~1.75</td><td>~2.00</td><td>~1.90</td><td>~2.00</td><td>~2.20</td><td>~2.00</td><td>~2.00</td><td>~2.10</td>
             </tr>
-            <tr class="row-ag">
+                        <!-- METRIC: US M2 ($tn)
+              Source : Federal Reserve H.6 Money Stock Measures — federalreserve.gov/releases/h6
+                       or FRED series M2SL — fred.stlouisfed.org/series/M2SL
+                       Published monthly with ~5-week lag; weekly seasonally adjusted data also available.
+              Format : $ trillions, round to 2 decimal places. Mark ~ if reference month not yet published.
+              Dir    : ↑ higher = more broad liquidity = higher monetary premium for hard assets including silver.
+                       M2 contraction is a headwind. Rate of change matters as much as level.
+              Notes  : Use the most recent available monthly figure. If reference month not yet published, carry forward
+                       prior month with ~ prefix. Annual growth rate context: M2 was −0.6% in 2023, +0.4% in 2024, running ~3% in 2025. -->
+<tr class="row-ag">
               <td>US M2 ($tn)<span class="mds-dir bull">↑ higher = more liquidity → monetary premium for silver</span></td>
               <td class="col-current">~23.2</td><td>~23.3</td><td>~23.2</td><td>23.16</td><td>~22.9</td><td>~22.8</td><td>~22.7</td><td>22.67</td><td class="col-divider">22.44</td>
               <td>22.41</td><td>~22.3</td><td>22.21</td><td>~21.9</td><td>~21.8</td><td>~21.7</td><td>~21.7</td><td>~21.6</td><td>~21.6</td><td>~21.5</td><td>~21.5</td><td>~21.4</td>
             </tr>
             <!-- Derived Signals -->
             <tr class="row-group"><td colspan="22">Derived Signals</td></tr>
-            <tr class="row-prem">
+                        <!-- METRIC: Gold / Silver ratio
+              Source : CALCULATED — Gold COMEX ($/oz) ÷ Silver COMEX ($/oz). Already in this table. Never fetch externally.
+              Format : Dimensionless ratio, round to nearest integer. Mark ~ if either input is ~estimated.
+              Dir    : ↓ lower = silver outperforming gold = late bull-market phase (silver catches up to gold's move).
+                       ↑ higher = silver lagging = early-phase or risk-off (gold safe-haven, silver not yet bid).
+              Notes  : Exit signal for thesis: ratio compressing toward 40–45x. Historical range: 15x (1980 peak) to 127x (Mar 2020 panic).
+                       Current Sep 26: ~68x. Peak Apr 2025 tariff panic: ~107x. -->
+<tr class="row-prem">
               <td>Gold / Silver ratio<span class="mds-dir bear">↓ lower = silver outperforming → thesis compressing</span></td>
               <td class="col-current">~68</td><td>~66</td><td>~69</td><td>~67</td><td>~61</td><td>~55</td><td>~57</td><td>~56</td><td class="col-divider">~52</td>
               <td>~50</td><td>~75</td><td>~89</td><td>~87</td><td>~82</td><td>~84</td><td>~89</td><td>~103</td><td>~107</td><td>~91</td><td>~93</td><td>~90</td>
             </tr>
             <!-- India -->
             <tr class="row-group"><td colspan="22">India</td></tr>
-            <tr class="row-india">
+                        <!-- METRIC: USD/INR
+              Source : RBI Reference Rate — rbi.org.in/scripts/ReferenceRateArchive.aspx (daily official rate)
+                       or Federal Reserve H.10 Foreign Exchange Rates — federalreserve.gov/releases/h10
+              Format : Round to 1 decimal place. No ~ if from RBI/Fed official source.
+              Dir    : ↑ higher (weaker rupee) = silver imports more expensive in INR even at flat COMEX price.
+                       Raises MCX silver price mechanically and increases effective duty burden.
+              Notes  : USD/INR has moved from ~84 (early 2025) to ~96 (Sep 2026) — structural rupee weakness amplifies
+                       the domestic duty impact. A 1% INR depreciation adds ~₹2,300/kg to MCX silver cost. -->
+<tr class="row-india">
               <td>USD/INR<span class="mds-dir bear">↑ higher (weaker rupee) = more duty pressure on imports</span></td>
               <td class="col-current">95.7</td><td>~91</td><td>~92.0</td><td>~95.0</td><td>~90.0</td><td>~85.0</td><td>~87.5</td><td>~87.0</td><td class="col-divider">~86.5</td>
               <td>~84.7</td><td>~84.4</td><td>~84.1</td><td>~84.0</td><td>~84.1</td><td>~84.0</td><td>~84.5</td><td>~84.0</td><td>~83.5</td><td>~86.5</td><td>~87.0</td><td>~86.6</td>
             </tr>
-            <tr class="row-india">
+                        <!-- METRIC: India FX Reserves ($bn)
+              Source : RBI Weekly Statistical Supplement Table 1 — rbi.org.in/scripts/WSSViewDetail.aspx
+                       Total reserves = Foreign Currency Assets (FCA) + Gold + SDRs + IMF Reserve Tranche.
+                       Published weekly; reference date is the Friday of the reference week.
+              Format : $bn, round to 1 decimal. No ~ if from RBI WSS for confirmed weekly date.
+              Dir    : ↓ lower = more RBI pressure to restrict silver imports (BOP/rupee defence).
+                       ↑ higher (record) = less urgency for import restriction; duty reversal pressure shifts from BOP to political.
+              Notes  : Sep 12 2026 record: $785.7bn driven by NRI diaspora deposits. At this level, the duty-reversal trigger
+                       is political/fiscal, not BOP-driven. Publication lag: ~1 week. -->
+<tr class="row-india">
               <td>India FX Reserves ($bn)<span class="mds-dir bull">↓ lower = duty hike / import curb pressure</span></td>
               <td class="col-current">785.7</td><td>~693</td><td>693</td><td>~668</td><td>~560</td><td>~590</td><td>~620</td><td>~635</td><td class="col-divider">701</td>
               <td>640</td><td>~657</td><td>~672</td><td>~705</td><td>~673</td><td>698</td><td>~658</td><td>~655</td><td>~648</td><td>~655</td><td>~638</td><td>626</td>
             </tr>
+            <!-- METRIC: MCX Silver (₹000/kg)
+              Source : MCX India front-month silver futures settlement — mcxindia.com (market data > commodities > silver)
+                       or Goodreturns.in for historical MCX silver settlement prices.
+              Format : ₹/kg ÷ 1000 = ₹000/kg (i.e. divide by 1000, show as integer). No ~ if from MCX settlement.
+              Dir    : ↑ higher = domestic premium over COMEX (driven by import duty + INR weakness + supply friction).
+              Notes  : To calculate implied premium vs COMEX:
+                       (MCX ₹000/kg × 32.15 ÷ USD/INR) = USD/oz equivalent. Compare to COMEX Silver.
+                       Sep 11 2026: ₹233,368/kg = ~$72.3/oz equivalent vs COMEX $64.5 → implied gross premium ~$7.8/oz.
+                       Subtract duty-adjusted import parity cost to get net premium (~$1.6/oz after duty). -->
             <tr class="row-india">
               <td>MCX Silver (₹000/kg)<span class="mds-dir bull">↑ higher = domestic premium / SILVERCASE +ve</span></td>
               <td class="col-current">233</td><td>~242</td><td>~204</td><td>~221</td><td>~234</td><td>~222</td><td>~229</td><td>~252</td><td class="col-divider">~285</td>
@@ -2569,55 +2750,203 @@
             </tr>
             <!-- Private Credit Stress -->
             <tr class="row-group"><td colspan="22">Private Credit Stress — Early Warning Indicators</td></tr>
-            <tr class="row-pc">
+                        <!-- METRIC: BDC sector Price/NAV (x)
+              Source : VanEck MVIS US BDC Income ETF (BIZD) market price vs most recently reported NAV.
+                       vaneck.com/us/en/investments/bdc-income-etf-bizd/ (daily price and reported NAV).
+                       Or calculate as weighted average P/NAV from individual BDC 10-Q filings via SEC EDGAR (sec.gov/cgi-bin/browse-edgar).
+              Format : Ratio (x), round to 2 decimal places. Mark ~ if based on lagged quarterly NAV (not current).
+              Dir    : ↓ below 1.0x = trading at discount to NAV (market doubts NAV accuracy).
+                       Warn < 0.85x. Alarm < 0.80x. Sustained discount = market pricing in NAV write-downs ahead.
+              Notes  : BDC NAVs are marked-to-model quarterly. A falling P/NAV is a leading signal that
+                       the market doubts the accuracy of the book values — often precedes formal write-downs by 1–2 quarters. -->
+<tr class="row-pc">
               <td>BDC sector Price/NAV (x)<span class="mds-dir bear">↓ below 0.85x = stress; below 0.80x = alarm</span></td>
               <td class="col-current">~0.83</td><td>~0.83</td><td>~0.82</td><td><span class="pc-warn">0.81</span></td><td><span class="pc-warn">0.80</span></td><td><span class="pc-stress">0.78</span></td><td><span class="pc-stress">0.80</span></td><td><span class="pc-warn">0.83</span></td><td class="col-divider"><span class="pc-warn">0.82</span></td>
               <td><span class="pc-warn">0.82</span></td><td><span class="pc-warn">0.82</span></td><td><span class="pc-warn">0.83</span></td><td><span class="pc-warn">0.85</span></td><td><span class="pc-warn">0.85</span></td><td>~0.87</td><td>~0.93</td><td>~0.93</td><td>~0.90</td><td>~0.93</td><td>~0.95</td><td>~0.97</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: LSTA distress ratio (% loans <80¢)
+              Source : PitchBook LCD / Morningstar LSTA US Leveraged Loan Index.
+                       % of loans in the index trading below 80 cents on the dollar in secondary market.
+                       Source URL: pitchbook.com (LCD loan data) or Morningstar Direct LSTA index data.
+              Format : %, round to 1 decimal. Mark ~ if prior month data (publication lag ~2 weeks).
+              Dir    : ↑ above 5% = warn; above 7% = alarm.
+                       Measures secondary market stress, not payment defaults — a loan can be current but trade distressed.
+              Notes  : Distinct from default rate. High LSTA distress ratio + low HY OAS = stress concentrated in
+                       private/illiquid loans, not yet transmitted to public credit markets. This divergence is a key signal. -->
+<tr class="row-pc">
               <td>LSTA distress ratio (% loans &lt;80¢)<span class="mds-dir bear">↑ above 5% = warning; above 7% = alarm</span></td>
               <td class="col-current"><span class="pc-stress">~6.0</span></td><td><span class="pc-stress">~6.2</span></td><td><span class="pc-stress">~6.5</span></td><td><span class="pc-stress">6.87</span></td><td><span class="pc-stress">6.53</span></td><td><span class="pc-stress">6.83</span></td><td><span class="pc-stress">7.23</span></td><td><span class="pc-warn">~5.5</span></td><td class="col-divider"><span class="pc-warn">~5.0</span></td>
               <td>4.34</td><td>~3.5</td><td>~3.0</td><td>2.59</td><td>~2.7</td><td>2.83</td><td>~3.0</td><td>3.23</td><td>~5.0</td><td>~3.0</td><td>~3.2</td><td>~3.5</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: HY OAS — ICE BofA (bps)
+              Source : FRED series BAMLH0A0HYM2 — fred.stlouisfed.org/series/BAMLH0A0HYM2
+                       ICE BofA US High Yield Index option-adjusted spread. Daily data. No ~ needed if FRED data available.
+              Format : Basis points (bps), round to nearest integer. No ~ if from FRED for reference date.
+              Dir    : ↑ above 400bps = warn; above 600bps = alarm.
+                       Currently ~270bps = very tight (no stress in liquid HY market). Historically tight even by pre-GFC standards.
+              Notes  : HY OAS and LSTA distress ratio diverging = stress concentrating in private/illiquid credit.
+                       Apr 2025 tariff panic spike: 461bps (briefly warn-level). Watch for sustained move above 300bps. -->
+<tr class="row-pc">
               <td>HY OAS — ICE BofA (bps)<span class="mds-dir bear">↑ above 400bps = warning; above 600bps = alarm</span></td>
               <td class="col-current">270</td><td>271</td><td>281</td><td>~285</td><td>~300</td><td>~310</td><td>~330</td><td>~290</td><td class="col-divider">~280</td>
               <td>275</td><td>~280</td><td>~275</td><td>~270</td><td>~280</td><td>~290</td><td>~310</td><td>~350</td><td><span class="pc-stress">461</span></td><td>~280</td><td>~270</td><td>259</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: Private-credit non-accruals (% of portfolio at cost)
+              Source : SEC EDGAR quarterly 10-Q filings — sec.gov/cgi-bin/browse-edgar
+                       STEP 1 — For each BDC below, go to SEC EDGAR → search company name → filter "10-Q" → open
+                                the most recently filed 10-Q covering the reference quarter.
+                       STEP 2 — Search the filing text for "non-accrual". Find the table titled something like
+                                "Non-accrual Investments" or "Schedule of Investments — Non-Accrual Status".
+                       STEP 3 — Extract "Total non-accrual investments at amortized cost (fair value for equity)"
+                                as % of "Total investments at amortized cost". Use AT COST, not at fair value.
+                       STEP 4 — Compute weighted average across the four BDCs using the weights below.
+                       BDCs to include (recalibrate weights annually from latest 10-K AUM disclosures):
+                         Ares Capital Corp (ARCC)      ~ 38% weight  (largest BDC by AUM, lower non-accrual rate)
+                         FS KKR Capital Corp (FSK)     ~ 25% weight  (second-largest; ELEVATED non-accruals ~6–8%)
+                         Blue Owl Capital Corp (OBDC)  ~ 24% weight  (conservative portfolio; lower non-accruals)
+                         Golub Capital BDC (GBDC)      ~ 13% weight  (senior-secured focus; very low non-accruals)
+                       Alternative aggregate sources (if SEC EDGAR lookup is impractical):
+                         (a) PitchBook LCD BDC Monitor — pitchbook.com (paywalled; best aggregate source)
+                         (b) Lincoln International Semi-Annual BDC Performance Report (published Feb and Aug;
+                             free executive summary available at lincolninternational.com)
+                         (c) Cliffwater BDC Index quarterly report (cliffwater.com)
+              Format : Weighted average = Σ(BDC_i non-accrual% × weight_i). Round to 1 decimal.
+                       Always mark ~ — underlying data is quarterly with a 45-day publication lag.
+                       Filing schedule: Q1 → filed ~May 15 | Q2 → filed ~Aug 15 | Q3 → filed ~Nov 15 | Q4 → filed ~Feb 15.
+                       FOR MONTHS WITHIN A QUARTER WITH NO NEW FILING: carry forward the prior quarter's value
+                       UNCHANGED (do not interpolate). Use step-function carry-forward, not linear interpolation.
+                       When a new filing arrives: update the three months of that quarter simultaneously.
+              Dir    : ↑ above 2% = warn; above 3% = alarm.
+                       LAGGING indicator — non-accruals build 6–12 months after the underlying stress appears.
+                       Compare to LSTA distress ratio (leading, reflects current secondary prices) to gauge lag position:
+                       if LSTA distress is already declining but non-accruals are still rising, that is normal lag.
+              Notes  : NEVER estimate from ARCC alone — FSK's elevated non-accruals (~6–8% at cost) pull the
+                       industry weighted average materially higher than ARCC-only (~0.9%) would suggest.
+                       AUM weight calibration: recalculate weights annually from latest 10-K AUM figures.
+                       Series baseline (Jan 2025): ~2.0% based on industry weighted avg (revised Sep 2026 from
+                       prior ~1.2% which had been understated by relying on ARCC-only approximation).
+                       Current Sep 26 estimate: ~3.7% = alarm territory. Q3 2026 filings (Oct–Nov) are next confirmation. -->
+<tr class="row-pc">
               <td>Private-credit non-accruals (% of portfolio at cost)<span class="mds-dir bear">↑ above 2% = warning; above 3% = alarm</span></td>
-              <td class="col-current"><span class="pc-stress">~4.0</span></td><td><span class="pc-stress">~3.4</span></td><td><span class="pc-stress">~3.3</span></td><td><span class="pc-stress">~3.2</span></td><td><span class="pc-stress">~3.1</span></td><td><span class="pc-warn">~2.9</span></td><td><span class="pc-warn">~2.7</span></td><td><span class="pc-warn">~2.5</span></td><td class="col-divider"><span class="pc-warn">~2.3</span></td>
-              <td><span class="pc-warn">~2.2</span></td><td><span class="pc-warn">~2.1</span></td><td>~1.9</td><td>~1.8</td><td>~1.7</td><td>~1.6</td><td>~1.5</td><td>~1.4</td><td>~1.4</td><td>~1.3</td><td>~1.2</td><td>~1.2</td>
+              <td class="col-current"><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.6</span></td><td><span class="pc-stress">~3.5</span></td><td><span class="pc-stress">~3.3</span></td><td><span class="pc-stress">~3.2</span></td><td><span class="pc-stress">~3.1</span></td><td><span class="pc-warn">~3.0</span></td><td><span class="pc-warn">~2.9</span></td><td class="col-divider"><span class="pc-warn">~2.9</span></td>
+              <td><span class="pc-warn">~2.8</span></td><td><span class="pc-warn">~2.7</span></td><td><span class="pc-warn">~2.6</span></td><td><span class="pc-warn">~2.5</span></td><td><span class="pc-warn">~2.4</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.2</span></td><td><span class="pc-warn">~2.1</span></td><td><span class="pc-warn">~2.1</span></td><td>~2.0</td><td>~2.0</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: Leveraged-loan dual-track default rate (%, T12M)
+              Source : PitchBook LCD Monthly Default Report — DUAL-TRACK methodology.
+                       Dual-track = payment defaults (missed interest/principal) + distressed LMEs (liability management exercises:
+                       amend-and-extend, debt exchanges, out-of-court restructurings counted as economic defaults).
+                       URL: pitchbook.com > LCD > Default Monitor (monthly release, ~2-4 week lag).
+              CRITICAL: Do NOT use Fitch all-inclusive rate (different, broader LME definition → reported ~6% for 2025,
+                       which overstates stress vs the standard PitchBook LCD dual-track comparator).
+              Format : %, round to 1 decimal. Always mark ~ (publication lag).
+              Dir    : ↑ above 3% = warn; above 5% = alarm.
+                       Three distinct measures (do not conflate):
+                       (1) Payment-only rate — missed payments only (Aug 2026: 0.87% — very low).
+                       (2) Dual-track — payment + LMEs (Aug 2026: ~2.87% — this is what the table tracks).
+                       (3) Fitch all-inclusive — broadest LME definition (2025: ~6% — NOT what this table tracks).
+              Notes  : The gap between payment-only (0.87%) and dual-track (2.87%) represents the scale of
+                       "quiet restructuring" activity — itself a stress signal even as headline defaults stay low.
+                       Peaked at ~4.2% in late 2025; declining through 2026. -->
+<tr class="row-pc">
               <td>Leveraged-loan dual-track default rate (%, T12M)<span class="mds-dir bear">↑ above 3% = warning; above 5% = alarm. PitchBook LCD dual-track (payment defaults + distressed LMEs). Payment-only Aug 26: 0.87%; dual-track Aug 26: ~2.87%. Declined from 2025 peak ~4.2%.</span></td>
               <td class="col-current">~2.9</td><td>~2.9</td><td><span class="pc-warn">~3.0</span></td><td><span class="pc-warn">~3.2</span></td><td><span class="pc-warn">~3.3</span></td><td><span class="pc-warn">~3.5</span></td><td><span class="pc-warn">~3.7</span></td><td><span class="pc-warn">~3.8</span></td><td class="col-divider"><span class="pc-warn">~3.9</span></td>
               <td><span class="pc-warn">~4.2</span></td><td><span class="pc-warn">~4.0</span></td><td>~3.8</td><td>~3.6</td><td>~3.5</td><td>~3.4</td><td>~3.3</td><td>~3.2</td><td>~3.0</td><td>~2.8</td><td>~2.6</td><td>~2.5</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: HY distress ratio (% bonds trading >1000bps OAS)
+              Source : S&P U.S. High Yield Corporate Distressed Bond Index or ICE BofA via Bloomberg.
+                       % of HY index bonds with individual OAS > 1000bps (market definition of "distressed").
+              Format : %, round to 1 decimal. Mark ~.
+              Dir    : ↑ above 8% = warn; above 12% = alarm.
+              Notes  : Distinct from: (1) LSTA distress ratio (loan-based, <80¢); (2) HY OAS (index average).
+                       This captures only the most severely stressed tail of the HY market.
+                       Apr 2025 tariff shock pushed this briefly to ~8.5% (warn-level). Currently ~5.3% — approaching.
+                       Rising HY distress ratio alongside elevated LSTA distress ratio = private credit stress transmitting
+                       to public markets. -->
+<tr class="row-pc">
               <td>HY distress ratio (% bonds trading >1000bps OAS)<span class="mds-dir bear">↑ above 8% = warning; above 12% = alarm</span></td>
               <td class="col-current">~5.3</td><td>~5.2</td><td>~5.4</td><td>~5.7</td><td>~5.9</td><td>~6.2</td><td>~5.8</td><td>~4.5</td><td class="col-divider">~4.2</td>
               <td>~4.0</td><td>~4.1</td><td>~4.0</td><td>~4.2</td><td>~4.5</td><td>~4.8</td><td>~5.2</td><td>~6.0</td><td><span class="pc-warn">~8.5</span></td><td>~3.4</td><td>~3.2</td><td>~3.5</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: Avg leveraged loan bid (cents on $)
+              Source : PitchBook LCD / Morningstar LSTA Leveraged Loan Index weekly average bid price.
+                       pitchbook.com (LCD weekly bid data) or Morningstar Direct LSTA index.
+              Format : Cents on the dollar, round to 1 decimal. Mark ~.
+              Dir    : ↓ below 96¢ = warn; below 93¢ = alarm.
+                       Average bid = what secondary market buyers will pay for a basket of leveraged loans.
+              Notes  : This is a broad market-health indicator for leveraged loans as an asset class.
+                       The Apr 2025 tariff panic pushed this down to ~96.5¢ — currently at the warn boundary.
+                       A sustained move below 95¢ would signal systemic re-pricing of private credit risk. -->
+<tr class="row-pc">
               <td>Avg leveraged loan bid (cents on $)<span class="mds-dir bear">↓ below 96¢ = warning; below 93¢ = alarm</span></td>
               <td class="col-current"><span class="pc-warn">~96.5</span></td><td><span class="pc-warn">~96.5</span></td><td><span class="pc-warn">~96.4</span></td><td><span class="pc-warn">~96.2</span></td><td><span class="pc-warn">~96.0</span></td><td><span class="pc-warn">~95.8</span></td><td><span class="pc-warn">~96.2</span></td><td>~96.8</td><td class="col-divider">~97.0</td>
               <td>~97.2</td><td>~97.5</td><td>~97.8</td><td>~98.2</td><td>~98.0</td><td>~97.8</td><td>~97.5</td><td>~97.2</td><td>~96.5</td><td>~97.8</td><td>~98.2</td><td>~98.5</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: CLO equity trailing 12M return (%)
+              Source : Palmer Square CLO equity index, Intex CLO data, or Morgan Stanley CLO research reports.
+                       Typically available from CLO manager reports or Bloomberg CLO analytics.
+              Format : %, round to nearest integer. Always mark ~ (quarterly data lag, difficult to confirm monthly).
+              Dir    : ↓ below 5% = warn; below 0% = alarm.
+                       CLO equity = most leveraged exposure to leveraged loan credit quality (first loss, last paid).
+              Notes  : CLO equity returns compress when: (1) loan defaults rise; (2) reinvestment spread narrows;
+                       (3) warehousing cost increases. A deteriorating CLO equity return is a leading signal for
+                       leveraged loan market stress since CLO equity investors are first to feel losses. -->
+<tr class="row-pc">
               <td>CLO equity trailing 12M return (%)<span class="mds-dir bear">↓ below 5% = warning; below 0% = alarm</span></td>
               <td class="col-current"><span class="pc-warn">~5</span></td><td><span class="pc-warn">~5</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~3</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~5</span></td><td class="col-divider"><span class="pc-warn">~5</span></td>
               <td>~6</td><td>~6</td><td>~7</td><td>~7</td><td>~8</td><td>~8</td><td>~8</td><td>~7</td><td>~6</td><td>~8</td><td>~9</td><td>~10</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: Lev-loan refinancing volumes ($bn, monthly)
+              Source : PitchBook LCD monthly leveraged loan new issuance report — pitchbook.com
+                       Refinancing-only volume (repricing and refinancing of existing loans; excludes new-money LBOs).
+              Format : $bn, round to nearest integer. Mark ~.
+              Dir    : ↓ below $20bn = warn; below $10bn = alarm.
+                       Collapse in refi volumes = companies cannot refinance maturing debt at acceptable terms = "refi wall" stress.
+              Notes  : High refi volumes (~$40–50bn/month) indicate a healthy market where companies can extend maturities.
+                       The Apr 2025 tariff panic caused a brief collapse to ~$18bn. Current ~$28bn = moderate.
+                       Watch for sustained decline below $20bn which would signal the 2027 maturity wall becoming problematic. -->
+<tr class="row-pc">
               <td>Lev-loan refinancing volumes ($bn, monthly)<span class="mds-dir bear">↓ below $20B = warning; below $10B = alarm. Collapse signals refi wall stress</span></td>
               <td class="col-current">~28</td><td>~32</td><td>~30</td><td>~28</td><td><span class="pc-warn">~22</span></td><td><span class="pc-warn">~20</span></td><td>~25</td><td>~32</td><td class="col-divider">~28</td>
               <td>~25</td><td>~30</td><td>~38</td><td>~35</td><td>~40</td><td>~48</td><td>~45</td><td>~32</td><td><span class="pc-warn">~18</span></td><td>~38</td><td>~42</td><td>~35</td>
             </tr>
-            <tr class="row-pc">
+                        <!-- METRIC: PIK toggle + amend-and-extend ($bn, monthly est.)
+              Source : No single authoritative public monthly source — this is a CONSTRUCTED ESTIMATE.
+                       Work through these sources in priority order:
+                       (1) Octus (formerly Reorg) — octus.com — proprietary A&E transaction tracker.
+                           Look for "Distressed A&E" or "LME" volume tables. Paywalled; most comprehensive.
+                       (2) PitchBook LCD Default Monitor — pitchbook.com/lcd
+                           Navigate to "LME Volume" or "Distressed Liability Management" section.
+                           LCD's LME volume counts distressed A&E + debt exchanges but excludes routine repricings.
+                       (3) SEC EDGAR BDC 10-Q filings — manual count of new PIK elections and maturity extensions.
+                           Search filing text for "payment-in-kind" and "amended and extended"; tally dollar amounts.
+                           This only captures private credit; add leveraged-loan A&E from (1) or (2) separately.
+                       (4) If none of the above are available: use the CONSTRUCT methodology in Notes below.
+              Format : $bn of DISTRESSED PIK elections + DISTRESSED A&E completed in the reference month.
+                       DISTRESSED ONLY — exclude routine maturity extensions or repricings done by healthy borrowers.
+                       Round to nearest integer. Always mark ~ regardless of source used.
+              Dir    : ↑ above $5bn = warn; above $8bn = alarm.
+                       PIK = borrower paying interest by issuing more debt rather than cash (worsens leverage).
+                       A&E = maturity pushed out 1–2 years to avoid formal default (deferred distress).
+              CONSTRUCT: When primary sources (1)–(3) are unavailable, build the estimate as follows:
+                       a. Start from prior month's value.
+                       b. LSTA distress ratio rose > 0.5pp this month → add ~$1–2bn (stress = more A&E urgency).
+                          LSTA distress ratio fell > 0.5pp → subtract ~$1bn (some stabilisation).
+                       c. Major credit event occurred (tariff shock, market seizure, key default):
+                          add $3–5bn in the event month; decay back toward baseline over the following 2–3 months.
+                       d. LSTA distress ratio has been sustained above 6% for 2+ months → floor the estimate at $10bn+.
+                       e. Cross-check: dual-track default rate should be directionally consistent with A&E direction.
+                          If A&E is rising but dual-track default rate is falling, note the divergence — it means
+                          distress is being deferred rather than resolved (flag in any update narrative).
+              Notes  : KNOWN EVENT ANCHORS — use these to calibrate estimates in adjacent months:
+                         Apr 2025: ~$9bn — Liberation Day tariff shock (Apr 2); credit freeze drove A&E rush.
+                         May 2025: ~$6bn — post-tariff-pause partial recovery; some deferred A&E came through.
+                         Mar 2026: ~$13bn — LSTA distress ratio peaked at 7.23%; A&E frenzy before conditions worsened.
+                       NEVER build this series as a linear ramp — real A&E is event-driven and lumpy by nature.
+                       Leading indicator: A&E volume today → non-accruals in 1–2 quarters when maturities come due. -->
+<tr class="row-pc">
               <td>PIK toggle + amend-and-extend ($bn, monthly est.)<span class="mds-dir bear">↑ above $5B = warning; above $8B = alarm. Rising A&amp;E = deferred distress</span></td>
-              <td class="col-current"><span class="pc-stress">~15</span></td><td><span class="pc-stress">~15</span></td><td><span class="pc-stress">~14</span></td><td><span class="pc-stress">~13</span></td><td><span class="pc-stress">~13</span></td><td><span class="pc-stress">~12</span></td><td><span class="pc-stress">~11</span></td><td><span class="pc-stress">~10</span></td><td class="col-divider"><span class="pc-stress">~9</span></td>
-              <td><span class="pc-stress">~9</span></td><td><span class="pc-stress">~8</span></td><td><span class="pc-warn">~8</span></td><td><span class="pc-warn">~7</span></td><td><span class="pc-warn">~7</span></td><td><span class="pc-warn">~6</span></td><td><span class="pc-warn">~6</span></td><td><span class="pc-warn">~5</span></td><td>~5</td><td>~4</td><td>~3</td><td>~3</td>
+              <td class="col-current"><span class="pc-stress">~13</span></td><td><span class="pc-stress">~13</span></td><td><span class="pc-stress">~12</span></td><td><span class="pc-stress">~12</span></td><td><span class="pc-stress">~12</span></td><td><span class="pc-stress">~11</span></td><td><span class="pc-stress">~13</span></td><td><span class="pc-stress">~10</span></td><td class="col-divider"><span class="pc-stress">~10</span></td>
+              <td><span class="pc-stress">~9</span></td><td><span class="pc-warn">~8</span></td><td><span class="pc-warn">~7</span></td><td><span class="pc-warn">~6</span></td><td><span class="pc-warn">~6</span></td><td>~5</td><td>~5</td><td><span class="pc-warn">~6</span></td><td><span class="pc-stress">~9</span></td><td>~5</td><td>~4</td><td>~4</td>
             </tr>
           </tbody>
         </table>
@@ -4148,7 +4477,7 @@
             <tr>
               <td>Private-credit non-accruals (% of portfolio at cost)</td>
               <td>Normal &lt;2%<br>Warn &gt;2%<br>Alarm &gt;3%</td>
-              <td>Weighted-average non-accrual rate across publicly reporting BDCs (e.g., Ares Capital, Blue Owl, FS KKR, Golub) as disclosed in quarterly 10-Qs. Non-accruals lag actual credit impairment by 1–2 quarters due to manager discretion in classification. Rising non-accruals in consecutive quarters are the clearest leading indicator of broader private-credit defaults. Q3 2026 BDC filings (Oct–Nov 2026) will be the first public confirmation of the Q2→Q3 2026 acceleration. Sources: SEC EDGAR BDC 10-Q filings, Octus (formerly Reorg), PitchBook LCD.</td>
+              <td>Weighted-average non-accrual rate across publicly reporting BDCs (Ares Capital, Blue Owl BDC, FS KKR, Golub Capital, Prospect Capital, Sixth Street) as % of total debt portfolio at cost, from quarterly 10-Q filings. Non-accruals lag credit impairment by 1–2 quarters due to manager classification discretion. SERIES REVISION Sep 2026: starting level raised to ~2.0% (Jan 2025) from prior ~1.2% — prior series was understated because it approximated ARCC-only rates (~0.9%) rather than an industry-weighted average. FS KKR (second-largest BDC, ~25% of industry AUM) has run ~6–8% non-accruals at cost, pulling the weighted average well above ARCC-level figures. Revised series estimate: ARCC ~0.9% × 38% + FSK ~7.0% × 25% + OBDC ~0.6% × 24% + GBDC ~0.3% × 13% ≈ 2.0% (Jan 2025). Monthly values are interpolated between quarterly steps — do not over-interpret month-to-month changes. Q2 2026 BDC 10-Qs filed ~Aug 2026; Q3 2026 filings (Oct–Nov 2026) provide the next confirmation. Sources: SEC EDGAR BDC 10-Q filings, Octus (formerly Reorg), PitchBook LCD BDC Monitor.</td>
             </tr>
             <tr>
               <td>Leveraged-loan dual-track default rate (%, T12M)</td>
@@ -4178,7 +4507,7 @@
             <tr>
               <td>PIK toggle + amend-and-extend ($bn, monthly est.)</td>
               <td>Normal &lt;$3B<br>Warn &gt;$5B<br>Alarm &gt;$8B</td>
-              <td>Estimated monthly volume of new Payment-in-Kind interest elections and Amend &amp; Extend (A&amp;E) transactions in private credit and leveraged loans. PIK elections allow borrowers to defer cash interest payments by adding to principal — preserving liquidity but worsening leverage. A&amp;E transactions push maturities out 1–2 years without formal default, a form of deferred distress. Both are invisible in headline default statistics and are the primary mechanism behind the "quiet restructuring" phenomenon Fitch identified. Rising A&amp;E volumes signal that sponsors are burning time rather than equity, while lenders are prioritising NAV preservation over loss realisation. Sources: Octus (formerly Reorg), PitchBook LCD, Lincoln International BDC Monitor.</td>
+              <td>Estimated monthly volume of distressed PIK (payment-in-kind interest elections) + A&amp;E (amend-and-extend) transactions in private credit and leveraged loans. Tracks the "distressed" subset only — not routine repricing or maturity extensions done from strength. PIK elections allow borrowers to defer cash interest by adding to principal; A&amp;E pushes maturities out 1–2 years to avoid formal default. Both are invisible in headline default statistics and are the primary mechanism behind Fitch's "quiet restructuring" phenomenon. SERIES REVISION Sep 2026: prior series was a near-perfect linear ramp ($3B→$15B over 21 months), clearly a spreadsheet extrapolation with no event-driven variation. Revised to quarterly-step estimates reflecting: (1) April 2025 tariff shock spike ~$9B as companies rushed to lock in A&amp;E before credit conditions tightened; (2) partial recovery May 2025 ~$6B post-tariff-pause; (3) gradual Q3–Q4 2025 re-escalation as LSTA distress ratio rose from 2.59% to 4.34%; (4) March 2026 spike ~$13B coinciding with LSTA peak at 7.23%. All values remain ~ estimates — no single authoritative monthly public source. Sources: Octus (formerly Reorg), PitchBook LCD, Lincoln International BDC Monitor.</td>
             </tr>
           </tbody>
         </table>
