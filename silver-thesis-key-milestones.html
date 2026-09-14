@@ -2325,6 +2325,69 @@
 </div>
 </div><!-- end tab-timeline -->
 
+<!--
+═══════════════════════════════════════════════════════════════════
+  RATE FRAGILITY INDEX (RFI) — FORMULA DOCUMENTATION
+  Last updated: Sep 2026
+  Method: OLS regression on 20 monthly data points (Jan 2025 – Aug 2026)
+═══════════════════════════════════════════════════════════════════
+
+  FORMULA
+  ───────
+  RFI = −0.6816 + 0.0549 × JGB_10Y + 0.1852 × UST_30Y
+        + bear_steepener_bonus (if conditions met)
+
+  Coefficients
+    Intercept  : −0.6816
+    JGB 10Y    :  0.0549  (per 1% yield)
+    UST 30Y    :  0.1852  (per 1% yield)
+    R²         :  0.9923  (across 20 months Jan 2025 – Aug 2026)
+    Max residual: 0.0123 (Feb 2026)
+
+  INPUTS
+  ──────
+  Primary drivers (both required):
+    · JGB 10Y yield (%)  — Bank of Japan 10-year government bond yield
+    · UST 30Y yield (%)  — US Treasury 30-year constant maturity (FRED DGS30)
+
+  Rejected inputs (each adds < 0.005 to R², collinear with 30Y):
+    · UST 10Y, UST 3Y, 30Y–10Y spread, 30Y–3Y spread, USD/JPY
+
+  BEAR-STEEPENER BONUS
+  ────────────────────
+  Bonus activates ONLY when BOTH conditions are met simultaneously:
+    Condition A: UST 30Y > 5.00%
+    Condition B: (UST 30Y − UST 10Y) > 1.00% (100 bps)
+  Bonus magnitude: not yet empirically determined (never fired in history).
+  Estimated range +0.04 to +0.06 based on the scale of the index.
+  As of Sep 2026: Condition A met (5.36%), Condition B NOT met (38 bps). Bonus inactive.
+
+  THRESHOLDS
+  ──────────
+  Green  < 0.30  — low systemic stress
+  Amber  ≥ 0.30  — warning level
+  Red    ≥ 0.55  — alarm level
+
+  WORKED EXAMPLE — Sep 2026 (as of Sep 11, 2026 close)
+  ──────────────────────────────────────────────────────
+  JGB 10Y  = 2.93%   (Trading Economics / BOJ)
+  UST 30Y  = 5.36%   (Fed H.15 / FRED DGS30)
+  RFI      = −0.6816 + (0.0549 × 2.93) + (0.1852 × 5.36)
+           = −0.6816 + 0.1609 + 0.9927
+           = 0.4720  → rounded to 0.47
+  Bear-steepener bonus: NOT active (30Y−10Y = 38 bps, need > 100 bps)
+
+  HOW TO UPDATE
+  ─────────────
+  Each month: fetch JGB 10Y and UST 30Y (month-end close).
+  Apply formula. Add bear-steepener bonus if both conditions fire.
+  Round result to 2 decimal places.
+  Source: Fed H.15 (federalreserve.gov/releases/h15),
+          BOJ Statistics (boj.or.jp/en/statistics),
+          FRED series DGS30 (fred.stlouisfed.org/series/dgs30)
+═══════════════════════════════════════════════════════════════════
+-->
+
 <!-- MARKET DATA TAB -->
 <div class="page-tab-panel" id="tab-marketdata">
 <div class="page-body">
@@ -2338,7 +2401,7 @@
       </button>
     </div>
     <div class="mds-body">
-      <div class="mds-note">Month-end closes. Aug 2026 is month-end close. Sep 2026 is projected. Values marked ~ are estimates. 2026 columns highlighted. Threshold colours on private credit rows: <span style="color:#B45309;font-weight:600">amber = warning</span>, <span style="color:#DC2626;font-weight:600">red = alarm</span>.</div>
+      <div class="mds-note">Month-end closes. Aug 2026 is month-end close. Sep 2026 is partially confirmed (FX &amp; Rates as of 11 Sep 2026 close; remaining rows estimated). Values marked ~ are estimates. 2026 columns highlighted. Threshold colours on private credit rows: <span style="color:#B45309;font-weight:600">amber = warning</span>, <span style="color:#DC2626;font-weight:600">red = alarm</span>.</div>
       <div class="mds-table-wrap">
         <table class="mds-table">
           <thead>
@@ -2359,27 +2422,27 @@
             <tr class="row-fx">
               <td>USD/JPY<span class="mds-dir bear">↓ lower = silver +ve</span></td>
               <td>154.7</td><td>151.8</td><td>150.3</td><td>143.7</td><td>144.8</td><td>145.7</td><td>148.2</td><td>146.4</td><td>143.9</td><td>152.6</td><td>156.3</td><td>156.4</td>
-              <td class="col-divider">153.2</td><td>154.3</td><td>150.5</td><td>148.2</td><td>152.8</td><td>160.2</td><td>157.4</td><td>~157</td><td class="col-current">~160</td>
+              <td class="col-divider">153.2</td><td>154.3</td><td>150.5</td><td>148.2</td><td>152.8</td><td>160.2</td><td>157.4</td><td>~157</td><td class="col-current">153.5</td>
             </tr>
             <tr class="row-fx">
               <td>JGB 10Y (%)<span class="mds-dir">↑ rising = carry unwind</span></td>
               <td>1.10</td><td>1.35</td><td>1.50</td><td>1.38</td><td>1.44</td><td>1.52</td><td>1.63</td><td>1.72</td><td>1.58</td><td>1.61</td><td>1.56</td><td>1.75</td>
-              <td class="col-divider">1.92</td><td>2.08</td><td>2.30</td><td>2.48</td><td>2.62</td><td>2.74</td><td>2.82</td><td>~2.90</td><td class="col-current">~3.00</td>
+              <td class="col-divider">1.92</td><td>2.08</td><td>2.30</td><td>2.48</td><td>2.62</td><td>2.74</td><td>2.82</td><td>~2.90</td><td class="col-current">2.93</td>
             </tr>
             <tr class="row-fx">
               <td>UST 30Y (%)<span class="mds-dir bear">↓ lower = silver +ve; ↑ = long-end fiscal stress</span></td>
               <td>~4.82</td><td>~4.59</td><td>~4.63</td><td>~4.58</td><td>~4.82</td><td>~4.72</td><td>~4.76</td><td>~4.42</td><td>~4.44</td><td>~4.64</td><td>~4.56</td><td>~4.77</td>
-              <td class="col-divider">~4.97</td><td>~4.78</td><td>~4.78</td><td>~4.72</td><td>~4.98</td><td>~5.04</td><td>~5.18</td><td>5.24</td><td class="col-current">~5.27</td>
+              <td class="col-divider">~4.97</td><td>~4.78</td><td>~4.78</td><td>~4.72</td><td>~4.98</td><td>~5.04</td><td>~5.18</td><td>5.24</td><td class="col-current">5.36</td>
             </tr>
             <tr class="row-fx">
               <td>UST 10Y (%)<span class="mds-dir bear">↓ lower = silver +ve</span></td>
               <td>4.53</td><td>4.24</td><td>4.21</td><td>4.17</td><td>4.40</td><td>4.36</td><td>4.43</td><td>4.06</td><td>4.06</td><td>4.28</td><td>4.18</td><td>4.36</td>
-              <td class="col-divider">4.58</td><td>4.42</td><td>4.36</td><td>4.28</td><td>4.48</td><td>4.52</td><td>4.75</td><td>~4.70</td><td class="col-current">~4.85</td>
+              <td class="col-divider">4.58</td><td>4.42</td><td>4.36</td><td>4.28</td><td>4.48</td><td>4.52</td><td>4.75</td><td>~4.70</td><td class="col-current">4.98</td>
             </tr>
             <tr class="row-fx">
               <td>UST 3Y (%)<span class="mds-dir bear">↓ lower = silver +ve</span></td>
               <td>4.27</td><td>4.05</td><td>3.98</td><td>3.92</td><td>4.05</td><td>3.95</td><td>4.01</td><td>3.85</td><td>3.86</td><td>4.05</td><td>4.00</td><td>4.11</td>
-              <td class="col-divider">4.35</td><td>4.22</td><td>3.86</td><td>4.00</td><td>4.12</td><td>4.18</td><td>4.32</td><td>~4.30</td><td class="col-current">~4.45</td>
+              <td class="col-divider">4.35</td><td>4.22</td><td>3.86</td><td>4.00</td><td>4.12</td><td>4.18</td><td>4.32</td><td>~4.30</td><td class="col-current">4.44</td>
             </tr>
             <!-- Silver -->
             <tr class="row-group"><td colspan="22">Silver</td></tr>
