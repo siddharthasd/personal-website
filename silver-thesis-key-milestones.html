@@ -454,8 +454,10 @@
   .mds-table .row-pc td:first-child { color: #7C3AED; }
   .mds-table .row-pc td { font-size: 10.5px; }
   /* Threshold badges in PC rows */
+  .pc-watch { color: #D97706; font-weight: 700; }
   .pc-warn { color: #B45309; font-weight: 700; }
   .pc-stress { color: #DC2626; font-weight: 700; }
+  .pc-crisis { color: #7C2D12; font-weight: 700; }
   .na { color: var(--color-text-muted); font-style: italic; }
   .mds-dir {
     display: block;
@@ -2794,40 +2796,58 @@
                        Or calculate as weighted average P/NAV from individual BDC 10-Q filings via SEC EDGAR (sec.gov/cgi-bin/browse-edgar).
               Format : Ratio (x), round to 2 decimal places. Mark ~ if based on lagged quarterly NAV (not current).
               Dir    : ↓ below 1.0x = trading at discount to NAV (market doubts NAV accuracy).
-                       Warn < 0.85x. Alarm < 0.80x. Sustained discount = market pricing in NAV write-downs ahead.
+                       OK ≥0.88x. Watch 0.78–0.88x (market sceptical but not alarmed). Warning 0.70–0.78x. Alarm <0.70x.
+                       Calibration: original alarm line (<0.80x) was breached Apr 2026 on sentiment alone then recovered — threshold was too sensitive.
               Notes  : BDC NAVs are marked-to-model quarterly. A falling P/NAV is a leading signal that
                        the market doubts the accuracy of the book values — often precedes formal write-downs by 1–2 quarters. -->
 <tr class="row-pc">
-              <td>BDC sector Price/NAV (x)<span class="mds-dir bear">↓ below 0.85x = stress; below 0.80x = alarm</span></td>
-              <td class="col-current">~0.83</td><td>~0.83</td><td>~0.82</td><td><span class="pc-warn">0.81</span></td><td><span class="pc-warn">0.80</span></td><td><span class="pc-stress">0.78</span></td><td><span class="pc-stress">0.80</span></td><td><span class="pc-warn">0.83</span></td><td class="col-divider"><span class="pc-warn">0.82</span></td>
-              <td><span class="pc-warn">0.82</span></td><td><span class="pc-warn">0.82</span></td><td><span class="pc-warn">0.83</span></td><td><span class="pc-warn">0.85</span></td><td><span class="pc-warn">0.85</span></td><td>~0.87</td><td>~0.93</td><td>~0.93</td><td>~0.90</td><td>~0.93</td><td>~0.95</td><td>~0.97</td>
+              <td>BDC sector Price/NAV (x)<span class="mds-dir bear">↓ OK ≥0.88x; Watch 0.78–0.88x; Warning 0.70–0.78x; Alarm <0.70x</span></td>
+              <td class="col-current"><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.82</span></td><td><span class="pc-watch">0.81</span></td><td><span class="pc-watch">0.80</span></td><td><span class="pc-watch">0.78</span></td><td><span class="pc-watch">0.80</span></td><td><span class="pc-watch">0.83</span></td><td class="col-divider"><span class="pc-watch">0.82</span></td>
+              <td><span class="pc-watch">0.82</span></td><td><span class="pc-watch">0.82</span></td><td><span class="pc-watch">0.83</span></td><td><span class="pc-watch">0.85</span></td><td><span class="pc-watch">0.85</span></td><td><span class="pc-watch">~0.87</span></td><td>~0.93</td><td>~0.93</td><td>~0.90</td><td>~0.93</td><td>~0.95</td><td>~0.97</td>
+            </tr>
+                        <!-- METRIC: % of BDCs by AUM trading below 0.65x NAV (companion to M1)
+              Source : Individual BDC filings (SEC EDGAR 10-Q) crossed with BIZD AUM weights.
+                       For each BDC in BIZD: if P/NAV estimate < 0.65x, count its AUM share.
+                       Alternatively use VanEck BIZD ETF fact-sheet holding weights (vaneck.com).
+              Format : %, round to nearest integer. Always mark ~ (quarterly NAV lag + monthly price lag).
+              Dir    : ↑ any non-zero = Watch. Thresholds not yet calibrated — treat any breach as Watch (amber).
+                       Rising % while sector median holds = stress concentrating in weaker names.
+              Notes  : Companion to M1 (sector median). Captures dispersion: individual-name discounts can
+                       reach crisis levels well before the median follows. Historically calibrated anchor
+                       not yet established. Flag for review when % exceeds 25% by AUM. -->
+<tr class="row-pc">
+              <td>% of BDCs by AUM below 0.65x NAV<span class="mds-dir bear">↑ any non-zero = Watch (companion to M1; dispersion signal; threshold not yet calibrated)</span></td>
+              <td class="col-current"><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~8%</span></td><td><span class="pc-watch">~9%</span></td><td><span class="pc-watch">~11%</span></td><td><span class="pc-watch">~15%</span></td><td><span class="pc-watch">~11%</span></td><td><span class="pc-watch">~7%</span></td><td class="col-divider"><span class="pc-watch">~8%</span></td>
+              <td><span class="pc-watch">~8%</span></td><td><span class="pc-watch">~8%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~4%</span></td><td><span class="pc-watch">~4%</span></td><td><span class="pc-watch">~2%</span></td><td>~0%</td><td>~0%</td><td><span class="pc-watch">~2%</span></td><td>~0%</td><td>~0%</td><td>~0%</td>
             </tr>
                         <!-- METRIC: LSTA distress ratio (% loans <80¢)
               Source : PitchBook LCD / Morningstar LSTA US Leveraged Loan Index.
                        % of loans in the index trading below 80 cents on the dollar in secondary market.
                        Source URL: pitchbook.com (LCD loan data) or Morningstar Direct LSTA index data.
               Format : %, round to 1 decimal. Mark ~ if prior month data (publication lag ~2 weeks).
-              Dir    : ↑ above 5% = warn; above 7% = alarm.
+              Dir    : OK <3.5%. Watch 3.5–5%. Warning 5–10%. Alarm 10–18%. Crisis >18%.
+                       Calibration: 2022-23 cyclical peak was 7.36% (non-systemic); GFC/COVID peaks 57–81%. Crisis at 18% preserves lead time.
                        Measures secondary market stress, not payment defaults — a loan can be current but trade distressed.
               Notes  : Distinct from default rate. High LSTA distress ratio + low HY OAS = stress concentrated in
                        private/illiquid loans, not yet transmitted to public credit markets. This divergence is a key signal. -->
 <tr class="row-pc">
-              <td>LSTA distress ratio (% loans &lt;80¢)<span class="mds-dir bear">↑ above 5% = warning; above 7% = alarm</span></td>
-              <td class="col-current"><span class="pc-stress">~6.0</span></td><td><span class="pc-stress">6.50</span></td><td><span class="pc-stress">6.89</span></td><td><span class="pc-stress">6.87</span></td><td><span class="pc-stress">6.53</span></td><td><span class="pc-stress">6.83</span></td><td><span class="pc-stress">7.23</span></td><td><span class="pc-stress">6.4</span></td><td class="col-divider"><span class="pc-warn">~5.0</span></td>
-              <td>4.34</td><td>~3.5</td><td>~3.0</td><td>2.59</td><td>~2.7</td><td>2.83</td><td>~3.0</td><td>3.23</td><td>~5.0</td><td>~3.0</td><td>~3.2</td><td>~3.5</td>
+              <td>LSTA distress ratio (% loans &lt;80¢)<span class="mds-dir bear">↑ OK <3.5%; Watch 3.5–5%; Warning 5–10%; Alarm 10–18%; Crisis >18%</span></td>
+              <td class="col-current"><span class="pc-warn">~6.0</span></td><td><span class="pc-warn">6.50</span></td><td><span class="pc-warn">6.89</span></td><td><span class="pc-warn">6.87</span></td><td><span class="pc-warn">6.53</span></td><td><span class="pc-warn">6.83</span></td><td><span class="pc-warn">7.23</span></td><td><span class="pc-warn">6.4</span></td><td class="col-divider"><span class="pc-warn">~5.0</span></td>
+              <td><span class="pc-watch">4.34</span></td><td><span class="pc-watch">~3.5</span></td><td>~3.0</td><td>2.59</td><td>~2.7</td><td>2.83</td><td>~3.0</td><td>3.23</td><td><span class="pc-warn">~5.0</span></td><td>~3.0</td><td>~3.2</td><td><span class="pc-watch">~3.5</span></td>
             </tr>
                         <!-- METRIC: HY OAS — ICE BofA (bps)
               Source : FRED series BAMLH0A0HYM2 — fred.stlouisfed.org/series/BAMLH0A0HYM2
                        ICE BofA US High Yield Index option-adjusted spread. Daily data. No ~ needed if FRED data available.
               Format : Basis points (bps), round to nearest integer. No ~ if from FRED for reference date.
-              Dir    : ↑ above 400bps = warn; above 600bps = alarm.
-                       Currently ~270bps = very tight (no stress in liquid HY market). Historically tight even by pre-GFC standards.
+              Dir    : OK <300bps. Watch 300–400bps. Warning 400–600bps. Alarm 600–900bps. Crisis >900bps.
+                       Crisis anchored to COVID peak (~877bps intraday; 1087 intraday spike). SVB 2023 peaked ~530bps — stayed below alarm.
+                       Currently ~270bps = very tight (no stress in liquid HY market).
               Notes  : HY OAS and LSTA distress ratio diverging = stress concentrating in private/illiquid credit.
                        Apr 2025 tariff panic spike: 461bps (briefly warn-level). Watch for sustained move above 300bps. -->
 <tr class="row-pc">
-              <td>HY OAS — ICE BofA (bps)<span class="mds-dir bear">↑ above 400bps = warning; above 600bps = alarm</span></td>
-              <td class="col-current">270</td><td>271</td><td>281</td><td>~285</td><td>~300</td><td>~310</td><td>~330</td><td>~290</td><td class="col-divider">~280</td>
-              <td>275</td><td>~280</td><td>~275</td><td>~270</td><td>~280</td><td>~290</td><td>~310</td><td>~350</td><td><span class="pc-stress">461</span></td><td>~280</td><td>~270</td><td>259</td>
+              <td>HY OAS — ICE BofA (bps)<span class="mds-dir bear">↑ OK <300bps; Watch 300–400bps; Warning 400–600bps; Alarm 600–900bps; Crisis >900bps</span></td>
+              <td class="col-current">270</td><td>271</td><td>281</td><td>~285</td><td><span class="pc-watch">~300</span></td><td><span class="pc-watch">~310</span></td><td><span class="pc-watch">~330</span></td><td>~290</td><td class="col-divider">~280</td>
+              <td>275</td><td>~280</td><td>~275</td><td>~270</td><td>~280</td><td>~290</td><td><span class="pc-watch">~310</span></td><td><span class="pc-watch">~350</span></td><td><span class="pc-warn">461</span></td><td>~280</td><td>~270</td><td>259</td>
             </tr>
                         <!-- METRIC: Private-credit non-accruals (% of portfolio at cost)
               Source : SEC EDGAR quarterly 10-Q filings — sec.gov/cgi-bin/browse-edgar
@@ -2854,7 +2874,7 @@
                        FOR MONTHS WITHIN A QUARTER WITH NO NEW FILING: carry forward the prior quarter's value
                        UNCHANGED (do not interpolate). Use step-function carry-forward, not linear interpolation.
                        When a new filing arrives: update the three months of that quarter simultaneously.
-              Dir    : ↑ above 2% = warn; above 3% = alarm.
+              Dir    : OK <2%. Warning 2–3%. Alarm 3–5%. Crisis >5% (matches/exceeds COVID-era BDC peak).
                        LAGGING indicator — non-accruals build 6–12 months after the underlying stress appears.
                        Compare to LSTA distress ratio (leading, reflects current secondary prices) to gauge lag position:
                        if LSTA distress is already declining but non-accruals are still rising, that is normal lag.
@@ -2865,9 +2885,9 @@
                        prior ~1.2% which had been understated by relying on ARCC-only approximation).
                        Current Sep 26 estimate: ~3.7% = alarm territory. Q3 2026 filings (Oct–Nov) are next confirmation. -->
 <tr class="row-pc">
-              <td>Private-credit non-accruals (% of portfolio at cost)<span class="mds-dir bear">↑ above 2% = warning; above 3% = alarm</span></td>
-              <td class="col-current"><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.6</span></td><td><span class="pc-stress">~3.5</span></td><td><span class="pc-stress">~3.3</span></td><td><span class="pc-stress">~3.2</span></td><td><span class="pc-stress">~3.1</span></td><td><span class="pc-warn">~3.0</span></td><td><span class="pc-warn">~2.9</span></td><td class="col-divider"><span class="pc-warn">~2.9</span></td>
-              <td><span class="pc-warn">~2.8</span></td><td><span class="pc-warn">~2.7</span></td><td><span class="pc-warn">~2.6</span></td><td><span class="pc-warn">~2.5</span></td><td><span class="pc-warn">~2.4</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.2</span></td><td><span class="pc-warn">~2.1</span></td><td><span class="pc-warn">~2.1</span></td><td>~2.0</td><td>~2.0</td>
+              <td>Private-credit non-accruals (% of portfolio at cost)<span class="mds-dir bear">↑ OK <2%; Warning 2–3%; Alarm 3–5%; Crisis >5%</span></td>
+              <td class="col-current"><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.6</span></td><td><span class="pc-stress">~3.5</span></td><td><span class="pc-stress">~3.3</span></td><td><span class="pc-stress">~3.2</span></td><td><span class="pc-stress">~3.1</span></td><td><span class="pc-stress">~3.0</span></td><td><span class="pc-warn">~2.9</span></td><td class="col-divider"><span class="pc-warn">~2.9</span></td>
+              <td><span class="pc-warn">~2.8</span></td><td><span class="pc-warn">~2.7</span></td><td><span class="pc-warn">~2.6</span></td><td><span class="pc-warn">~2.5</span></td><td><span class="pc-warn">~2.4</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.2</span></td><td><span class="pc-warn">~2.1</span></td><td><span class="pc-warn">~2.1</span></td><td><span class="pc-warn">~2.0</span></td><td><span class="pc-warn">~2.0</span></td>
             </tr>
                         <!-- METRIC: Leveraged-loan dual-track default rate (%, T12M)
               Source : PitchBook LCD Monthly Default Report — DUAL-TRACK methodology.
@@ -2877,7 +2897,8 @@
               CRITICAL: Do NOT use Fitch all-inclusive rate (different, broader LME definition → reported ~6% for 2025,
                        which overstates stress vs the standard PitchBook LCD dual-track comparator).
               Format : %, round to 1 decimal. Always mark ~ (publication lag).
-              Dir    : ↑ above 3% = warn; above 5% = alarm.
+              Dir    : OK <3%. Watch 3–4.5%. Warning 4.5–6%. Alarm 6–10%. Crisis >10%.
+                       Calibrated to PitchBook LCD dual-track methodology. GFC peak 9.8–10.5%; COVID peak 4.4%. Long-run avg ~2.9%.
                        Three distinct measures (do not conflate):
                        (1) Payment-only rate — missed payments only (Aug 2026: 0.87% — very low).
                        (2) Dual-track — payment + LMEs (Aug 2026: ~2.87% — this is what the table tracks).
@@ -2886,22 +2907,24 @@
                        "quiet restructuring" activity — itself a stress signal even as headline defaults stay low.
                        Peaked at ~4.2% in late 2025; declining through 2026. -->
 <tr class="row-pc">
-              <td>Leveraged-loan dual-track default rate (%, T12M)<span class="mds-dir bear">↑ above 3% = warning; above 5% = alarm. PitchBook LCD dual-track (payment defaults + distressed LMEs). Payment-only Aug 26: 0.87%; dual-track Aug 26: ~2.87%. Declined from 2025 peak ~4.2%.</span></td>
-              <td class="col-current">~2.9</td><td>~2.9</td><td><span class="pc-warn">~3.0</span></td><td><span class="pc-warn">~3.2</span></td><td><span class="pc-warn">~3.3</span></td><td><span class="pc-warn">~3.5</span></td><td><span class="pc-warn">~3.7</span></td><td><span class="pc-warn">~3.8</span></td><td class="col-divider"><span class="pc-warn">~3.9</span></td>
-              <td><span class="pc-warn">~4.2</span></td><td><span class="pc-warn">~4.0</span></td><td>~3.8</td><td>~3.6</td><td>~3.5</td><td>~3.4</td><td>~3.3</td><td>~3.2</td><td>~3.0</td><td>~2.8</td><td>~2.6</td><td>~2.5</td>
+              <td>Leveraged-loan dual-track default rate (%, T12M)<span class="mds-dir bear">↑ OK <3%; Watch 3–4.5%; Warning 4.5–6%; Alarm 6–10%; Crisis >10%. PitchBook LCD dual-track. Payment-only Aug 26: 0.87%; dual-track Aug 26: ~2.87%. Declined from 2025 peak ~4.2%.</span></td>
+              <td class="col-current">~2.9</td><td>~2.9</td><td><span class="pc-watch">~3.0</span></td><td><span class="pc-watch">~3.2</span></td><td><span class="pc-watch">~3.3</span></td><td><span class="pc-watch">~3.5</span></td><td><span class="pc-watch">~3.7</span></td><td><span class="pc-watch">~3.8</span></td><td class="col-divider"><span class="pc-watch">~3.9</span></td>
+              <td><span class="pc-watch">~4.2</span></td><td><span class="pc-watch">~4.0</span></td><td><span class="pc-watch">~3.8</span></td><td><span class="pc-watch">~3.6</span></td><td><span class="pc-watch">~3.5</span></td><td><span class="pc-watch">~3.4</span></td><td><span class="pc-watch">~3.3</span></td><td><span class="pc-watch">~3.2</span></td><td><span class="pc-watch">~3.0</span></td><td>~2.8</td><td>~2.6</td><td>~2.5</td>
             </tr>
                         <!-- METRIC: HY distress ratio (% bonds trading >1000bps OAS)
               Source : S&P U.S. High Yield Corporate Distressed Bond Index or ICE BofA via Bloomberg.
                        % of HY index bonds with individual OAS > 1000bps (market definition of "distressed").
               Format : %, round to 1 decimal. Mark ~.
-              Dir    : ↑ above 8% = warn; above 12% = alarm.
+              Dir    : ↑ warning ≥8%; alarm ≥12% — PROVISIONAL. Thresholds not historically benchmarked with same rigour as other metrics.
+              Primary use: dispersion cross-check against HY OAS (M3). If this ratio rises while aggregate OAS stays calm,
+              stress is concentrating in specific sectors/rating tiers beneath a calm-looking average.
               Notes  : Distinct from: (1) LSTA distress ratio (loan-based, <80¢); (2) HY OAS (index average).
                        This captures only the most severely stressed tail of the HY market.
-                       Apr 2025 tariff shock pushed this briefly to ~8.5% (warn-level). Currently ~5.3% — approaching.
+                       Apr 2025 tariff shock pushed this briefly to ~8.5% (warn-level). Currently ~5.3%.
                        Rising HY distress ratio alongside elevated LSTA distress ratio = private credit stress transmitting
-                       to public markets. -->
+                       to public markets. Read M7 and M3 together — divergence is the actionable signal. -->
 <tr class="row-pc">
-              <td>HY distress ratio (% bonds trading >1000bps OAS)<span class="mds-dir bear">↑ above 8% = warning; above 12% = alarm</span></td>
+              <td>HY distress ratio (% bonds trading >1000bps OAS)<span class="mds-dir bear">↑ provisional: warning ≥8%; alarm ≥12%. Primary use: dispersion cross-check vs HY OAS (M3)</span></td>
               <td class="col-current">~5.3</td><td>~5.2</td><td>~5.4</td><td>~5.7</td><td>~5.9</td><td>~6.2</td><td>~5.8</td><td>~4.5</td><td class="col-divider">~4.2</td>
               <td>~4.0</td><td>~4.1</td><td>~4.0</td><td>~4.2</td><td>~4.5</td><td>~4.8</td><td>~5.2</td><td>~6.0</td><td><span class="pc-warn">~8.5</span></td><td>~3.4</td><td>~3.2</td><td>~3.5</td>
             </tr>
@@ -2909,43 +2932,48 @@
               Source : PitchBook LCD / Morningstar LSTA Leveraged Loan Index weekly average bid price.
                        pitchbook.com (LCD weekly bid data) or Morningstar Direct LSTA index.
               Format : Cents on the dollar, round to 1 decimal. Mark ~.
-              Dir    : ↓ below 96¢ = warn; below 93¢ = alarm.
-                       Average bid = what secondary market buyers will pay for a basket of leveraged loans.
+              Dir    : OK ≥97¢. Watch 94–97¢. Warning 87–94¢. Alarm 76–87¢. Crisis <76¢.
+                       Calibration: 2002 telecom trough 86.90¢; COVID trough 76.23¢; GFC trough 60.33¢. Normal range 96–98¢.
+                       Original alarm (<93¢) sat above the 2002 trough — too sensitive. Revised to match actual historical crises.
               Notes  : This is a broad market-health indicator for leveraged loans as an asset class.
                        The Apr 2025 tariff panic pushed this down to ~96.5¢ — currently at the warn boundary.
                        A sustained move below 95¢ would signal systemic re-pricing of private credit risk. -->
 <tr class="row-pc">
-              <td>Avg leveraged loan bid (cents on $)<span class="mds-dir bear">↓ below 96¢ = warning; below 93¢ = alarm</span></td>
-              <td class="col-current"><span class="pc-warn">~96.5</span></td><td><span class="pc-warn">~96.5</span></td><td><span class="pc-warn">~96.4</span></td><td><span class="pc-warn">~96.2</span></td><td><span class="pc-warn">~96.0</span></td><td><span class="pc-warn">~95.8</span></td><td><span class="pc-warn">~96.2</span></td><td>~96.8</td><td class="col-divider">~97.0</td>
-              <td>~97.2</td><td>~97.5</td><td>~97.8</td><td>~98.2</td><td>~98.0</td><td>~97.8</td><td>~97.5</td><td>~97.2</td><td>~96.5</td><td>~97.8</td><td>~98.2</td><td>~98.5</td>
+              <td>Avg leveraged loan bid (cents on $)<span class="mds-dir bear">↓ OK ≥97¢; Watch 94–97¢; Warning 87–94¢; Alarm 76–87¢; Crisis <76¢</span></td>
+              <td class="col-current"><span class="pc-watch">~96.5</span></td><td><span class="pc-watch">~96.5</span></td><td><span class="pc-watch">~96.4</span></td><td><span class="pc-watch">~96.2</span></td><td><span class="pc-watch">~96.0</span></td><td><span class="pc-watch">~95.8</span></td><td><span class="pc-watch">~96.2</span></td><td><span class="pc-watch">~96.8</span></td><td class="col-divider">~97.0</td>
+              <td>~97.2</td><td>~97.5</td><td>~97.8</td><td>~98.2</td><td>~98.0</td><td>~97.8</td><td>~97.5</td><td>~97.2</td><td><span class="pc-watch">~96.5</span></td><td>~97.8</td><td>~98.2</td><td>~98.5</td>
             </tr>
                         <!-- METRIC: CLO equity trailing 12M return (%)
               Source : Palmer Square CLO equity index, Intex CLO data, or Morgan Stanley CLO research reports.
                        Typically available from CLO manager reports or Bloomberg CLO analytics.
               Format : %, round to nearest integer. Always mark ~ (quarterly data lag, difficult to confirm monthly).
-              Dir    : ↓ below 5% = warn; below 0% = alarm.
-                       CLO equity = most leveraged exposure to leveraged loan credit quality (first loss, last paid).
+              Dir    : OK ≥10%. Watch 5–10%. Warning 0–5%. Alarm -16–0%. Crisis <-16%.
+                       Crisis anchored to 2015 energy-crash year (-16.26%) and Q1 2020 COVID (single-quarter -30.41%).
+                       Normal good years: 13–18%; since-inception avg 6.4%. CLO equity = first-loss, most leveraged tranche.
               Notes  : CLO equity returns compress when: (1) loan defaults rise; (2) reinvestment spread narrows;
                        (3) warehousing cost increases. A deteriorating CLO equity return is a leading signal for
                        leveraged loan market stress since CLO equity investors are first to feel losses. -->
 <tr class="row-pc">
-              <td>CLO equity trailing 12M return (%)<span class="mds-dir bear">↓ below 5% = warning; below 0% = alarm</span></td>
-              <td class="col-current"><span class="pc-warn">~5</span></td><td><span class="pc-warn">~5</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~3</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~5</span></td><td class="col-divider"><span class="pc-warn">~5</span></td>
-              <td>~6</td><td>~6</td><td>~7</td><td>~7</td><td>~8</td><td>~8</td><td>~8</td><td>~7</td><td>~6</td><td>~8</td><td>~9</td><td>~10</td>
+              <td>CLO equity trailing 12M return (%)<span class="mds-dir bear">↓ OK ≥10%; Watch 5–10%; Warning 0–5%; Alarm -16–0%; Crisis <-16%</span></td>
+              <td class="col-current"><span class="pc-watch">~5</span></td><td><span class="pc-watch">~5</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~3</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-watch">~5</span></td><td class="col-divider"><span class="pc-watch">~5</span></td>
+              <td><span class="pc-watch">~6</span></td><td><span class="pc-watch">~6</span></td><td><span class="pc-watch">~7</span></td><td><span class="pc-watch">~7</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~7</span></td><td><span class="pc-watch">~6</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~9</span></td><td>~10</td>
             </tr>
                         <!-- METRIC: Lev-loan refinancing volumes ($bn, monthly)
               Source : PitchBook LCD monthly leveraged loan new issuance report — pitchbook.com
                        Refinancing-only volume (repricing and refinancing of existing loans; excludes new-money LBOs).
-              Format : $bn, round to nearest integer. Mark ~.
-              Dir    : ↓ below $20bn = warn; below $10bn = alarm.
-                       Collapse in refi volumes = companies cannot refinance maturing debt at acceptable terms = "refi wall" stress.
-              Notes  : High refi volumes (~$40–50bn/month) indicate a healthy market where companies can extend maturities.
-                       The Apr 2025 tariff panic caused a brief collapse to ~$18bn. Current ~$28bn = moderate.
-                       Watch for sustained decline below $20bn which would signal the 2027 maturity wall becoming problematic. -->
+              Format : Ratio = current month ÷ trailing 12M average monthly refi volume × 100.
+                       Trailing 12M average computed from this table; pre-2025 months use $38/month proxy for 2024 baseline.
+                       Ratio >100% = above recent run-rate; <50% = Warning territory; <30% = Alarm.
+              Dir    : OK ≥80%. Watch 50–80%. Warning 30–50%. Alarm 15–30%. Crisis <15%.
+                       Calibration: Feb-Mar 2026 episode (~65% below prior run-rate) was flagged as real risk-off.
+                       Crisis <15% is directional — no clean monthly data exists for 2008/2020 market freezes.
+              Notes  : Conversion makes the metric scale-invariant as the leveraged loan market grows (~$600B in 2008 → $1.2T+ today).
+                       High ratio (>100%) = companies can extend maturities — no refi wall pressure.
+                       A sustained move below 50% signals the 2027 maturity wall becoming problematic. -->
 <tr class="row-pc">
-              <td>Lev-loan refinancing volumes ($bn, monthly)<span class="mds-dir bear">↓ below $20B = warning; below $10B = alarm. Collapse signals refi wall stress</span></td>
-              <td class="col-current">~28</td><td>~32</td><td>~30</td><td>~28</td><td><span class="pc-warn">~22</span></td><td><span class="pc-warn">~20</span></td><td>~25</td><td>~32</td><td class="col-divider">~28</td>
-              <td>~25</td><td>~30</td><td>~38</td><td>~35</td><td>~40</td><td>~48</td><td>~45</td><td>~32</td><td><span class="pc-warn">~18</span></td><td>~38</td><td>~42</td><td>~35</td>
+              <td>Lev-loan refinancing volumes ($bn, monthly)<span class="mds-dir bear">↓ OK ≥80%; Watch 50–80%; Warning 30–50%; Alarm 15–30%; Crisis <15% (ratio to T12M avg). Collapse signals refi wall stress</span></td>
+              <td class="col-current">~97%</td><td>~109%</td><td>~97%</td><td>~87%</td><td><span class="pc-watch">~66%</span></td><td><span class="pc-watch">~61%</span></td><td><span class="pc-watch">~73%</span></td><td>~92%</td><td class="col-divider"><span class="pc-watch">~79%</span></td>
+              <td><span class="pc-watch">~70%</span></td><td>~82%</td><td>~102%</td><td>~94%</td><td>~107%</td><td>~129%</td><td>~123%</td><td>~89%</td><td><span class="pc-watch">~50%</span></td><td>~100%</td><td>~110%</td><td>~93%</td>
             </tr>
                         <!-- METRIC: PIK toggle + amend-and-extend ($bn, monthly est.)
               Source : No single authoritative public monthly source — this is a CONSTRUCTED ESTIMATE.
@@ -2959,12 +2987,15 @@
                            Search filing text for "payment-in-kind" and "amended and extended"; tally dollar amounts.
                            This only captures private credit; add leveraged-loan A&E from (1) or (2) separately.
                        (4) If none of the above are available: use the CONSTRUCT methodology in Notes below.
-              Format : $bn of DISTRESSED PIK elections + DISTRESSED A&E completed in the reference month.
-                       DISTRESSED ONLY — exclude routine maturity extensions or repricings done by healthy borrowers.
-                       Round to nearest integer. Always mark ~ regardless of source used.
-              Dir    : ↑ above $5bn = warn; above $8bn = alarm.
+              Format : Annualised incidence rate = (monthly distressed PIK+A&E $bn × 12) ÷ $1.8T Bloomberg private credit market × 100.
+                       Hold $1.8T denominator constant across all readings (consistency > precision).
+                       Round to 1 decimal. Always mark ~ regardless of source used.
+              Dir    : ↑ provisional thresholds (baseline not yet established; benchmarks TBD).
+                       <4%/yr = OK. 4–6%/yr = Watch. 6–8%/yr = Warning. ≥8%/yr = Alarm. (Provisional — see Notes)
                        PIK = borrower paying interest by issuing more debt rather than cash (worsens leverage).
                        A&E = maturity pushed out 1–2 years to avoid formal default (deferred distress).
+                       CRITICAL: This is a FLOW RATE, not a depletion measure. Loans exit the pool via curing,
+                       refinancing or workout — do NOT project "market exhaustion timelines" from this ratio.
               CONSTRUCT: When primary sources (1)–(3) are unavailable, build the estimate as follows:
                        a. Start from prior month's value.
                        b. LSTA distress ratio rose > 0.5pp this month → add ~$1–2bn (stress = more A&E urgency).
@@ -2982,9 +3013,9 @@
                        NEVER build this series as a linear ramp — real A&E is event-driven and lumpy by nature.
                        Leading indicator: A&E volume today → non-accruals in 1–2 quarters when maturities come due. -->
 <tr class="row-pc">
-              <td>PIK toggle + amend-and-extend ($bn, monthly est.)<span class="mds-dir bear">↑ above $5B = warning; above $8B = alarm. Rising A&amp;E = deferred distress</span></td>
-              <td class="col-current"><span class="pc-stress">~13</span></td><td><span class="pc-stress">~13</span></td><td><span class="pc-stress">~12</span></td><td><span class="pc-stress">~12</span></td><td><span class="pc-stress">~12</span></td><td><span class="pc-stress">~11</span></td><td><span class="pc-stress">~13</span></td><td><span class="pc-stress">~10</span></td><td class="col-divider"><span class="pc-stress">~10</span></td>
-              <td><span class="pc-stress">~9</span></td><td><span class="pc-warn">~8</span></td><td><span class="pc-warn">~7</span></td><td><span class="pc-warn">~6</span></td><td><span class="pc-warn">~6</span></td><td>~5</td><td>~5</td><td><span class="pc-warn">~6</span></td><td><span class="pc-stress">~9</span></td><td>~5</td><td>~4</td><td>~4</td>
+              <td>PIK toggle + A&amp;E (% of mkt/yr, prov.)<span class="mds-dir bear">↑ provisional: &lt;4%=OK; 4–6%=Watch; 6–8%=Warn; ≥8%=Alarm. Flow rate, not countdown. See Notes.</span></td>
+              <td class="col-current"><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-warn">~7.3%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-warn">~6.7%</span></td><td class="col-divider"><span class="pc-warn">~6.7%</span></td>
+              <td><span class="pc-warn">~6.0%</span></td><td><span class="pc-watch">~5.3%</span></td><td><span class="pc-watch">~4.7%</span></td><td><span class="pc-watch">~4.0%</span></td><td><span class="pc-watch">~4.0%</span></td><td>~3.3%</td><td>~3.3%</td><td><span class="pc-watch">~4.0%</span></td><td><span class="pc-warn">~6.0%</span></td><td>~3.3%</td><td>~2.7%</td><td>~2.7%</td>
             </tr>
           </tbody>
         </table>
@@ -4310,17 +4341,19 @@
       { key: 'USD/INR',                    dir: 'up',   warn: 86.5,  alarm: 88   },
       { key: 'India FX Reserves',          dir: 'down', warn: 640,   alarm: 600  },
       { key: 'MCX Silver',                 dir: 'none'                            },
-      // Private credit
-      { key: 'BDC sector Price/NAV',       dir: 'down', warn: 0.85,  alarm: 0.80 },
-      { key: 'LSTA distress',              dir: 'up',   warn: 5,     alarm: 7    },
-      { key: 'HY OAS',                     dir: 'up',   warn: 400,   alarm: 600  },
+      // Private credit — thresholds updated per private-credit-thresholds.md
+      // RAG dots: green=OK, amber=Watch, red=Warning+. Mid-bands in cell spans provide full 5-tier colour.
+      { key: 'BDC sector Price/NAV',       dir: 'down', warn: 0.88,  alarm: 0.78 },
+      { key: '% of BDCs by AUM',           dir: 'up',   warn: 0.5,   alarm: 20   },
+      { key: 'LSTA distress',              dir: 'up',   warn: 3.5,   alarm: 5    },
+      { key: 'HY OAS',                     dir: 'up',   warn: 300,   alarm: 400  },
       { key: 'Private-credit non-accruals',dir: 'up',   warn: 2,     alarm: 3    },
-      { key: 'Leveraged-loan dual-track default rate',dir: 'up',   warn: 3,     alarm: 5    },
+      { key: 'Leveraged-loan dual-track default rate',dir: 'up',   warn: 3,     alarm: 4.5  },
       { key: 'HY distress ratio',          dir: 'up',   warn: 8,     alarm: 12   },
-      { key: 'Avg leveraged loan bid',     dir: 'down', warn: 96,    alarm: 93   },
-      { key: 'CLO equity',                 dir: 'down', warn: 5,     alarm: 0    },
-      { key: 'Lev-loan refinancing',       dir: 'down', warn: 20,    alarm: 10   },
-      { key: 'PIK toggle',                 dir: 'up',   warn: 5,     alarm: 8    }
+      { key: 'Avg leveraged loan bid',     dir: 'down', warn: 97,    alarm: 94   },
+      { key: 'CLO equity',                 dir: 'down', warn: 10,    alarm: 5    },
+      { key: 'Lev-loan refinancing',       dir: 'down', warn: 80,    alarm: 50   },
+      { key: 'PIK toggle',                 dir: 'up',   warn: 4,     alarm: 6    }
     ];
 
     var dataRows = document.querySelectorAll(
