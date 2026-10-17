@@ -348,8 +348,8 @@ figcaption {
 .magnifier {
   display: none;
   position: absolute;
-  width: 220px;
-  height: 220px;
+  width: min(660px, 80vw);
+  height: min(660px, 80vw);
   border-radius: 50%;
   border: 2px solid var(--gold);
   box-shadow: 0 6px 24px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.25);
@@ -1292,7 +1292,6 @@ figcaption {
 
   // ── Magnifier ─────────────────────────────────────
   const lens      = document.getElementById('magnifier');
-  const LENS_SIZE = 220;
   let zoom = 3;
 
   function moveLens(clientX, clientY) {
@@ -1300,13 +1299,13 @@ figcaption {
     const x = clientX - rect.left;
     const y = clientY - rect.top;
     if (x < 0 || y < 0 || x > rect.width || y > rect.height) { hideLens(); return; }
-    const half = LENS_SIZE / 2;
+    lens.classList.add('is-active');
+    const half = lens.offsetWidth / 2;
     lens.style.left = (x - half) + 'px';
     lens.style.top  = (y - half) + 'px';
     lens.style.backgroundImage    = 'url("' + lbImg.src + '")';
     lens.style.backgroundSize     = (rect.width * zoom) + 'px ' + (rect.height * zoom) + 'px';
     lens.style.backgroundPosition = (half - x * zoom) + 'px ' + (half - y * zoom) + 'px';
-    lens.classList.add('is-active');
   }
 
   function hideLens() { lens.classList.remove('is-active'); }
