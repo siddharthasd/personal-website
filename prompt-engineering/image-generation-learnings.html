@@ -95,12 +95,13 @@ main { padding: var(--space-lg); max-width: 1100px; margin: 0 auto; }
 
 #t1:checked ~ .panels #p1, #t2:checked ~ .panels #p2, #t3:checked ~ .panels #p3,
 #t4:checked ~ .panels #p4, #t5:checked ~ .panels #p5, #t6:checked ~ .panels #p6,
-#t7:checked ~ .panels #p7, #t8:checked ~ .panels #p8 { display: block; }
+#t7:checked ~ .panels #p7, #t8:checked ~ .panels #p8, #t9:checked ~ .panels #p9 { display: block; }
 
 #t1:checked ~ .tab-bar label[for="t1"], #t2:checked ~ .tab-bar label[for="t2"],
 #t3:checked ~ .tab-bar label[for="t3"], #t4:checked ~ .tab-bar label[for="t4"],
 #t5:checked ~ .tab-bar label[for="t5"], #t6:checked ~ .tab-bar label[for="t6"],
-#t7:checked ~ .tab-bar label[for="t7"], #t8:checked ~ .tab-bar label[for="t8"] {
+#t7:checked ~ .tab-bar label[for="t7"], #t8:checked ~ .tab-bar label[for="t8"],
+#t9:checked ~ .tab-bar label[for="t9"] {
   background: var(--color-primary);
   border-color: var(--color-primary);
   color: #ffffff;
@@ -109,7 +110,8 @@ main { padding: var(--space-lg); max-width: 1100px; margin: 0 auto; }
 #t1:focus-visible ~ .tab-bar label[for="t1"], #t2:focus-visible ~ .tab-bar label[for="t2"],
 #t3:focus-visible ~ .tab-bar label[for="t3"], #t4:focus-visible ~ .tab-bar label[for="t4"],
 #t5:focus-visible ~ .tab-bar label[for="t5"], #t6:focus-visible ~ .tab-bar label[for="t6"],
-#t7:focus-visible ~ .tab-bar label[for="t7"], #t8:focus-visible ~ .tab-bar label[for="t8"] {
+#t7:focus-visible ~ .tab-bar label[for="t7"], #t8:focus-visible ~ .tab-bar label[for="t8"],
+#t9:focus-visible ~ .tab-bar label[for="t9"] {
   outline: 2px solid var(--color-secondary-dark);
   outline-offset: 2px;
 }
@@ -174,6 +176,16 @@ th { background: var(--color-primary-light); font-weight: 600; }
 .stat .num { font-size: 22px; font-weight: 700; color: var(--color-primary-dark); }
 .stat .cap { font-size: 13px; color: var(--color-text-muted); }
 
+.book-frame {
+  width: 100%;
+  height: 80vh;
+  min-height: 520px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  display: block;
+}
+
 .site-footer {
   text-align: center;
   color: var(--color-text-muted);
@@ -234,6 +246,7 @@ th { background: var(--color-primary-light); font-weight: 600; }
 <input class="tab-radio" type="radio" name="tab" id="t6" aria-label="Composition">
 <input class="tab-radio" type="radio" name="tab" id="t7" aria-label="Moderation">
 <input class="tab-radio" type="radio" name="tab" id="t8" aria-label="Workflow">
+<input class="tab-radio" type="radio" name="tab" id="t9" aria-label="Buy Books">
 
 <nav class="tab-bar" aria-label="Report sections">
   <label for="t1">1. Overview</label>
@@ -244,6 +257,7 @@ th { background: var(--color-primary-light); font-weight: 600; }
   <label for="t6">6. Composition</label>
   <label for="t7">7. Moderation</label>
   <label for="t8">8. Workflow</label>
+  <label for="t9">9. Buy Books</label>
 </nav>
 
 <div class="panels">
@@ -838,6 +852,13 @@ th { background: var(--color-primary-light); font-weight: 600; }
       </table>
     </div>
   </div>
+</section>
+
+<!-- ═════════ 9. BUY BOOKS ═════════ -->
+<section class="panel" id="p9" aria-label="Buy Books">
+  <h2>Buy Books</h2>
+  <p class="lead">Every learning in this report was distilled from my experience of creating these books over several months. The books are not only enjoyable to color and read. They are also a great companion to this report. Buy them on Amazon US or Amazon UK.</p>
+  <iframe class="book-frame" src="../books.html" title="Books by Siddhartha Dhamankar" loading="lazy"></iframe>
 </section>
 
 </div>

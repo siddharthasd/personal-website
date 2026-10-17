@@ -162,6 +162,9 @@ main { padding: var(--space-lg); max-width: 1100px; margin: 0 auto; }
 .site-footer a { color: var(--color-primary-dark); text-decoration: none; }
 .site-footer a:hover { text-decoration: underline; }
 
+/* Embedded view (inside an iframe): hide the page chrome */
+.embedded .banner, .embedded .site-footer { display: none; }
+
 @media (min-width: 900px) {
   .book-grid { grid-template-columns: 1fr 1fr; }
 }
@@ -173,6 +176,7 @@ main { padding: var(--space-lg); max-width: 1100px; margin: 0 auto; }
 </style>
 </head>
 <body>
+<script>if (window.self !== window.top) document.body.classList.add('embedded');</script>
 
 <header class="banner">
   <div class="banner-inner">
