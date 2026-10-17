@@ -1,0 +1,1348 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T Shirt Catalog | Siddhartha Dhamankar</title>
+<style>
+:root {
+  --gold:           #C49A1A;
+  --gold-light:     #E8D5A0;
+  --gold-pale:      #F5EDCE;
+  --ink:            #1C1712;
+  --parchment:      #FAF7F0;
+  --parchment-mid:  #F2EBE0;
+  --parchment-dark: #E6DDD0;
+  --text:           #2A2118;
+  --text-muted:     #6B5848;
+  --green:          #7DBF8E;
+  --green-dark:     #4E8C5F;
+  --border:         #D4C9B0;
+  --mat:            #F5F0E8;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; }
+
+body {
+  background: var(--parchment);
+  color: var(--text);
+  font-family: Georgia, 'Times New Roman', serif;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+body.loaded { opacity: 1; }
+
+/* ─── HEADER ──────────────────────────────────────── */
+.site-header {
+  background: var(--ink);
+  padding: 16px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(0deg,  transparent, transparent 19px, rgba(196,154,26,0.05) 20px),
+    repeating-linear-gradient(90deg, transparent, transparent 19px, rgba(196,154,26,0.05) 20px);
+  pointer-events: none;
+}
+.header-inner {
+  position: relative; z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.medallion-link { display: flex; flex-shrink: 0; }
+.medallion { width: 48px; height: 48px; }
+.brand-text { flex: 1; }
+.page-title {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.07em;
+  line-height: 1.2;
+}
+.page-subtitle {
+  font-family: Georgia, serif;
+  font-size: 11px;
+  color: rgba(232,213,160,0.5);
+  letter-spacing: 0.2em;
+  font-style: italic;
+  margin-top: 2px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-decoration: none;
+  border: 1px solid rgba(196,154,26,0.35);
+  padding: 5px 12px;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.back-link:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.7);
+  color: #fff;
+}
+.back-link::before { content: '←'; font-size: 13px; }
+
+/* ─── FOOTER ──────────────────────────────────────── */
+.site-footer {
+  background: var(--ink);
+  color: rgba(232,213,160,0.5);
+  text-align: center;
+  padding: 44px 40px;
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.07em;
+  line-height: 2.2;
+}
+.site-footer a {
+  color: rgba(232,213,160,0.72);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-footer a:hover { color: var(--gold-light); }
+.footer-rule {
+  width: 80px;
+  height: 1px;
+  background: rgba(196,154,26,0.35);
+  margin: 16px auto;
+}
+
+/* ─── FILTER BAR ──────────────────────────────────── */
+.filter-section {
+  background: var(--parchment-mid);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 7px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  line-height: 1;
+}
+.filter-btn:hover {
+  border-color: var(--gold);
+  color: var(--text);
+}
+.filter-btn.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--gold-light);
+}
+
+.gallery-count {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* ─── COMING SOON NOTICE ──────────────────────────── */
+.coming-soon {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 40px 0;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* ─── GALLERY ─────────────────────────────────────── */
+.gallery-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 40px 64px;
+}
+
+.gallery-grid {
+  column-count: 2;
+  column-gap: 24px;
+}
+
+.gallery-item {
+  break-inside: avoid;
+  margin-bottom: 24px;
+  transition: opacity 0.3s ease;
+}
+.gallery-item.hidden {
+  display: none;
+}
+
+/* ─── PICTURE FRAME ───────────────────────────────── */
+.drawing-frame {
+  background: var(--mat);
+  border: 1px solid var(--border);
+  cursor: zoom-in;
+  position: relative;
+  box-shadow: 2px 3px 10px rgba(28,23,18,0.13);
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.drawing-frame:hover {
+  box-shadow: 5px 8px 24px rgba(28,23,18,0.2);
+  transform: translateY(-2px);
+}
+
+/* Gold corner brackets */
+.drawing-frame::before,
+.drawing-frame::after {
+  content: '';
+  position: absolute;
+  width: 20px; height: 20px;
+  border-color: var(--gold);
+  border-style: solid;
+  opacity: 0.5;
+  z-index: 2;
+  pointer-events: none;
+}
+.drawing-frame::before { top: 6px; left: 6px; border-width: 1.5px 0 0 1.5px; }
+.drawing-frame::after  { bottom: 34px; right: 6px; border-width: 0 1.5px 1.5px 0; }
+
+/* Parchment mat around image */
+.drawing-mat {
+  padding: 12px 12px 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hairline inner border on mat */
+.drawing-mat::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(196,154,26,0.18);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.drawing-mat img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: sepia(8%) contrast(0.97);
+  transition: filter 0.3s ease;
+}
+
+/* Hover overlay */
+.drawing-overlay {
+  position: absolute;
+  inset: 12px 12px 10px;
+  background: rgba(28,23,18,0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.drawing-overlay span {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: 0.18em;
+  color: var(--gold-light);
+  border-bottom: 1px solid rgba(232,213,160,0.5);
+  padding-bottom: 3px;
+}
+.drawing-frame:hover .drawing-overlay { opacity: 1; }
+.drawing-frame:hover .drawing-mat img { filter: sepia(0%) contrast(1); }
+
+/* Caption */
+figcaption {
+  padding: 8px 14px 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.caption-title {
+  font-family: Georgia, serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text);
+}
+.caption-year {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+/* ─── LIGHTBOX ────────────────────────────────────── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  background: rgba(28,23,18,0.93);
+  cursor: zoom-out;
+}
+.lightbox.is-open { display: flex; }
+
+.lightbox-inner {
+  position: relative;
+  z-index: 1;
+  cursor: default;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.lightbox-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.lightbox-img-wrap {
+  position: relative;
+  max-width: 100%;
+  line-height: 0;
+}
+
+#lightbox-img {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  box-shadow: 0 8px 48px rgba(0,0,0,0.6);
+}
+
+/* Magnifier lens */
+#lightbox-img { cursor: crosshair; touch-action: none; }
+.magnifier {
+  display: none;
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.25);
+  background-color: var(--mat);
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 2;
+}
+.magnifier.is-active { display: block; }
+
+.lightbox-hint {
+  display: block;
+  margin-top: 6px;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 11px;
+  color: rgba(232,213,160,0.4);
+  letter-spacing: 0.1em;
+}
+
+.lightbox-caption {
+  text-align: center;
+}
+
+#lightbox-title {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--gold-light);
+  margin-bottom: 4px;
+}
+
+#lightbox-meta {
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-size: 12px;
+  color: rgba(232,213,160,0.55);
+  letter-spacing: 0.14em;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 20px; right: 24px;
+  background: none;
+  border: none;
+  color: rgba(232,213,160,0.7);
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  transition: color 0.2s;
+  z-index: 1001;
+}
+.lightbox-close:hover { color: #fff; }
+
+.lightbox-prev,
+.lightbox-next {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(28,23,18,0.5);
+  border: 1px solid rgba(196,154,26,0.25);
+  color: var(--gold-light);
+  font-size: 22px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  z-index: 1001;
+  line-height: 1;
+}
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(196,154,26,0.15);
+  border-color: rgba(196,154,26,0.6);
+}
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+
+@media (max-width: 520px) {
+  .gallery-grid { column-count: 1; }
+  .page-title   { font-size: 20px; }
+  .lightbox-prev { left: 4px; }
+  .lightbox-next { right: 4px; }
+}
+</style>
+<script>
+(function () {
+  var s = document.createElement('script');
+  s.src = 'https://js.monitor.azure.com/scripts/b/ai.2.min.js';
+  s.onload = function () {
+    var ai = new Microsoft.ApplicationInsights.ApplicationInsights({
+      config: {
+        connectionString: 'InstrumentationKey=5e195bbe-749f-4621-b80f-6f8faeea6b69;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/;ApplicationId=114f921c-1c00-4b3e-a988-120dce7b5392'
+      }
+    });
+    ai.loadAppInsights();
+    window.appInsights = ai;
+    ai.trackPageView();
+  };
+  document.head.appendChild(s);
+}());
+</script>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="medallion-link" aria-label="Home">
+      <svg class="medallion" viewBox="0 0 108 108" aria-label="SD monogram">
+        <circle cx="54" cy="54" r="51" fill="none" stroke="#C49A1A" stroke-width="0.8" stroke-dasharray="4 3.5" opacity="0.45"/>
+        <circle cx="54" cy="54" r="45" fill="none" stroke="#C49A1A" stroke-width="0.5" opacity="0.3"/>
+        <circle cx="54" cy="54" r="39" fill="#3A5C42"/>
+        <circle cx="54" cy="54" r="35" fill="none" stroke="#7DBF8E" stroke-width="0.7" opacity="0.45"/>
+        <ellipse cx="54" cy="10"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="98" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="54" cy="98"  rx="4.5" ry="7"   fill="#C49A1A" opacity="0.7"/>
+        <ellipse cx="10" cy="54"  rx="7"   ry="4.5" fill="#C49A1A" opacity="0.7"/>
+        <polygon points="23,23 26,20 29,23 26,26" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="79,23 82,20 85,23 82,26" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="79,82 82,79 85,82 82,85" fill="#C49A1A" opacity="0.5"/>
+        <polygon points="23,82 26,79 29,82 26,85" fill="#C49A1A" opacity="0.5"/>
+        <text x="54" y="63" text-anchor="middle"
+              font-family="Georgia, serif" font-size="26" font-weight="700"
+              fill="#FFFFFF" letter-spacing="3">SD</text>
+      </svg>
+    </a>
+    <div class="brand-text">
+      <h1 class="page-title">T Shirt Catalog</h1>
+      <p class="page-subtitle">Unique eclectic designs &nbsp;&middot;&nbsp; Coming soon</p>
+    </div>
+    <a href="index.html" class="back-link">Home</a>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     FILTER
+══════════════════════════════════════ -->
+<div class="filter-section">
+  <div class="filter-bar" role="group" aria-label="Filter by t-shirt colour">
+    <button class="filter-btn active" data-filter="all">All designs</button>
+    <button class="filter-btn" data-filter="white">White t-shirt</button>
+    <button class="filter-btn" data-filter="black">Black t-shirt</button>
+  </div>
+  <p class="gallery-count" aria-live="polite">
+    <span id="visible-count">40</span> designs
+  </p>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     GALLERY
+══════════════════════════════════════ -->
+<p class="coming-soon">Unique, eclectic designs on high quality cotton t-shirts. Coming soon.</p>
+
+<main class="gallery-wrap">
+  <div class="gallery-grid" id="gallery">
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/catalog-overview.jpg"
+              data-title="Catalog overview"
+              data-meta="Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/catalog-overview.jpg" alt="Overview of all t-shirt designs on white t-shirts" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Catalog overview</span>
+          <span class="caption-year">Overview</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/catalog-overview-black-tee.jpg"
+              data-title="Catalog overview"
+              data-meta="White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/catalog-overview-black-tee.jpg" alt="Overview of all t-shirt designs on black t-shirts" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Catalog overview</span>
+          <span class="caption-year">Overview</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/jor-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Jörmungandr"
+              data-meta="No. 01 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/jor-bk001-ft003-fu-b-catalog.jpg" alt="Jörmungandr design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Jörmungandr</span>
+          <span class="caption-year">No. 01</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/jor-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Jörmungandr"
+              data-meta="No. 01 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/jor-bk001-ft003-fu-w-catalog.jpg" alt="Jörmungandr design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Jörmungandr</span>
+          <span class="caption-year">No. 01</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/nid-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Níðhöggr"
+              data-meta="No. 02 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/nid-bk001-ft003-fu-b-catalog.jpg" alt="Níðhöggr design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Níðhöggr</span>
+          <span class="caption-year">No. 02</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/nid-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Níðhöggr"
+              data-meta="No. 02 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/nid-bk001-ft003-fu-w-catalog.jpg" alt="Níðhöggr design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Níðhöggr</span>
+          <span class="caption-year">No. 02</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/faf-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Fáfnir"
+              data-meta="No. 03 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/faf-bk001-ft003-fu-b-catalog.jpg" alt="Fáfnir design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Fáfnir</span>
+          <span class="caption-year">No. 03</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/faf-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Fáfnir"
+              data-meta="No. 03 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/faf-bk001-ft003-fu-w-catalog.jpg" alt="Fáfnir design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Fáfnir</span>
+          <span class="caption-year">No. 03</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/haf-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Hafgufa"
+              data-meta="No. 04 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/haf-bk001-ft003-fu-b-catalog.jpg" alt="Hafgufa design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Hafgufa</span>
+          <span class="caption-year">No. 04</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/haf-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Hafgufa"
+              data-meta="No. 04 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/haf-bk001-ft003-fu-w-catalog.jpg" alt="Hafgufa design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Hafgufa</span>
+          <span class="caption-year">No. 04</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/ryu-bk001-ft003-ka-b-catalog.jpg"
+              data-title="Ryūjin"
+              data-meta="No. 05 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/ryu-bk001-ft003-ka-b-catalog.jpg" alt="Ryūjin design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Ryūjin</span>
+          <span class="caption-year">No. 05</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/ryu-bk001-ft003-ka-w-catalog.jpg"
+              data-title="Ryūjin"
+              data-meta="No. 05 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/ryu-bk001-ft003-ka-w-catalog.jpg" alt="Ryūjin design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Ryūjin</span>
+          <span class="caption-year">No. 05</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/rai-bk001-ft003-ka-b-catalog.jpg"
+              data-title="Raijin"
+              data-meta="No. 06 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/rai-bk001-ft003-ka-b-catalog.jpg" alt="Raijin design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Raijin</span>
+          <span class="caption-year">No. 06</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/rai-bk001-ft003-ka-w-catalog.jpg"
+              data-title="Raijin"
+              data-meta="No. 06 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/rai-bk001-ft003-ka-w-catalog.jpg" alt="Raijin design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Raijin</span>
+          <span class="caption-year">No. 06</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/tan-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Tanngrisnir"
+              data-meta="No. 07 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/tan-bk001-ft003-fu-b-catalog.jpg" alt="Tanngrisnir design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Tanngrisnir</span>
+          <span class="caption-year">No. 07</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/tan-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Tanngrisnir"
+              data-meta="No. 07 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/tan-bk001-ft003-fu-w-catalog.jpg" alt="Tanngrisnir design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Tanngrisnir</span>
+          <span class="caption-year">No. 07</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/mim-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Mímir's Head"
+              data-meta="No. 08 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/mim-bk001-ft003-fu-b-catalog.jpg" alt="Mímir's Head design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Mímir's Head</span>
+          <span class="caption-year">No. 08</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/mim-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Mímir's Head"
+              data-meta="No. 08 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/mim-bk001-ft003-fu-w-catalog.jpg" alt="Mímir's Head design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Mímir's Head</span>
+          <span class="caption-year">No. 08</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/nor-bk001-ft003-fu-b-catalog.jpg"
+              data-title="The Norns"
+              data-meta="No. 09 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/nor-bk001-ft003-fu-b-catalog.jpg" alt="The Norns design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">The Norns</span>
+          <span class="caption-year">No. 09</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/nor-bk001-ft003-fu-w-catalog.jpg"
+              data-title="The Norns"
+              data-meta="No. 09 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/nor-bk001-ft003-fu-w-catalog.jpg" alt="The Norns design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">The Norns</span>
+          <span class="caption-year">No. 09</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/kyo-bk001-ft003-ka-b-catalog.jpg"
+              data-title="Kyōkotsu"
+              data-meta="No. 10 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/kyo-bk001-ft003-ka-b-catalog.jpg" alt="Kyōkotsu design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Kyōkotsu</span>
+          <span class="caption-year">No. 10</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/kyo-bk001-ft003-ka-w-catalog.jpg"
+              data-title="Kyōkotsu"
+              data-meta="No. 10 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/kyo-bk001-ft003-ka-w-catalog.jpg" alt="Kyōkotsu design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Kyōkotsu</span>
+          <span class="caption-year">No. 10</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/ymi-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Ymir"
+              data-meta="No. 11 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/ymi-bk001-ft003-fu-b-catalog.jpg" alt="Ymir design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Ymir</span>
+          <span class="caption-year">No. 11</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/ymi-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Ymir"
+              data-meta="No. 11 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/ymi-bk001-ft003-fu-w-catalog.jpg" alt="Ymir design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Ymir</span>
+          <span class="caption-year">No. 11</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/sur-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Surtr"
+              data-meta="No. 12 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/sur-bk001-ft003-fu-b-catalog.jpg" alt="Surtr design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Surtr</span>
+          <span class="caption-year">No. 12</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/sur-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Surtr"
+              data-meta="No. 12 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/sur-bk001-ft003-fu-w-catalog.jpg" alt="Surtr design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Surtr</span>
+          <span class="caption-year">No. 12</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/thr-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Þrúðgelmir"
+              data-meta="No. 13 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/thr-bk001-ft003-fu-b-catalog.jpg" alt="Þrúðgelmir design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Þrúðgelmir</span>
+          <span class="caption-year">No. 13</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/thr-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Þrúðgelmir"
+              data-meta="No. 13 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/thr-bk001-ft003-fu-w-catalog.jpg" alt="Þrúðgelmir design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Þrúðgelmir</span>
+          <span class="caption-year">No. 13</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/gje-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Gjenganger"
+              data-meta="No. 14 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/gje-bk001-ft003-fu-b-catalog.jpg" alt="Gjenganger design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Gjenganger</span>
+          <span class="caption-year">No. 14</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/gje-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Gjenganger"
+              data-meta="No. 14 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/gje-bk001-ft003-fu-w-catalog.jpg" alt="Gjenganger design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Gjenganger</span>
+          <span class="caption-year">No. 14</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/dra-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Draugen"
+              data-meta="No. 15 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/dra-bk001-ft003-fu-b-catalog.jpg" alt="Draugen design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Draugen</span>
+          <span class="caption-year">No. 15</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/dra-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Draugen"
+              data-meta="No. 15 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/dra-bk001-ft003-fu-w-catalog.jpg" alt="Draugen design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Draugen</span>
+          <span class="caption-year">No. 15</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/keu-bk001-ft003-ka-b-catalog.jpg"
+              data-title="Keukegen"
+              data-meta="No. 16 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/keu-bk001-ft003-ka-b-catalog.jpg" alt="Keukegen design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Keukegen</span>
+          <span class="caption-year">No. 16</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/keu-bk001-ft003-ka-w-catalog.jpg"
+              data-title="Keukegen"
+              data-meta="No. 16 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/keu-bk001-ft003-ka-w-catalog.jpg" alt="Keukegen design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Keukegen</span>
+          <span class="caption-year">No. 16</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/aud-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Auðumbla"
+              data-meta="No. 17 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/aud-bk001-ft003-fu-b-catalog.jpg" alt="Auðumbla design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Auðumbla</span>
+          <span class="caption-year">No. 17</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/aud-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Auðumbla"
+              data-meta="No. 17 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/aud-bk001-ft003-fu-w-catalog.jpg" alt="Auðumbla design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Auðumbla</span>
+          <span class="caption-year">No. 17</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/kar-bk001-ft003-ka-b-catalog.jpg"
+              data-title="Karakasa-obake"
+              data-meta="No. 18 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/kar-bk001-ft003-ka-b-catalog.jpg" alt="Karakasa-obake design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Karakasa-obake</span>
+          <span class="caption-year">No. 18</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/kar-bk001-ft003-ka-w-catalog.jpg"
+              data-title="Karakasa-obake"
+              data-meta="No. 18 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/kar-bk001-ft003-ka-w-catalog.jpg" alt="Karakasa-obake design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Karakasa-obake</span>
+          <span class="caption-year">No. 18</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="white">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/vol-bk001-ft003-fu-b-catalog.jpg"
+              data-title="Völva"
+              data-meta="No. 19 · Black ink on white t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/vol-bk001-ft003-fu-b-catalog.jpg" alt="Völva design on a white t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Völva</span>
+          <span class="caption-year">No. 19</span>
+        </figcaption>
+      </figure>
+    </div>
+
+    <div class="gallery-item" data-category="black">
+      <figure class="drawing-frame"
+              data-src="assets/t-shirt-catalog/vol-bk001-ft003-fu-w-catalog.jpg"
+              data-title="Völva"
+              data-meta="No. 19 · White ink on black t-shirt">
+        <div class="drawing-mat">
+          <img src="assets/t-shirt-catalog/vol-bk001-ft003-fu-w-catalog.jpg" alt="Völva design on a black t-shirt" loading="lazy">
+          <div class="drawing-overlay"><span>View</span></div>
+        </div>
+        <figcaption>
+          <span class="caption-title">Völva</span>
+          <span class="caption-year">No. 19</span>
+        </figcaption>
+      </figure>
+    </div>
+
+  </div><!-- /gallery-grid -->
+</main>
+
+
+<!-- ══════════════════════════════════════
+     LIGHTBOX
+══════════════════════════════════════ -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="T shirt design viewer">
+  <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <button class="lightbox-prev" id="lightbox-prev" aria-label="Previous design">&#8249;</button>
+  <button class="lightbox-next" id="lightbox-next" aria-label="Next design">&#8250;</button>
+
+  <div class="lightbox-inner">
+    <div class="lightbox-frame">
+      <div class="lightbox-img-wrap">
+        <img id="lightbox-img" src="" alt="">
+        <div class="magnifier" id="magnifier" aria-hidden="true"></div>
+      </div>
+      <div class="lightbox-caption">
+        <span id="lightbox-title"></span>
+        <span id="lightbox-meta"></span>
+        <span class="lightbox-hint">Move over the design to magnify. Scroll to change the zoom.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar &nbsp;&middot;&nbsp; Mumbai</p>
+  <div class="footer-rule"></div>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+
+<script>
+(function () {
+  'use strict';
+
+  // ── Fade in ────────────────────────────────────────
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.classList.add('loaded');
+  });
+
+  // ── Filter ────────────────────────────────────────
+  const filterBtns   = document.querySelectorAll('.filter-btn');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+  const countEl      = document.getElementById('visible-count');
+
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const filter = this.dataset.filter;
+
+      filterBtns.forEach(function (b) { b.classList.remove('active'); });
+      this.classList.add('active');
+
+      let visible = 0;
+      galleryItems.forEach(function (item) {
+        if (filter === 'all' || item.dataset.category === filter) {
+          item.classList.remove('hidden');
+          visible++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      countEl.textContent = visible;
+    });
+  });
+
+  // ── Lightbox ──────────────────────────────────────
+  const lightbox     = document.getElementById('lightbox');
+  const lbImg        = document.getElementById('lightbox-img');
+  const lbTitle      = document.getElementById('lightbox-title');
+  const lbMeta       = document.getElementById('lightbox-meta');
+  const lbClose      = document.getElementById('lightbox-close');
+  const lbPrev       = document.getElementById('lightbox-prev');
+  const lbNext       = document.getElementById('lightbox-next');
+
+  let currentItems = [];
+  let currentIndex = 0;
+
+  function getVisibleFrames() {
+    return Array.from(
+      document.querySelectorAll('.gallery-item:not(.hidden) .drawing-frame')
+    );
+  }
+
+  function showImage(idx) {
+    const frame = currentItems[idx];
+    hideLens();
+    lbImg.src   = frame.dataset.src;
+    lbImg.alt   = frame.querySelector('img').alt;
+    lbTitle.textContent = frame.dataset.title;
+    lbMeta.textContent  = frame.dataset.meta;
+  }
+
+  function openLightbox(clickedFrame) {
+    currentItems = getVisibleFrames();
+    currentIndex = currentItems.indexOf(clickedFrame);
+    if (currentIndex === -1) currentIndex = 0;
+    showImage(currentIndex);
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+    if (window.appInsights) {
+      window.appInsights.trackEvent({ name: 'T Shirt Design Opened', properties: { title: clickedFrame.dataset.title, meta: clickedFrame.dataset.meta } });
+    }
+  }
+
+  function closeLightbox() {
+    hideLens();
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + currentItems.length) % currentItems.length;
+    showImage(currentIndex);
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % currentItems.length;
+    showImage(currentIndex);
+  }
+
+  // Open on frame click
+  document.querySelectorAll('.drawing-frame').forEach(function (frame) {
+    frame.addEventListener('click', function () { openLightbox(this); });
+    frame.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(this); }
+    });
+    frame.setAttribute('tabindex', '0');
+    frame.setAttribute('role', 'button');
+  });
+
+  // ── Magnifier ─────────────────────────────────────
+  const lens      = document.getElementById('magnifier');
+  const LENS_SIZE = 220;
+  let zoom = 3;
+
+  function moveLens(clientX, clientY) {
+    const rect = lbImg.getBoundingClientRect();
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    if (x < 0 || y < 0 || x > rect.width || y > rect.height) { hideLens(); return; }
+    const half = LENS_SIZE / 2;
+    lens.style.left = (x - half) + 'px';
+    lens.style.top  = (y - half) + 'px';
+    lens.style.backgroundImage    = 'url("' + lbImg.src + '")';
+    lens.style.backgroundSize     = (rect.width * zoom) + 'px ' + (rect.height * zoom) + 'px';
+    lens.style.backgroundPosition = (half - x * zoom) + 'px ' + (half - y * zoom) + 'px';
+    lens.classList.add('is-active');
+  }
+
+  function hideLens() { lens.classList.remove('is-active'); }
+
+  lbImg.addEventListener('mousemove', function (e) { moveLens(e.clientX, e.clientY); });
+  lbImg.addEventListener('mouseleave', hideLens);
+  lbImg.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    zoom = Math.min(6, Math.max(2, zoom + (e.deltaY < 0 ? 0.5 : -0.5)));
+    moveLens(e.clientX, e.clientY);
+  }, { passive: false });
+  lbImg.addEventListener('touchstart', function (e) { moveLens(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  lbImg.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+    moveLens(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: false });
+  lbImg.addEventListener('touchend', hideLens);
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click',  prevImage);
+  lbNext.addEventListener('click',  nextImage);
+
+  // Click backdrop to close
+  lightbox.addEventListener('click', function (e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    if (!lightbox.classList.contains('is-open')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  prevImage();
+    if (e.key === 'ArrowRight') nextImage();
+  });
+
+}());
+</script>
+</body>
+</html>
