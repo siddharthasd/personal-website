@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Books | Siddhartha Dhamankar</title>
+<style>
+:root {
+  --color-primary:         #7DBF8E;
+  --color-primary-light:   #D6EFDB;
+  --color-primary-dark:    #4E8C5F;
+  --color-secondary:       #A89BC9;
+  --color-secondary-light: #E8E2F5;
+  --color-secondary-dark:  #6B5A9E;
+  --color-text:            #2B2B2B;
+  --color-text-muted:      #6B6B6B;
+  --color-border:          #D9D9D9;
+  --color-neutral-bg:      #F4F6F4;
+  --color-surface:         #FFFFFF;
+  --color-primary-bg:      #D6EFDB;
+  --color-warning:         #D97706;
+  --color-warning-bg:      #FEF3E2;
+  --color-error:           #C0392B;
+  --color-error-bg:        #FEF0EF;
+  --color-success:         #4E8C5F;
+  --color-success-bg:      #D6EFDB;
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  40px;
+  --space-xl:  56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--color-neutral-bg);
+  color: var(--color-text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.banner {
+  background: var(--color-primary-light);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 3px solid var(--color-primary);
+}
+.banner-inner { display: flex; align-items: center; gap: var(--space-sm); }
+.banner-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.banner-text { flex: 1; }
+.banner-text h1 { color: var(--color-text); font-size: 22px; font-weight: 700; margin: 0; }
+.banner-text .subtitle { color: var(--color-text); font-size: 13px; margin: 0; }
+.back-link {
+  color: var(--color-primary-dark);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.back-link:hover { text-decoration: underline; }
+
+main { padding: var(--space-lg); max-width: 1100px; margin: 0 auto; }
+
+.book-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: var(--space-md);
+}
+
+.book {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+.book-cover {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  object-fit: cover;
+  background: var(--color-secondary-light);
+}
+.book-cover--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-secondary-dark);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.book-body { display: flex; flex-direction: column; gap: var(--space-xs); flex: 1; }
+.book-title { font-size: 17px; font-weight: 600; }
+.book-subtitle { font-size: 14px; color: var(--color-text); }
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.tag {
+  background: var(--color-secondary-light);
+  color: var(--color-secondary-dark);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 12px;
+}
+.book-desc { margin-top: var(--space-xs); }
+
+.buy { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-top: var(--space-sm); }
+.btn {
+  display: inline-block;
+  background: var(--color-primary);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn:hover, .btn:focus-visible { background: var(--color-primary-dark); }
+.btn--uk { background: var(--color-secondary); }
+.btn--uk:hover, .btn--uk:focus-visible { background: var(--color-secondary-dark); }
+
+.notice {
+  background: var(--color-warning-bg);
+  border-left: 4px solid var(--color-warning);
+  border-radius: 0 8px 8px 0;
+  padding: var(--space-sm) var(--space-md);
+}
+.notice--empty {
+  background: var(--color-primary-light);
+  border-left-color: var(--color-primary);
+}
+
+.site-footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  padding: var(--space-lg) var(--space-lg) var(--space-xl);
+}
+.site-footer a { color: var(--color-primary-dark); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+@media (min-width: 640px) {
+  .book { flex-direction: row; }
+  .book-cover { flex-shrink: 0; width: 200px; max-width: none; aspect-ratio: 3 / 4; }
+}
+@media (min-width: 900px) {
+  .book-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .banner { padding: var(--space-md) var(--space-sm); }
+  main { padding: var(--space-sm); }
+  .banner-inner { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<header class="banner">
+  <div class="banner-inner">
+    <a class="banner-mark" href="index.html" aria-label="Home">SD</a>
+    <div class="banner-text">
+      <h1>Books</h1>
+      <p class="subtitle">Published titles, available on Amazon US and Amazon UK.</p>
+    </div>
+    <a class="back-link" href="index.html">Back to home</a>
+  </div>
+</header>
+
+<main>
+  <section aria-label="Book showcase">
+    <div id="book-grid" class="book-grid" aria-live="polite">
+      <p class="notice notice--empty">Loading books.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar, Mumbai</p>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var CSV_PATH = 'books/listing.csv';
+  var CSV_DIR  = CSV_PATH.slice(0, CSV_PATH.lastIndexOf('/') + 1);
+  var grid = document.getElementById('book-grid');
+
+  // Parse CSV text into rows. Handles quoted fields with commas, quotes and line breaks.
+  function parseCsv(text) {
+    var rows = [], row = [], field = '', inQuotes = false;
+    text = text.replace(/^﻿/, '');
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (inQuotes) {
+        if (c === '"') {
+          if (text[i + 1] === '"') { field += '"'; i++; }
+          else { inQuotes = false; }
+        } else { field += c; }
+      } else if (c === '"') {
+        inQuotes = true;
+      } else if (c === ',') {
+        row.push(field); field = '';
+      } else if (c === '\n' || c === '\r') {
+        if (c === '\r' && text[i + 1] === '\n') i++;
+        row.push(field); field = '';
+        rows.push(row); row = [];
+      } else { field += c; }
+    }
+    if (field !== '' || row.length) { row.push(field); rows.push(row); }
+    return rows.filter(function (r) { return r.some(function (f) { return f.trim() !== ''; }); });
+  }
+
+  function toBooks(rows) {
+    if (rows.length < 2) return [];
+    var head = rows[0].map(function (h) { return h.trim(); });
+    return rows.slice(1).map(function (r) {
+      var o = {};
+      head.forEach(function (h, i) { o[h] = (r[i] || '').trim(); });
+      return o;
+    });
+  }
+
+  function safeUrl(u) {
+    return /^https:\/\//i.test(u) ? u : '';
+  }
+
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text) e.textContent = text;
+    return e;
+  }
+
+  function buyLink(label, url, cls, title) {
+    var a = el('a', 'btn' + (cls ? ' ' + cls : ''), label);
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.setAttribute('aria-label', label + ': ' + title + ' (opens in a new tab)');
+    return a;
+  }
+
+  function renderBook(b) {
+    var card = el('article', 'card book');
+
+    // Covers are resolved relative to the CSV folder, so "cover.jpg" means books/cover.jpg
+    var coverUrl = b.cover && !/^(https?:|\/\/)/i.test(b.cover) ? CSV_DIR + b.cover.replace(/^\.?\//, '') : '';
+    if (coverUrl) {
+      var img = el('img', 'book-cover');
+      img.src = coverUrl;
+      img.alt = 'Cover of ' + b.title;
+      img.loading = 'lazy';
+      card.appendChild(img);
+    } else {
+      var ph = el('div', 'book-cover book-cover--empty', 'SD');
+      ph.setAttribute('aria-hidden', 'true');
+      card.appendChild(ph);
+    }
+
+    var body = el('div', 'book-body');
+    body.appendChild(el('h2', 'book-title', b.title));
+    if (b.subtitle) body.appendChild(el('p', 'book-subtitle', b.subtitle));
+
+    var tags = el('div', 'tags');
+    if (b.year) tags.appendChild(el('span', 'tag', b.year));
+    if (b.format) tags.appendChild(el('span', 'tag', b.format));
+    if (tags.children.length) body.appendChild(tags);
+
+    if (b.description) body.appendChild(el('p', 'book-desc', b.description));
+
+    var buy = el('div', 'buy');
+    var us = safeUrl(b.amazon_us_url), uk = safeUrl(b.amazon_uk_url);
+    if (us) buy.appendChild(buyLink('Buy on Amazon US', us, '', b.title));
+    if (uk) buy.appendChild(buyLink('Buy on Amazon UK', uk, 'btn--uk', b.title));
+    if (buy.children.length) body.appendChild(buy);
+
+    card.appendChild(body);
+    return card;
+  }
+
+  function showMessage(text, isError) {
+    grid.textContent = '';
+    grid.appendChild(el('p', isError ? 'notice' : 'notice notice--empty', text));
+  }
+
+  fetch(CSV_PATH)
+    .then(function (res) {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.text();
+    })
+    .then(function (text) {
+      var books = toBooks(parseCsv(text)).filter(function (b) { return b.title; });
+      if (!books.length) { showMessage('No books are listed yet.', false); return; }
+      grid.textContent = '';
+      books.forEach(function (b) { grid.appendChild(renderBook(b)); });
+    })
+    .catch(function () {
+      showMessage('The book list could not be loaded. If you opened this file directly from disk, run it through a local web server instead.', true);
+    });
+}());
+</script>
+</body>
+</html>

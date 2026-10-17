@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image generation learnings | Siddhartha Dhamankar</title>
+<style>
+:root {
+  --color-primary:         #7DBF8E;
+  --color-primary-light:   #D6EFDB;
+  --color-primary-dark:    #4E8C5F;
+  --color-secondary:       #A89BC9;
+  --color-secondary-light: #E8E2F5;
+  --color-secondary-dark:  #6B5A9E;
+  --color-text:            #2B2B2B;
+  --color-text-muted:      #6B6B6B;
+  --color-border:          #D9D9D9;
+  --color-neutral-bg:      #F4F6F4;
+  --color-surface:         #FFFFFF;
+  --color-primary-bg:      #D6EFDB;
+  --color-warning:         #D97706;
+  --color-warning-bg:      #FEF3E2;
+  --color-error:           #C0392B;
+  --color-error-bg:        #FEF0EF;
+  --color-success:         #4E8C5F;
+  --color-success-bg:      #D6EFDB;
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  40px;
+  --space-xl:  56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--color-neutral-bg);
+  color: var(--color-text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.banner {
+  background: var(--color-primary-light);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 3px solid var(--color-primary);
+}
+.banner-inner { display: flex; align-items: center; gap: var(--space-sm); }
+.banner-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.banner-text { flex: 1; }
+.banner-text h1 { color: var(--color-text); font-size: 22px; font-weight: 700; margin: 0; }
+.banner-text .subtitle { color: var(--color-text); font-size: 13px; margin: 0; }
+.back-link {
+  color: var(--color-primary-dark);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.back-link:hover { text-decoration: underline; }
+
+main { padding: var(--space-lg); max-width: 1100px; margin: 0 auto; }
+
+/* Radio-input tab navigation */
+.tab-radio { position: absolute; opacity: 0; pointer-events: none; }
+.tab-bar { display: flex; flex-wrap: wrap; gap: var(--space-xs); margin-bottom: var(--space-md); }
+.tab-bar label {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.tab-bar label:hover { border-color: var(--color-primary); }
+
+.panel { display: none; }
+
+#t1:checked ~ .panels #p1, #t2:checked ~ .panels #p2, #t3:checked ~ .panels #p3,
+#t4:checked ~ .panels #p4, #t5:checked ~ .panels #p5, #t6:checked ~ .panels #p6,
+#t7:checked ~ .panels #p7, #t8:checked ~ .panels #p8 { display: block; }
+
+#t1:checked ~ .tab-bar label[for="t1"], #t2:checked ~ .tab-bar label[for="t2"],
+#t3:checked ~ .tab-bar label[for="t3"], #t4:checked ~ .tab-bar label[for="t4"],
+#t5:checked ~ .tab-bar label[for="t5"], #t6:checked ~ .tab-bar label[for="t6"],
+#t7:checked ~ .tab-bar label[for="t7"], #t8:checked ~ .tab-bar label[for="t8"] {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #ffffff;
+}
+.tab-radio:focus-visible ~ .tab-bar label { outline: none; }
+#t1:focus-visible ~ .tab-bar label[for="t1"], #t2:focus-visible ~ .tab-bar label[for="t2"],
+#t3:focus-visible ~ .tab-bar label[for="t3"], #t4:focus-visible ~ .tab-bar label[for="t4"],
+#t5:focus-visible ~ .tab-bar label[for="t5"], #t6:focus-visible ~ .tab-bar label[for="t6"],
+#t7:focus-visible ~ .tab-bar label[for="t7"], #t8:focus-visible ~ .tab-bar label[for="t8"] {
+  outline: 2px solid var(--color-secondary-dark);
+  outline-offset: 2px;
+}
+
+/* Content */
+.panel h2 { font-size: 20px; font-weight: 700; margin-bottom: var(--space-sm); }
+.panel > p.lead { max-width: 760px; margin-bottom: var(--space-md); }
+
+.card {
+  background: var(--color-surface);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+.card--green  { background: var(--color-primary-light); border-left: 4px solid var(--color-primary-dark); }
+.card--violet { background: var(--color-secondary-light); border-left: 4px solid var(--color-secondary-dark); }
+.card h3 { font-size: 16px; font-weight: 600; margin-bottom: var(--space-xs); }
+.card p { margin-bottom: var(--space-xs); }
+.card p:last-child { margin-bottom: 0; }
+.card ul { margin: var(--space-xs) 0 var(--space-xs) var(--space-md); }
+.card li { margin-bottom: 4px; }
+.label { font-weight: 700; color: var(--color-primary-dark); }
+.card--violet .label { color: var(--color-secondary-dark); }
+
+.prompt {
+  background: var(--color-surface);
+  border-left: 4px solid var(--color-secondary);
+  border-radius: 0 8px 8px 0;
+  padding: var(--space-sm) var(--space-md);
+  margin: var(--space-xs) 0 var(--space-sm);
+  font-size: 13px;
+  color: var(--color-text);
+}
+.card--violet .prompt { background: var(--color-surface); }
+.prompt p { margin-bottom: 4px; }
+.prompt p:last-child { margin-bottom: 0; }
+
+.pair { display: grid; grid-template-columns: 1fr; gap: var(--space-xs); margin: var(--space-xs) 0 var(--space-sm); }
+.pair > div { background: var(--color-surface); border-radius: 8px; padding: var(--space-sm); font-size: 13px; }
+.pair .bad  { border-left: 4px solid var(--color-error); }
+.pair .good { border-left: 4px solid var(--color-success); }
+.pair strong { display: block; margin-bottom: 4px; }
+.pair .bad strong  { color: var(--color-error); }
+.pair .good strong { color: var(--color-success); }
+
+.notice {
+  background: var(--color-warning-bg);
+  border-left: 4px solid var(--color-warning);
+  border-radius: 0 8px 8px 0;
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.table-wrap { overflow-x: auto; margin: var(--space-xs) 0 var(--space-sm); }
+table { border-collapse: collapse; width: 100%; background: var(--color-surface); font-size: 13px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--color-border); vertical-align: top; }
+th { background: var(--color-primary-light); font-weight: 600; }
+
+.stat-row { display: grid; grid-template-columns: 1fr; gap: var(--space-sm); margin-bottom: var(--space-md); }
+.stat { background: var(--color-surface); border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); padding: var(--space-md); }
+.stat .num { font-size: 22px; font-weight: 700; color: var(--color-primary-dark); }
+.stat .cap { font-size: 13px; color: var(--color-text-muted); }
+
+.site-footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  padding: var(--space-lg) var(--space-lg) var(--space-xl);
+}
+.site-footer a { color: var(--color-primary-dark); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+@media (min-width: 640px) {
+  .pair { grid-template-columns: 1fr 1fr; }
+  .stat-row { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 480px) {
+  .banner { padding: var(--space-md) var(--space-sm); }
+  main { padding: var(--space-sm); }
+  .banner-inner { flex-wrap: wrap; }
+}
+</style>
+<script>
+(function () {
+  var s = document.createElement('script');
+  s.src = 'https://js.monitor.azure.com/scripts/b/ai.2.min.js';
+  s.onload = function () {
+    var ai = new Microsoft.ApplicationInsights.ApplicationInsights({
+      config: {
+        connectionString: 'InstrumentationKey=5e195bbe-749f-4621-b80f-6f8faeea6b69;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/;ApplicationId=114f921c-1c00-4b3e-a988-120dce7b5392'
+      }
+    });
+    ai.loadAppInsights();
+    window.appInsights = ai;
+    ai.trackPageView();
+  };
+  document.head.appendChild(s);
+}());
+</script>
+</head>
+<body>
+
+<header class="banner">
+  <div class="banner-inner">
+    <a class="banner-mark" href="../index.html" aria-label="Home">SD</a>
+    <div class="banner-text">
+      <h1>Image generation learnings</h1>
+      <p class="subtitle">A report on prompting AI image models, built from three colouring book projects.</p>
+    </div>
+    <a class="back-link" href="prompt-engineering-learnings.html">Back to learnings</a>
+  </div>
+</header>
+
+<main>
+
+<input class="tab-radio" type="radio" name="tab" id="t1" checked aria-label="Overview">
+<input class="tab-radio" type="radio" name="tab" id="t2" aria-label="Style template">
+<input class="tab-radio" type="radio" name="tab" id="t3" aria-label="Describing subjects">
+<input class="tab-radio" type="radio" name="tab" id="t4" aria-label="Line art and fills">
+<input class="tab-radio" type="radio" name="tab" id="t5" aria-label="Backgrounds">
+<input class="tab-radio" type="radio" name="tab" id="t6" aria-label="Composition">
+<input class="tab-radio" type="radio" name="tab" id="t7" aria-label="Moderation">
+<input class="tab-radio" type="radio" name="tab" id="t8" aria-label="Workflow">
+
+<nav class="tab-bar" aria-label="Report sections">
+  <label for="t1">1. Overview</label>
+  <label for="t2">2. Style template</label>
+  <label for="t3">3. Describing subjects</label>
+  <label for="t4">4. Line art and fills</label>
+  <label for="t5">5. Backgrounds</label>
+  <label for="t6">6. Composition</label>
+  <label for="t7">7. Moderation</label>
+  <label for="t8">8. Workflow</label>
+</nav>
+
+<div class="panels">
+
+<!-- ═════════ 1. OVERVIEW ═════════ -->
+<section class="panel" id="p1" aria-label="Overview">
+  <h2>Overview</h2>
+  <p class="lead">This report collects what worked and what failed while generating illustrations for a series of adult colouring books. Every learning is a cause and effect seen across several generations. None of them is a guess.</p>
+
+  <div class="stat-row">
+    <div class="stat"><div class="num">3</div><div class="cap">Volumes: Norse Vættir, Yokai and Oni of Japan, Ajaib of Egypt, Babylon and Persia</div></div>
+    <div class="stat"><div class="num">50</div><div class="cap">Creature illustrations planned for each volume</div></div>
+    <div class="stat"><div class="num">4</div><div class="cap">Source learning documents merged into this report</div></div>
+  </div>
+
+  <div class="card card--green">
+    <h3>The setting</h3>
+    <p>All three volumes used Grok Imagine (grok-imagine-image). The target was strict black line art on pure white, with no fills of any kind, so a colourist could work on the page. This is a hard constraint. Image models drift towards shading, grey and solid black, so the prompts had to push back on every default.</p>
+    <p>The Norse volume used a fine anatomical engraving style. The Ajaib volume adapted the same template. The Yokai volume used a bolder horror line art style. The lessons overlap heavily, which is why they hold up beyond any single book.</p>
+  </div>
+
+  <div class="card">
+    <h3>The ten principles</h3>
+    <ul>
+      <li><strong>Describe the form, not the name.</strong> The model's knowledge of niche mythology is shallow.</li>
+      <li><strong>Build from human anatomy.</strong> Category words such as demon or giant trigger cartoon templates.</li>
+      <li><strong>Describe what is present.</strong> Negations often make the model draw the unwanted thing.</li>
+      <li><strong>List every hollow.</strong> A generic ban on solid black protects only the obvious cases.</li>
+      <li><strong>Imply time through objects.</strong> Never state the time of day.</li>
+      <li><strong>Repeat scale and key anatomy.</strong> A single mention is treated as optional.</li>
+      <li><strong>Use culture-specific vocabulary.</strong> Generic nouns produce generic or wrong results.</li>
+      <li><strong>Give camera and intent, not coordinates.</strong> Over-constrained layouts break anatomy.</li>
+      <li><strong>Avoid moderation triggers.</strong> Some phrases cause rejections that content alone does not.</li>
+      <li><strong>Review before you generate.</strong> Every generation costs a credit.</li>
+    </ul>
+  </div>
+
+  <div class="card card--violet">
+    <h3>How to read this report</h3>
+    <p>Use the tabs above. Each learning has a rule, a reason and a way to apply it. Prompt wording appears in the violet-edged boxes. Red and green pairs show a failing phrase next to its fix.</p>
+    <p>Section 2 covers the locked style template. Sections 3 to 6 cover what to say in the prompt. Section 7 covers what not to say. Section 8 covers the working process around the prompt.</p>
+  </div>
+
+  <div class="card">
+    <h3>Sources</h3>
+    <ul>
+      <li>Prompt learnings for Vættir of the Norse Eddas</li>
+      <li>Prompt engineering learnings for Yokai and Oni of Japan</li>
+      <li>Prompt review learnings for Yokai and Oni of Japan</li>
+      <li>Prompt learnings for Serpents, Djinn and Demons of Egypt, Babylon and Persia</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═════════ 2. STYLE TEMPLATE ═════════ -->
+<section class="panel" id="p2" aria-label="Style template">
+  <h2>Style template</h2>
+  <p class="lead">Each volume locks one opening paragraph and one closing paragraph. Every prompt shares them. This keeps linework consistent across fifty pages and leaves the middle of the prompt free for the subject.</p>
+
+  <div class="card card--violet">
+    <h3>Locked opening</h3>
+    <p>The opening names the art form, the historical sub-style and the fill rules in one block.</p>
+    <div class="prompt">
+      <p>Adult coloring book page illustration of a Norse mythology [creature], in the style of fine anatomical engraving line art, like a 19th century [zoological / medical / natural history / geological / ornithological / maritime] illustration. Pure monochrome design with clean, naturalistically varying linework, crisp black contour lines, and completely empty white spaces. Formatted for an adult coloring book template with zero solid black fill-ins, no shading, no gradients, no grayscale, and no cross-hatching.</p>
+    </div>
+  </div>
+
+  <div class="card card--violet">
+    <h3>Locked closing</h3>
+    <p>The closing sets orientation, full bleed and the ban on text.</p>
+    <div class="prompt">
+      <p>Portrait orientation, taller than wide. Full bleed composition, artwork extends to every edge of the page with no border, no frame, no margin. Background elements, foreground elements, and all linework must run completely off every edge of the canvas, with no visible page boundary, no safe zone, and no white gutter around the perimeter. Treat the image frame as a window cropping into a larger continuous scene rather than a contained composition. No text, no lettering, no signature.</p>
+    </div>
+    <p>Only one page per volume used landscape orientation. It swaps the first sentence for "Landscape orientation, wider than tall."</p>
+  </div>
+
+  <div class="card">
+    <h3>Match the sub-style to the subject</h3>
+    <p>The engraving template accepts different specimen-plate sub-styles. Naming the right one in the opening pulls the model towards the correct visual tradition for that creature.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Subject type</th><th>Sub-style to name</th></tr></thead>
+        <tbody>
+          <tr><td>Serpents, dragons, sea beasts, chaos serpents</td><td>19th century zoological or natural history illustration</td></tr>
+          <tr><td>Undead, horror creatures, composite demons</td><td>19th century medical or anatomical illustration</td></tr>
+          <tr><td>Giants with stone or rock skin, elemental creatures</td><td>19th century geological and natural history illustration</td></tr>
+          <tr><td>Birds and animal-form creatures</td><td>19th century ornithological illustration</td></tr>
+          <tr><td>Sea gods, fish-men, underwater scenes</td><td>19th century maritime and natural history illustration</td></tr>
+          <tr><td>Ships and naval scenes</td><td>19th century maritime illustration</td></tr>
+          <tr><td>Battle scenes, weapons and armour</td><td>19th century military antiquarian illustration</td></tr>
+          <tr><td>Female figures and seeresses, djinn and spirits</td><td>19th century anthropological and natural history illustration</td></tr>
+          <tr><td>Forest and plant scenes</td><td>19th century botanical and natural history illustration</td></tr>
+          <tr><td>Hybrid guardian figures</td><td>19th century archaeological and natural history illustration</td></tr>
+          <tr><td>Half-human chimeras</td><td>19th century zoological and anatomical illustration</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card--green">
+    <h3>The Yokai volume used a different header</h3>
+    <p>The Yokai prompts used bold uniform linework and a fixed adult horror register sentence in the header. The header was not enough on its own. The creature description also needed tone words, which section 3 explains.</p>
+    <div class="prompt">
+      <p>Pure monochrome design featuring clean bold linework, crisp black outlines, completely empty white spaces, and all shapes fully closed. Rendered in adult horror register. Consistent uniform line weight throughout all elements.</p>
+    </div>
+    <p>The same header also carried a realism line for backgrounds, covered in section 5.</p>
+  </div>
+</section>
+
+<!-- ═════════ 3. DESCRIBING SUBJECTS ═════════ -->
+<section class="panel" id="p3" aria-label="Describing subjects">
+  <h2>Describing subjects</h2>
+  <p class="lead">Most failed generations traced back to how the subject was described. The model fills any gap with its most common training image. These learnings close those gaps.</p>
+
+  <div class="card card--green">
+    <h3>3.1 Describe the visual form, not the name</h3>
+    <p><span class="label">Rule.</span> Do not let a proper name carry the visual. Lead with the physical form. Treat the name as optional flavour at the end.</p>
+    <p><span class="label">Why.</span> The model maps names to shallow training associations. Draugr produced a plain skeleton. Huldra produced an ordinary woman. Álfar produced a modern human. Kuchisake-onna produced a modern woman and Pazuzu risked a generic winged demon.</p>
+    <p><span class="label">Apply.</span> Write the body, the key features and their placement before any mythological name.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.2 Build humanoids from human anatomy up</h3>
+    <p><span class="label">Rule.</span> Never open with a category word such as giant, ogre, demon, monster, zombie, undead or beast.</p>
+    <p><span class="label">Why.</span> Category words anchor the model to a cartoon template. That means exaggerated faces, comic proportions and flat frontal staging.</p>
+    <p><span class="label">Apply.</span> Start with a human base, describe its anatomy, then add each supernatural feature with an exact placement.</p>
+    <div class="pair">
+      <div class="bad"><strong>Weak</strong>An ogre with horns.</div>
+      <div class="good"><strong>Stronger</strong>A large powerful human male, broad-shouldered and heavily built. Two curved horns emerge from the forehead above the brow line.</div>
+    </div>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.3 Set the tone inside the description</h3>
+    <p><span class="label">Rule.</span> For a horror register, put tone words in the creature description and not only in the style header. Use words such as ancient, malevolent, predatory, unsettling, menacing, grim and cold menace.</p>
+    <p><span class="label">Why.</span> Words like jolly, mischievous, playful, wide grin and dancing push the model to a children's book style whatever the header says.</p>
+    <p><span class="label">Apply.</span> For trickster creatures that are not full horror, replace mischievous with "sly, grim". Add "realistic" before each key anatomy element, such as "realistic beak-like mouth". The Kappa entry confirmed this approach.</p>
+    <p>Book-wide, the header should also state the register once, for example "Rendered in adult horror register", so the tone holds even for beautiful or tragic creatures.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.4 A tight grimace beats an open roar</h3>
+    <p><span class="label">Rule.</span> For powerful humanoids, use a controlled grimace.</p>
+    <p><span class="label">Why.</span> The roaring mouth is the standard fantasy attack pose. It locks the model into a cartoon monster. A grimace reads as cold menace and keeps the model in human anatomy mode.</p>
+    <div class="prompt"><p>Mouth: lips set in a tight controlled grimace, pulled back slightly at the corners, teeth just visible at the edges. Not open, not roaring. An expression of cold fury.</p></div>
+    <p><span class="label">Exception.</span> When the open jaw is the horror, as with the crocodile-headed Ammit, describe the jaw in detail. Show the teeth in a natural row and keep the interior as an empty white space.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.5 Horror comes from position, not scale</h3>
+    <p><span class="label">Rule.</span> Keep abnormal features at realistic size. Describe exactly where they sit.</p>
+    <p><span class="label">Why.</span> A giant eye or an enormous wound reads as cartoon. A normal-sized feature in the wrong place lets the viewer almost accept it before the wrongness registers. That delay is the unease.</p>
+    <ul>
+      <li>State size against normal anatomy, such as an eye of normal human size, no wider than a quarter of the face.</li>
+      <li>Use anatomical coordinates, such as at the horizontal midline where the nose bridge would sit.</li>
+      <li>Name each absent feature and where it would normally be.</li>
+      <li>Never write vast, enormous or filling the face. Never write wrong placement. The model cannot draw an abstraction, so describe the place itself.</li>
+    </ul>
+    <p>The Hel prompt split the body along the vertical midline. One side was living flesh. The other showed decomposition, with the shape of the clavicle and ribs readable through taut skin. Hitotsume-kozo and Noppera-bo used the same method.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.6 Name the attachment point of impossible features</h3>
+    <p><span class="label">Rule.</span> For grafted or grown features, say where the feature emerges and how the surrounding tissue responds.</p>
+    <p><span class="label">Why.</span> Without an attachment point, the model floats the feature beside the body. The tissue response sells it as real.</p>
+    <div class="prompt"><p>From each trapezius muscle, where the shoulder meets the neck, a serpent emerges. The flesh of the shoulder is split and closed around the serpent's base as if it grew there from birth. Skin contours are tight and radiate outward from the emergence point.</p></div>
+    <p>Describe the serpent at a scale matched to the shoulder width. Do not make it giant.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.7 Composite bodies need a part-by-part list</h3>
+    <p><span class="label">Rule.</span> List every body part with its source animal. Never write composite or hybrid as shorthand.</p>
+    <p><span class="label">Why.</span> A bare composite demon produces a generic winged humanoid. The model invents its own mix.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Creature</th><th>Breakdown used in the prompt</th></tr></thead>
+        <tbody>
+          <tr><td>Pazuzu</td><td>Human torso and arms, lion head with mane, four wings (upper pair eagle feathers, lower pair bat membrane), eagle talons, scorpion tail curving over the back</td></tr>
+          <tr><td>Lamashtu</td><td>Lioness head with open jaws, donkey ears, human hands with long fingers, raptor talons, a piglet and a puppy suckling at her breasts</td></tr>
+          <tr><td>Mushhushshu</td><td>Serpent neck and body with overlapping scale plates, lion forelimbs, eagle hindlimbs, scorpion tail, forked tongue</td></tr>
+          <tr><td>Girtablullu</td><td>Human male torso from the waist up, scorpion body below with six legs and a tail arching overhead, bow in one hand</td></tr>
+          <tr><td>Lamassu</td><td>Bull body, folded eagle wings, bearded human head with a conical horned crown, five legs</td></tr>
+          <tr><td>Ammit</td><td>Crocodile head, lion or leopard forequarters, hippopotamus hindquarters</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.8 Describe only what is unnatural</h3>
+    <p><span class="label">Rule.</span> Trust the model on familiar anatomy. Spend words only on features that are impossible or specific to the creature.</p>
+    <p><span class="label">Why.</span> Over-describing scale patterns, toe pads or feather counts crowds out the unusual features. The prompt starts to read as an anatomy lesson, not a portrait.</p>
+    <p><span class="label">Test.</span> Ask whether a competent natural history illustrator would draw the detail correctly from the species name alone. If yes, leave it out. Write "a great venomous snake" and "broad eagle wings". Describe in full only the horns on the snake or the legs that sprout from its body.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.9 State critical anatomy twice</h3>
+    <p><span class="label">Rule.</span> Say the defining features in the anatomy section and again in the pose section. Use explicit counts.</p>
+    <p><span class="label">Why.</span> A feature mentioned once is treated as optional. The Nekomata prompt produced one tail instead of two until the prompt said "two separate forked tails, unmistakably divided".</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.10 Use even counts for repeated parts</h3>
+    <p><span class="label">Rule.</span> For repeated heads, tails, arms or eyes, ask for 2, 4 or 6. Avoid odd numbers.</p>
+    <p><span class="label">Why.</span> Odd clusters break symmetry. A nine-headed giant produced a ninth head misplaced on the body. Eight heads in two columns of four worked, and the lore notes the implied ninth.</p>
+    <p><span class="label">Arrangement.</span> Use rows with a count per row, such as a front row of three and a rear row of four. Stop there. Adding a sentence about how the rows sit behind and between each other made the arrangement stiff and over-literal.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.11 Place the end of any extreme elongation</h3>
+    <p><span class="label">Rule.</span> When a neck, tail or limb stretches a long way, describe the journey and then name where the terminal element appears.</p>
+    <p><span class="label">Why.</span> The model draws the coiling but leaves the head or tip out of frame. The Rokurokubi neck coiled well while the head went missing.</p>
+    <div class="prompt"><p>Her neck stretches upward through the room and out through the window. At the far end of the neck, outside the window, her head is clearly visible, turned to face back inward.</p></div>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.12 Describe transformation part by part</h3>
+    <p><span class="label">Rule.</span> Never write mid-transformation alone. State which parts have changed, which have not and what the boundary looks like.</p>
+    <p><span class="label">Why.</span> Vague wording makes the model show the creature holding or standing beside the object. The Bakedanuki produced a tanuki carrying a teapot.</p>
+    <div class="prompt"><p>The lower body and belly have become a cast-iron teapot with a heavy lid, curved spout and looping handle. The creature's face, forepaws, hind legs and tail still emerge from the iron vessel, with flesh and fur fused to cast iron at the seam.</p></div>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.13 Use emaciation words, never skeletal</h3>
+    <p><span class="label">Rule.</span> Do not write skeletal, bony fingers or every rib visible as a ridge for a flesh-covered figure.</p>
+    <p><span class="label">Why.</span> Skeletal produces exposed bone. The rib phrasing produces a bare ribcage.</p>
+    <div class="pair">
+      <div class="bad"><strong>Avoid</strong>Skeletal arms. Bony fingers. Every rib visible as an outlined ridge.</div>
+      <div class="good"><strong>Use</strong>Gaunt, emaciated, severely wasted. Ribs pressing through papery skin as raised lines, not exposed bone.</div>
+    </div>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.14 Name garments and period features</h3>
+    <p><span class="label">Garments.</span> Use the cultural term and describe construction. Long coat produced a modern blazer and robe produced a wizard. A furisode kimono described by its crossing front panels, deep V collar and sleeves hanging past the waist rendered correctly.</p>
+    <p><span class="label">Faces.</span> The model defaults to modern Western faces. Name each period convention and describe it geometrically. The hikimayu brows of Heian-era women became "two small flat rectangular outlined marks high on the forehead, each empty white inside, brow ridge completely bare". All four Heian-era women then rendered correctly.</p>
+    <p><span class="label">Hair.</span> The word straight is not enough. Add NOT qualifiers: "long straight hair, NOT wavy, NOT curly, NOT exploding outward. Each strand drawn as an individual straight outlined line." This is one of the few places where negation worked, because it gave the model a positive description alongside it.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.15 Make the figure fill the frame</h3>
+    <p><span class="label">Rule.</span> Use at least three reinforcing scale phrases.</p>
+    <p><span class="label">Why.</span> The model places figures small and distant in a landscape. One instruction is ignored. Hitotsume-kozo needed several regeneration passes before the figure filled the frame.</p>
+    <div class="prompt"><p>The [creature] fills the page from the lower edge to the crown. Its form dominates the composition, large, close, filling the centre of the image from top to bottom. This is not a small distant figure in a landscape but a looming presence that occupies the full frame.</p></div>
+  </div>
+
+  <div class="card card--green">
+    <h3>3.16 Dynamic poses</h3>
+    <p><span class="label">Rule.</span> For a figure in action, use the word heroic and describe flowing elements such as hair, wings, mane or serpent tails in motion.</p>
+    <p><span class="label">Result.</span> Adding "stands firm in heroic pose, hair waving in the wind of the impact" turned a static Hrungnir into a dynamic low-angle fighter. Use it with a grimace and not an open roar.</p>
+  </div>
+</section>
+
+<!-- ═════════ 4. LINE ART AND FILLS ═════════ -->
+<section class="panel" id="p4" aria-label="Line art and fills">
+  <h2>Line art and fills</h2>
+  <p class="lead">A colouring page fails if it contains grey or solid black. The model adds both by default. These learnings keep the page clean.</p>
+
+  <div class="card card--violet">
+    <h3>4.1 Use the six-item hollow prohibition in every prompt</h3>
+    <p><span class="label">Rule.</span> Ban solid fills for each type of hollow, one line each.</p>
+    <p><span class="label">Why.</span> The model fills eyes, mouths, nostrils, ears, wounds and shadows with black or grey. A general ban on solid black is read as covering only the most obvious case, which is the eyes. This matters most with hybrid creatures that have many heads and so many hollows.</p>
+    <div class="prompt">
+      <p>Do not fill hollows of eyes with solid black or grey. Keep them empty white closed shapes.</p>
+      <p>Do not fill hollows of nostrils with solid black or grey. Keep them empty white closed shapes.</p>
+      <p>Do not fill hollows of open mouths with solid black or grey. Keep them empty white closed shapes.</p>
+      <p>Do not fill hollows of ear canals with solid black or grey. Keep them empty white closed shapes.</p>
+      <p>Do not fill wounds, body cavities, or interior forms with solid black or grey. Keep them empty white closed shapes.</p>
+      <p>Do not fill shadows of clothing, objects, or body parts with solid black or grey. Keep them empty white closed shapes.</p>
+    </div>
+  </div>
+
+  <div class="card card--violet">
+    <h3>4.2 Dark creatures default to solid black</h3>
+    <p><span class="label">Rule.</span> For crows, ravens, black cats and dark scales, strengthen the fill ban and add a creature-specific sentence.</p>
+    <p><span class="label">Why.</span> The Karasutengu rendered its crow head and body in solid black even with the standard fill ban in the header.</p>
+    <div class="prompt">
+      <p>Zero solid black fill-ins. No solid black areas anywhere in the illustration. All dark plumage, fur, scales or surfaces are rendered as fine outlined strokes only.</p>
+      <p>Its dark feathers are rendered entirely as fine outlined feather strokes with no solid black fill anywhere.</p>
+    </div>
+  </div>
+
+  <div class="card card--violet">
+    <h3>4.3 Ban cross-hatching and reinforce it at quality control</h3>
+    <p>The header already forbids it. Repeat it in the negative prompt used for quality checks.</p>
+    <div class="prompt"><p>shading, gradient, grayscale, solid black fill, filled black areas, color, text, lettering, watermark, signature, border frame, cross-hatching</p></div>
+  </div>
+
+  <div class="card card--violet">
+    <h3>4.4 Keep linework language out of the scene description</h3>
+    <p><span class="label">Rule.</span> The creature and background sections describe what to draw. They should not describe how lines look.</p>
+    <p><span class="label">Why.</span> Phrases such as "each crack a thin closed outline", "rendered as fine outlined strokes" and "each a closed outlined form" conflict with the header. They pull attention from form and make the result look mechanical. Quality audits showed better realism once these phrases were removed.</p>
+    <p><span class="label">Also avoid.</span> The sentence "every surface outline is a heavy closed variable-weight line". It flattened the line weight variation that the header already produces.</p>
+    <p><span class="label">Exception.</span> Section 4.2 shows that a targeted fill ban inside a creature description is useful when the creature is naturally dark. The difference is that the ban prevents a failure and does not describe style.</p>
+  </div>
+
+  <div class="card card--violet">
+    <h3>4.5 Describe what is present, not what is absent</h3>
+    <p><span class="label">Rule.</span> Avoid no beard, no wings, no tail, no horns.</p>
+    <p><span class="label">Why.</span> Diffusion models latch onto the concept inside the negation. The Grýla beard survived two iterations of "no beard, no facial hair of any kind".</p>
+    <p><span class="label">Apply.</span> Fill the visual space with a positive description of what is there.</p>
+    <div class="pair">
+      <div class="bad"><strong>Fails</strong>Her chin is bare, no beard, no facial hair of any kind.</div>
+      <div class="good"><strong>Works</strong>Smooth bare chin and jaw, deeply wrinkled papery skin, sagging jowls, a few visible age spots, sunken cheeks.</div>
+    </div>
+    <div class="pair">
+      <div class="bad"><strong>Fails</strong>The back is bare, no wings of any kind.</div>
+      <div class="good"><strong>Works</strong>The back is smooth human musculature, with trapezius, rhomboids and latissimus dorsi drawn as contour lines. No attachment points, no wing roots.</div>
+    </div>
+  </div>
+
+  <div class="card card--violet">
+    <h3>4.6 Use realistic anatomy words for flesh and bone</h3>
+    <p>See 3.13 for the emaciation vocabulary. In pale subjects such as snow, ice, frost, white fur and pale skin, the post-processing step matters too. A gentle white correction ramp (180 to 220) preserved detail where the standard soft ramp (120 to 160) pushed light mid-tones to white. Use the gentle ramp for Sleipnir, the wolves Sköll and Háti, Þrymr, Skaði and for pale stone and sand scenes.</p>
+  </div>
+</section>
+
+<!-- ═════════ 5. BACKGROUNDS ═════════ -->
+<section class="panel" id="p5" aria-label="Backgrounds">
+  <h2>Backgrounds</h2>
+  <p class="lead">Backgrounds caused the second largest group of failures. The model reads atmosphere as a tone fill. These learnings keep scenes white and open while still giving them depth.</p>
+
+  <div class="card card--green">
+    <h3>5.1 Never state the time of day</h3>
+    <p><span class="label">Rule.</span> Do not write at night, nighttime scene, dark night, at dusk, at dawn or in daylight.</p>
+    <p><span class="label">Why.</span> The model renders the phrase as a literal grey or black background. This broke the no-grey rule in several scenes.</p>
+    <p><span class="label">Apply.</span> Describe the objects that imply the time.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Implied time or weather</th><th>Describe instead</th></tr></thead>
+        <tbody>
+          <tr><td>Night</td><td>An outlined crescent moon at the upper edge. Stars as individual outlined five-pointed forms. Foxfire flames as outlined teardrops.</td></tr>
+          <tr><td>Dawn</td><td>A low winter sunrise through loose cloud and light-ray contours. Bare branches reaching into open white sky.</td></tr>
+          <tr><td>Midday desert</td><td>A sun disk as an outlined circle at upper centre. Heat-haze contour lines rising from the sand.</td></tr>
+          <tr><td>Storm</td><td>Naturalistic storm cloud contour forms, dramatically massed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.2 Control the sky and ban dot fills</h3>
+    <p><span class="label">Rule.</span> Use a standard sky clause in every prompt that shows sky. Always ban dot fills and star fields.</p>
+    <p><span class="label">Why.</span> The model scatters grey dots across open white areas, even in scenes that are not night scenes.</p>
+    <p><span class="label">Clouds.</span> The volumes disagreed, and the disagreement is instructive. The Yokai volume banned clouds by default, because clouds kept rendering in front of trees and figures. The Ajaib volume asked for sparse outlined clouds, because a fully empty sky looked unfinished in print. Choose per volume, and use clouds with lore-driven storm scenes in either case.</p>
+    <div class="prompt">
+      <p>Open sky with sparse naturalistic clouds rendered as clean outlined contour forms. Each cloud is a closed curved shape with no fill, no grey wash and no dot texture. The sky between the clouds is pure white. No dot fills, no grey dots, no star field anywhere. No solid fills anywhere in the sky or background.</p>
+    </div>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.3 Keep horror out of the sky</h3>
+    <p><span class="label">Rule.</span> Do not rely on a dark sky for horror atmosphere.</p>
+    <p><span class="label">Why.</span> Describing a dark night fills the sky with black. Banning that and demanding an open white sky fixed the fill but lightened the whole scene. Hitotsume-kozo showed this. Version 2 had perfect horror with a black sky. Version 3 had a clean sky with weak horror.</p>
+    <p><span class="label">Apply.</span> Specify an open white sky with only outlined cloud shapes and a crescent moon. Carry the horror in the creature and the foreground, with predatory stillness, a blank expressionless face, wrong anatomy, lantern shadows, cracked stone and dead vegetation.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.4 Ask for realistic backgrounds</h3>
+    <p><span class="label">Rule.</span> State that landscape and architecture are realistic illustration.</p>
+    <p><span class="label">Why.</span> The model renders backgrounds in a flat comic style even when the creature is realistic. The Yuki-onna forest had stylised trees.</p>
+    <div class="prompt"><p>All background and landscape elements rendered as a realistic illustration, detailed, naturalistic and three-dimensional, not stylised, simplified or comic-book linework.</p></div>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.5 Use named cultural vocabulary</h3>
+    <p><span class="label">Rule.</span> Name architecture, vessels, weapons and garments by their historical terms.</p>
+    <p><span class="label">Why.</span> Generic nouns such as old boat, wooden house or stone pillar give anachronistic or vague results.</p>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Culture</th><th>Generic</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>Norse</td><td>Viking boat</td><td>Longship or knarr, with strakes, ribs, keel and oars</td></tr>
+          <tr><td>Norse</td><td>Wooden house</td><td>Longhouse, post-and-beam and thatched, with a smoke opening above the central hearth</td></tr>
+          <tr><td>Norse</td><td>War hammer</td><td>Mjölnir, short handle and a disproportionately large head</td></tr>
+          <tr><td>Norse</td><td>Warrior dress</td><td>Ring-mail byrnie, conical nasal helm, ash spear, round shield with iron boss</td></tr>
+          <tr><td>Norse</td><td>Woman's dress</td><td>Apron dress over underdress, oval shoulder brooches, keys at the belt</td></tr>
+          <tr><td>Japanese</td><td>Paper screen</td><td>Shoji, with ranma carved above, on a tatami floor</td></tr>
+          <tr><td>Japanese</td><td>Lantern</td><td>Toro (stone), chōchin (paper globe) or andon (box lantern on a stand)</td></tr>
+          <tr><td>Japanese</td><td>Gravestone</td><td>Haka (stone marker) or sotoba (tall narrow wooden stake)</td></tr>
+          <tr><td>Egyptian</td><td>Temple</td><td>Temple pylon with receding battered walls and lotus-bud column capitals</td></tr>
+          <tr><td>Mesopotamian</td><td>Tower</td><td>Tiered mud-brick ziggurat with stepped access ramps and a summit shrine</td></tr>
+          <tr><td>Mesopotamian</td><td>Gate</td><td>Ishtar Gate style portal with glazed brick and alternating relief dragons and bulls</td></tr>
+          <tr><td>Persian</td><td>Palace</td><td>Achaemenid columned hall with double-bull-headed capitals</td></tr>
+          <tr><td>Arabian</td><td>Desert camp</td><td>Bedouin goat-hair tent with guy-ropes and wooden pegs</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.6 Props need placement, pattern and substitution control</h3>
+    <ul>
+      <li><span class="label">Placement.</span> Props that can hang will hang. A floor-standing andon rendered as a lantern hung over the figure. Write "floor-standing, resting on the floor, not hanging, not suspended. No ceiling chains, no ropes, no hooks anywhere in the image."</li>
+      <li><span class="label">Pattern.</span> The model applies a default surface pattern. A paper globe lantern showed latitude and longitude lines and read as a cage. Adding "horizontal rib lines only, no vertical lines, no grid" fixed it.</li>
+      <li><span class="label">Substitution.</span> For unusual props the model swaps in a familiar object. The andon became a cauldron. List the wrong substitutes: "explicitly a round paper lantern resting on the floor, not a cauldron, not a pot, not a barrel, not a hanging lantern."</li>
+      <li><span class="label">Size.</span> A drinking bowl is too small to hold a head. Use a large cauldron with ring handles and feet.</li>
+    </ul>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.7 Draw sand and snow with contour lines</h3>
+    <p><span class="label">Why.</span> Phrases like sandy desert produce beige or grey tone fills.</p>
+    <div class="prompt"><p>Sand dunes rendered as clean sweeping contour lines. Each dune is defined by its ridge line and flowing slope contours, completely white between the lines. No tone fill, no stippling, no shading.</p></div>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.8 Keep placement physically coherent</h3>
+    <p><span class="label">Rule.</span> Do not anchor a very large creature to a small background feature.</p>
+    <p><span class="label">Why.</span> A seven-headed serpent as wide as a river barge cannot coil at a narrow stone embankment. The model silently shrinks the creature or ignores the embankment.</p>
+    <p><span class="label">Apply.</span> Describe the background as an independent field that fills the frame around the creature. For the serpent, a river surface fills the lower frame, a low far bank sits on the horizon and a blank white sky sits above. Before writing a placement, ask whether a creature of that scale can sit there in a way the model can draw.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>5.9 Leave ancient scripts out</h3>
+    <p><span class="label">Rule.</span> No hieroglyphs, cuneiform or Arabic calligraphy as decoration.</p>
+    <p><span class="label">Why.</span> They render as visual noise, they shift the image towards archaeology and the creature stops being the subject. Arabic calligraphy also raises a sensitivity concern in an Islamic context. Use rosette borders, reed bundles, rope patterns and relief carvings instead. A clay tablet should have "impressed wedge-form marks" and not the word cuneiform.</p>
+  </div>
+</section>
+
+<!-- ═════════ 6. COMPOSITION ═════════ -->
+<section class="panel" id="p6" aria-label="Composition">
+  <h2>Composition and references</h2>
+  <p class="lead">The model is a better compositor than a layout engine. Give it intent and anchors. Do not give it coordinates.</p>
+
+  <div class="card card--violet">
+    <h3>6.1 Give camera and intent, not placement</h3>
+    <p><span class="label">Rule.</span> State the camera angle, the scale and the dominant gesture. Do not say which edge a tail runs off or where a head sits in the frame.</p>
+    <p><span class="label">Why.</span> Strict positions remove the model's room to find a coherent arrangement. Limbs float, parts overlap and anatomy bends to satisfy the brief.</p>
+    <div class="pair">
+      <div class="bad"><strong>Over-specified</strong>The head is raised at the upper centre. The tail coils off the lower right edge. The mid-body coil brushes the left side.</div>
+      <div class="good"><strong>Intent</strong>Low three-quarter view slightly from the side. The serpent's head is raised and angled toward the viewer. The body is too large to fit in the frame.</div>
+    </div>
+    <p>One exception applies. When a relationship defines the creature, such as the scorpion tail arching over Girtablullu, describe it against the body and not against the frame.</p>
+  </div>
+
+  <div class="card card--violet">
+    <h3>6.2 Reinforce full bleed at scene level</h3>
+    <p><span class="label">Rule.</span> Do not rely on the closing paragraph alone.</p>
+    <p><span class="label">Why.</span> The closing sits at the end of a long prompt and earlier framing can override it.</p>
+    <div class="prompt"><p>The [creature and scene elements] extend to every edge of the frame. The [background element] runs off the top, the [foreground element] runs off the bottom, and [lateral elements] run off both sides.</p></div>
+  </div>
+
+  <div class="card card--violet">
+    <h3>6.3 Ground complex scenes in a film reference</h3>
+    <p><span class="label">Rule.</span> When a scene has many elements or tricky perspective, pick a well-known film scene with the same composition. Ask for that scene, then replace each element one for one.</p>
+    <p><span class="label">Why.</span> The model has absorbed a great deal of cinematic imagery. A film scene supplies the camera angle, the placement and the sense of scale that abstract description fails to convey.</p>
+    <ol style="margin: 8px 0 8px 24px;">
+      <li>Identify the film scene whose composition matches your vision.</li>
+      <li>Prompt: "Dramatic [angle or shot] of a composition of [film scene description]."</li>
+      <li>Then: "Replace [film character] with [your subject]. Replace [film element] with [your element]. Replace [background] with [your background]."</li>
+      <li>Keep the replacements clean and one for one. Add no new elements in this step.</li>
+    </ol>
+    <p><span class="label">Worked example.</span> Möðguðr, a guardian woman on a long bridge facing a portal to the underworld, failed in versions 1 to 3 from abstract description. Version 4 used Gandalf confronting the Balrog on the bridge in the Mines of Moria. Gandalf became a Nordic woman. The Balrog became a portal to oblivion. The cave became an overcast underworld sky. The river stayed. It produced the correct wide-angle confrontation in one pass.</p>
+    <p>The Ajaib volume applied the same method to place a Lamassu at the Ishtar Gate from a dramatic low angle.</p>
+  </div>
+
+  <div class="card card--violet">
+    <h3>6.4 Style references help, but they can contaminate</h3>
+    <p><span class="label">Benefit.</span> In the Yokai volume, passing one approved image as a style reference through the image edit endpoint raised detail density, background realism and linework. The prompt stayed unchanged, because the reference steers style and not subject.</p>
+    <p><span class="label">Risk.</span> The chosen reference showed a cloth smothering a victim with arms raised above an obscured head. On a close-up portrait of a standing humanoid, the model copied that silhouette. It produced floating hands and a round blank head. It also pulled in a solid dark sky.</p>
+    <p><span class="label">Rule.</span> Do not use a reference whose pose or silhouette is distinctive for close-up portraits or upright frontal figures. Generate those from text alone and check any new portrait against this risk first.</p>
+  </div>
+
+  <div class="card card--violet">
+    <h3>6.5 Do borders and margins in post-processing</h3>
+    <p><span class="label">Finding.</span> Six attempts with different phrasings failed to get a precise 1/8 inch white margin and a single unbroken border. Phrasings tried included single unbroken line with no inner margin line, picture-frame mat framing and capitalised CRITICAL emphasis. An image generator is not a layout engine.</p>
+    <p><span class="label">Rule.</span> Remove every border and margin instruction from the prompt. Add the border with a script such as Pillow after generation.</p>
+    <p><span class="label">Bleed update.</span> The book later moved to a print format with bleed, where the border runs to the canvas edge on purpose. The script handles that case too. The prompt stays free of layout rules in both formats.</p>
+    <p>The same logic explains the standard closing line, which carries no margin reference. Layout belongs to the template and the print file.</p>
+  </div>
+</section>
+
+<!-- ═════════ 7. MODERATION ═════════ -->
+<section class="panel" id="p7" aria-label="Moderation">
+  <h2>Moderation and sensitivity</h2>
+  <p class="lead">Some prompts are rejected before any image is made. Each rejection still costs a credit. These learnings came from rejected prompts.</p>
+
+  <div class="notice">The rejections are classifier behaviour. They respond to phrases as much as to content. When a harmless scene is rejected, suspect the wording before the subject.</div>
+
+  <div class="card card--violet">
+    <h3>7.1 Realism disclaimers trigger rejection</h3>
+    <p><span class="label">Avoid.</span> Not a cartoon, not a comic book, not a fantasy illustration, every proportion must be based on realistic human anatomy, the figure is a real physical subject.</p>
+    <p><span class="label">Why.</span> The classifier reads these as an intent to produce a realistic depiction of a real human. Rejections that the scene alone could not explain disappeared once the phrases were removed.</p>
+    <p><span class="label">Fix.</span> Delete them. The style header and a specific anatomical description give realistic proportions without the risk.</p>
+  </div>
+
+  <div class="card card--violet">
+    <h3>7.2 Always dress figures</h3>
+    <p><span class="label">Avoid.</span> No clothing, bare-bodied, or framing the body as the only subject.</p>
+    <p><span class="label">Why.</span> A prompt for a frost giant with no garment was rejected with HTTP 400 and the code imagine:content-moderated. This happened whatever the creature's nature or the artistic intent.</p>
+    <p><span class="label">Fix.</span> Add covering that suits the creature, even where the lore says it is naked.</p>
+    <ul>
+      <li>Cold-realm giant: massive fur pelts and rough-hewn ice-encrusted armour.</li>
+      <li>Spirit figure: tattered grave-wrappings or trailing spirit-cloth.</li>
+      <li>Aquatic creature: seaweed wrapping or barnacle-encrusted shell armour.</li>
+      <li>Pazuzu: a knotted linen loincloth, a narrow cloth panel front and back secured by a knotted cord, in place of the explicit iconography.</li>
+      <li>Lilitu: a diaphanous linen robe, fine contour lines following the body form, with no skin exposed. This also reads as more uncanny than nudity.</li>
+    </ul>
+  </div>
+
+  <div class="card card--violet">
+    <h3>7.3 Soften severed or preserved heads</h3>
+    <p><span class="label">Avoid.</span> Preserved head, severed, clean-cut neck.</p>
+    <p><span class="label">Why.</span> The Mímir prompt, version 2, was rejected and billed with the words "preserved head" in both the context paragraph and the subject sentence.</p>
+    <p><span class="label">Fix.</span> Write "the head of a very old wise man, calm and watchful, rests in the herbs" and keep the context to "whose counsel Odin kept after death". Use a large cauldron and a high camera angle so the rim does not hide the head. A short expert-context paragraph at the top, such as "You are an expert in Norse folklore and mythology", helped. Three short paragraphs beat the earlier long drafts.</p>
+  </div>
+
+  <div class="card card--violet">
+    <h3>7.4 Frame djinn as folklore, never theology</h3>
+    <p><span class="label">Rule.</span> Describe djinn as creatures of pre-Islamic Arabian folklore and the medieval Arabic storytelling tradition.</p>
+    <p><span class="label">Avoid.</span> Islamic spirit, a spirit mentioned in the Quran, jinn of Islamic tradition, demonic entity of Islam.</p>
+    <p><span class="label">Why.</span> Theological framing risks a refusal and conflicts with the series' sensitivity guidelines.</p>
+    <p><span class="label">Apply.</span> Describe form only. An Ifrit is fire-born and a Marid is ocean-born. A Ghul is a shape-shifter of graves and desert. A Nasnas is a half-human with one arm, one leg and one eye. A Si'lat is a shape-shifter who appears fully human.</p>
+  </div>
+</section>
+
+<!-- ═════════ 8. WORKFLOW ═════════ -->
+<section class="panel" id="p8" aria-label="Workflow">
+  <h2>Workflow and quick reference</h2>
+  <p class="lead">Good prompts need a good process around them. These habits protected approved work and saved credits.</p>
+
+  <div class="card card--green">
+    <h3>8.1 Review the prompt before generating</h3>
+    <p>Write the prompt to a file and show it in full. Wait for explicit approval, such as approved, go or generate. Do not proceed on implied approval. Review catches wrong anatomy, banned phrases and category mismatches before a credit is spent.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>8.2 Back up before overwriting</h3>
+    <p>Copy the current file to a versioned backup before each regeneration, such as NN-name-v1.png. Version 2 of the Kappa was overwritten by version 3. The user preferred version 2 and it could not be recovered. When a version is accepted, move the backups to an archive folder.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>8.3 Report the file path after each generation</h3>
+    <p>Give the saved path as a clickable relative link. It confirms at once that the right file went to the right place.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>8.4 Save the exact accepted prompt immediately</h3>
+    <p>If generation went from version 1 to version 3, the prompt file must hold the version 3 text and not the first draft. Update the status tracker to approved with the version number. Do both before opening the next creature. The prompt file is the permanent record for consistency and later regeneration.</p>
+  </div>
+
+  <div class="card card--green">
+    <h3>8.5 Keep the learnings document alive</h3>
+    <p>Each review that exposes a repeatable issue gets a new numbered learning with the creature where it first appeared. Apply every learning to new prompts and retrofit it to prompts not yet generated. Where a learning exposes a process gap, add a matching item to the quality checklist.</p>
+  </div>
+
+  <div class="card">
+    <h3>Pre-generation checklist</h3>
+    <ul>
+      <li>The prompt leads with a visual description and not a name.</li>
+      <li>Humanoids start from human anatomy with no category words.</li>
+      <li>Defining features appear twice and counts are even.</li>
+      <li>No time-of-day words. The sky clause is present.</li>
+      <li>The six-item hollow prohibition is present.</li>
+      <li>Negations are replaced by positive descriptions.</li>
+      <li>Cultural terms are named and props have placement and substitution notes.</li>
+      <li>Camera and scale are stated and no body part has a coordinate.</li>
+      <li>Full bleed is reinforced in the scene text.</li>
+      <li>No realism disclaimers. Every figure is dressed.</li>
+      <li>No border or margin text. No script decoration.</li>
+      <li>A backup of the current file exists and the prompt has been approved.</li>
+    </ul>
+  </div>
+
+  <div class="card card--violet">
+    <h3>Failure and fix lookup</h3>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>Generic or modern version of a myth figure</td><td>Name used as the descriptor</td><td>Lead with the visual form (3.1)</td></tr>
+          <tr><td>Cartoon monster</td><td>Category word or open roar</td><td>Human anatomy base and a grimace (3.2, 3.4)</td></tr>
+          <tr><td>Cartoon despite a horror header</td><td>Cheerful words in the description</td><td>Add tone anchors (3.3)</td></tr>
+          <tr><td>Defining feature missing or wrong count</td><td>Mentioned once or odd number</td><td>Repeat and use even counts (3.9, 3.10)</td></tr>
+          <tr><td>Bare bones on a living figure</td><td>The word skeletal</td><td>Gaunt, wasted, emaciated (3.13)</td></tr>
+          <tr><td>Figure small and distant</td><td>One scale instruction</td><td>Three reinforcing phrases (3.15)</td></tr>
+          <tr><td>Black eyes, mouths or shadows</td><td>Generic fill ban</td><td>Six-item hollow block (4.1)</td></tr>
+          <tr><td>Solid black on crows or dark fur</td><td>Natural colour read as fill</td><td>Creature-specific stroke-only line (4.2)</td></tr>
+          <tr><td>Unwanted feature appears</td><td>Negation in the prompt</td><td>Positive description (4.5)</td></tr>
+          <tr><td>Grey or black sky</td><td>Time of day stated</td><td>Imply with objects and use the sky clause (5.1, 5.2)</td></tr>
+          <tr><td>Scattered grey dots</td><td>No dot-fill ban</td><td>Add the ban to the sky clause (5.2)</td></tr>
+          <tr><td>Flat comic backgrounds</td><td>No realism line</td><td>Add the background realism sentence (5.4)</td></tr>
+          <tr><td>Prop hangs, wrong pattern or wrong object</td><td>Model defaults</td><td>Placement, pattern and NOT lists (5.6)</td></tr>
+          <tr><td>Creature shrinks or scene muddles</td><td>Large creature anchored to a small object</td><td>Independent background (5.8)</td></tr>
+          <tr><td>Stiff or broken anatomy</td><td>Positional micro-instructions</td><td>Camera and intent only (6.1)</td></tr>
+          <tr><td>Complex scene incoherent</td><td>Abstract description</td><td>Film scene with replacements (6.3)</td></tr>
+          <tr><td>Reference image leaks into the result</td><td>Distinctive reference pose</td><td>Text-only generation (6.4)</td></tr>
+          <tr><td>Border or margin wrong</td><td>Layout in the prompt</td><td>Post-process in code (6.5)</td></tr>
+          <tr><td>Rejected as content-moderated</td><td>Disclaimer, nudity or head wording</td><td>Section 7</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar, Mumbai</p>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+</body>
+</html>

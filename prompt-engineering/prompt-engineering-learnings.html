@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prompt Engineering Learnings | Siddhartha Dhamankar</title>
+<style>
+:root {
+  --color-primary:         #7DBF8E;
+  --color-primary-light:   #D6EFDB;
+  --color-primary-dark:    #4E8C5F;
+  --color-secondary:       #A89BC9;
+  --color-secondary-light: #E8E2F5;
+  --color-secondary-dark:  #6B5A9E;
+  --color-text:            #2B2B2B;
+  --color-text-muted:      #6B6B6B;
+  --color-border:          #D9D9D9;
+  --color-neutral-bg:      #F4F6F4;
+  --color-surface:         #FFFFFF;
+  --color-primary-bg:      #D6EFDB;
+  --color-warning:         #D97706;
+  --color-warning-bg:      #FEF3E2;
+  --color-error:           #C0392B;
+  --color-error-bg:        #FEF0EF;
+  --color-success:         #4E8C5F;
+  --color-success-bg:      #D6EFDB;
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  40px;
+  --space-xl:  56px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--color-neutral-bg);
+  color: var(--color-text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.banner {
+  background: var(--color-primary-light);
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 3px solid var(--color-primary);
+}
+.banner-inner { display: flex; align-items: center; gap: var(--space-sm); }
+.banner-mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.banner-text { flex: 1; }
+.banner-text h1 { color: var(--color-text); font-size: 22px; font-weight: 700; margin: 0; }
+.banner-text .subtitle { color: var(--color-text); font-size: 13px; margin: 0; }
+.back-link {
+  color: var(--color-primary-dark);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.back-link:hover { text-decoration: underline; }
+
+main { padding: var(--space-lg); max-width: 1100px; margin: 0 auto; }
+
+.intro { max-width: 720px; margin-bottom: var(--space-lg); }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.card {
+  display: block;
+  background: var(--color-surface);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  padding: var(--space-md);
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow 0.2s;
+}
+.card--green { background: var(--color-primary-light); border-left: 4px solid var(--color-primary-dark); }
+.card:hover, .card:focus-visible { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14); }
+.card h2 { font-size: 17px; font-weight: 600; margin-bottom: var(--space-xs); }
+.card p { margin-bottom: var(--space-sm); }
+.card .cta { color: var(--color-primary-dark); font-weight: 600; font-size: 13px; }
+
+.site-footer {
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  padding: var(--space-lg) var(--space-lg) var(--space-xl);
+}
+.site-footer a { color: var(--color-primary-dark); text-decoration: none; }
+.site-footer a:hover { text-decoration: underline; }
+
+@media (min-width: 900px) {
+  .card-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .banner { padding: var(--space-md) var(--space-sm); }
+  main { padding: var(--space-sm); }
+  .banner-inner { flex-wrap: wrap; }
+}
+</style>
+<script>
+(function () {
+  var s = document.createElement('script');
+  s.src = 'https://js.monitor.azure.com/scripts/b/ai.2.min.js';
+  s.onload = function () {
+    var ai = new Microsoft.ApplicationInsights.ApplicationInsights({
+      config: {
+        connectionString: 'InstrumentationKey=5e195bbe-749f-4621-b80f-6f8faeea6b69;IngestionEndpoint=https://eastasia-0.in.applicationinsights.azure.com/;LiveEndpoint=https://eastasia.livediagnostics.monitor.azure.com/;ApplicationId=114f921c-1c00-4b3e-a988-120dce7b5392'
+      }
+    });
+    ai.loadAppInsights();
+    window.appInsights = ai;
+    ai.trackPageView();
+  };
+  document.head.appendChild(s);
+}());
+</script>
+</head>
+<body>
+
+<header class="banner">
+  <div class="banner-inner">
+    <a class="banner-mark" href="../index.html" aria-label="Home">SD</a>
+    <div class="banner-text">
+      <h1>Prompt engineering learnings</h1>
+      <p class="subtitle">Lessons from writing prompts for AI tools.</p>
+    </div>
+    <a class="back-link" href="../index.html">Back to home</a>
+  </div>
+</header>
+
+<main>
+  <section class="intro" aria-label="About these learnings">
+    <p>Each learning here comes from repeated trial and error. A prompt fails, the cause is found, and the fix is written down. The aim is to save the next attempt from the same mistake.</p>
+  </section>
+
+  <section aria-label="Learning topics">
+    <div class="card-grid">
+      <a class="card card--green" href="image-generation-learnings.html">
+        <h2>Image generation learnings</h2>
+        <p>A detailed report on writing prompts for AI image generation. It draws on three illustrated colouring book projects and covers style, anatomy, backgrounds, composition, moderation and workflow.</p>
+        <span class="cta">Read the report</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>Siddhartha Dhamankar, Mumbai</p>
+  <p><a href="mailto:siddhartha.dhamankar@icloud.com">siddhartha.dhamankar@icloud.com</a></p>
+</footer>
+
+</body>
+</html>
