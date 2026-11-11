@@ -2616,26 +2616,26 @@
 
   <div class="mds" id="mds-main" style="margin-bottom:0">
     <div class="mds-header" style="cursor:default; display:flex; align-items:center; justify-content:space-between; gap:12px;">
-      <h2 style="margin:0">Market data — monthly close reference (Jan 2025 to Oct 2026)</h2>
+      <h2 style="margin:0">Market data — monthly close reference (Jan 2025 to Nov 2026)</h2>
       <button class="mds-info-btn" onclick="openMdsModal()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Metric notes &amp; sources
       </button>
     </div>
     <div class="mds-body">
-      <div class="mds-note">Month-end closes. Aug 2026 is month-end close. Sep 2026 is confirmed Sep 29 close. Oct 2026 updated to 29 Oct 2026 (post-FOMC hold at 3.75–4.00%, 10–2 vote with Cook and Hammack dissenting for a hike; Silver COMEX ~52.0 intraday, new 2026 low and first print below $53; Gold Dec ~4,033; WTI Dec ~101; UST 10Y 5.00 / 30Y ~5.33 est.; DXY ~102.0; JGB 10Y ~2.84 after BOJ held at 1.25% on Oct 30; Fed Funds 4.00% unchanged). Inventories, India FX reserves ($721.0bn, RBI WSS week ended Oct 16 — sixth straight weekly fall), USD/INR, HY OAS, COT-linked and private-credit rows carried forward from Oct 22. Values marked ~ are estimates. 2026 columns highlighted. Threshold colours on private credit rows: <span style="color:#D97706;font-weight:600">amber-light = watch</span>, <span style="color:#B45309;font-weight:600">amber = warning</span>, <span style="color:#DC2626;font-weight:600">red = alarm</span>, <span style="color:#7C2D12;font-weight:600">deep-red = crisis</span>.</div>
+      <div class="mds-note">Month-end closes. Sep 2026 is confirmed Sep 29 close. Oct 2026 is the 29 Oct estimate (not revised to final month-end). Nov 2026 updated to 9–10 Nov 2026 (post-hot Oct CPI: headline +0.4% m/m, core +0.3%; Dec 9 FOMC hike now ~fully priced; Fed Funds 4.00% unchanged after Oct 28 hold). Fed H.15 confirmed for Nov 9: UST 3Y 4.58 / 10Y 4.88 / 30Y 5.26. TIPS 10Y 2.66 (FRED, Nov 9). COMEX Registered 101.6 moz (goldsilver.ai, Nov 9). USD/INR from H.10 Nov 6 (93.9). Silver COMEX ~52.4 and Gold ~4,050 are Nov 10 spot/futures estimates, not CME settlements (silver briefly traded below $50 on Oct 30–Nov 3; gold 2026 low $3,870 on Oct 30). WTI ~85 (Brent ~$90, lowest since August). JGB 10Y ~2.70 (Nov 9). SHFE stocks, India FX reserves ($721.0bn, Oct 16 WSS), M2, Shanghai premiums, backwardation, HY OAS, COT-linked and private-credit rows carried forward (Q3 BDC 10-Qs due ~Nov 15). Values marked ~ are estimates. 2026 columns highlighted. Threshold colours on private credit rows: <span style="color:#D97706;font-weight:600">amber-light = watch</span>, <span style="color:#B45309;font-weight:600">amber = warning</span>, <span style="color:#DC2626;font-weight:600">red = alarm</span>, <span style="color:#7C2D12;font-weight:600">deep-red = crisis</span>.</div>
       <div class="mds-table-wrap">
         <table class="mds-table">
           <thead>
             <tr>
               <th>Metric</th>
-              <th class="col-current th-current">Oct 26†</th><th>Sep 26</th><th>Aug 26</th><th>Jul 26</th><th>Jun 26</th><th>May 26</th><th>Apr 26</th><th>Mar 26</th><th>Feb 26</th><th class="col-divider">Jan 26</th>
+              <th class="col-current th-current">Nov 26†</th><th>Oct 26</th><th>Sep 26</th><th>Aug 26</th><th>Jul 26</th><th>Jun 26</th><th>May 26</th><th>Apr 26</th><th>Mar 26</th><th>Feb 26</th><th class="col-divider">Jan 26</th>
               <th>Dec 25</th><th>Nov 25</th><th>Oct 25</th><th>Sep 25</th><th>Aug 25</th><th>Jul 25</th><th>Jun 25</th><th>May 25</th><th>Apr 25</th><th>Mar 25</th><th>Feb 25</th><th>Jan 25</th>
             </tr>
           </thead>
           <tbody>
             <!-- FX & Rates -->
-            <tr class="row-group"><td colspan="23">FX &amp; Rates</td></tr>
+            <tr class="row-group"><td colspan="24">FX &amp; Rates</td></tr>
                         <!-- METRIC: Rate Fragility Index (RFI)
               Source : CALCULATED — never fetch externally.
                        Formula: RFI = −0.6816 + (0.0549 × JGB_10Y) + (0.1852 × UST_30Y)
@@ -2647,7 +2647,7 @@
                        Recalculate fresh every update even if JGB/UST inputs are unchanged. -->
 <tr class="row-rfi">
               <td>Rate Fragility Index (0&#8209;1)<span class="mds-dir bear">&#8593; higher = more systemic stress &middot; warn &#8805;0.30 &middot; alarm &#8805;0.55 &middot; bear-steepener bonus activates when 30Y &gt;5% &amp; spread &gt;100bps</span></td>
-              <td class="col-current">0.46</td><td>0.44</td><td>0.44</td><td>0.40</td><td>0.38</td><td>0.33</td><td>0.33</td><td>0.33</td><td class="col-divider">0.35</td>
+              <td class="col-current">0.44</td><td>0.46</td><td>0.44</td><td>0.44</td><td>0.40</td><td>0.38</td><td>0.33</td><td>0.33</td><td>0.33</td><td class="col-divider">0.35</td>
               <td>0.30</td><td>0.25</td><td>0.27</td><td>0.23</td><td>0.23</td><td>0.29</td><td>0.27</td><td>0.28</td><td>0.24</td><td>0.25</td><td>0.24</td><td>0.28</td>
             </tr>
                         <!-- METRIC: USD/JPY
@@ -2659,7 +2659,7 @@
               Notes  : Key input alongside JGB 10Y for monitoring the BOJ carry-trade unwind thesis (Driver 9b). -->
 <tr class="row-fx">
               <td>USD/JPY<span class="mds-dir bear">↓ lower = silver +ve</span></td>
-              <td class="col-current">~158.2</td><td>~157</td><td>157.4</td><td>160.2</td><td>152.8</td><td>148.2</td><td>150.5</td><td>154.3</td><td class="col-divider">153.2</td>
+              <td class="col-current">~158.2</td><td>~158.2</td><td>~157</td><td>157.4</td><td>160.2</td><td>152.8</td><td>148.2</td><td>150.5</td><td>154.3</td><td class="col-divider">153.2</td>
               <td>156.4</td><td>156.3</td><td>152.6</td><td>143.9</td><td>146.4</td><td>148.2</td><td>145.7</td><td>144.8</td><td>143.7</td><td>150.3</td><td>151.8</td><td>154.7</td>
             </tr>
                         <!-- METRIC: JGB 10Y yield (%)
@@ -2671,7 +2671,7 @@
                        BOJ has been hiking gradually since 2024; any surprise hike is a significant carry-trade signal. -->
 <tr class="row-fx">
               <td>JGB 10Y (%)<span class="mds-dir">↑ rising = carry unwind</span></td>
-              <td class="col-current">~2.84</td><td>~2.90</td><td>2.82</td><td>2.74</td><td>2.62</td><td>2.48</td><td>2.30</td><td>2.08</td><td class="col-divider">1.92</td>
+              <td class="col-current">~2.70</td><td>~2.84</td><td>~2.90</td><td>2.82</td><td>2.74</td><td>2.62</td><td>2.48</td><td>2.30</td><td>2.08</td><td class="col-divider">1.92</td>
               <td>1.75</td><td>1.56</td><td>1.61</td><td>1.58</td><td>1.72</td><td>1.63</td><td>1.52</td><td>1.44</td><td>1.38</td><td>1.50</td><td>1.35</td><td>1.10</td>
             </tr>
                         <!-- METRIC: UST 30Y yield (%)
@@ -2683,7 +2683,7 @@
               Notes  : Second key input to RFI formula. Bear-steepener bonus: BOTH (30Y > 5%) AND (30Y − 10Y > 100bps) must hold simultaneously. -->
 <tr class="row-fx">
               <td>UST 30Y (%)<span class="mds-dir bear">↓ lower = silver +ve; ↑ = long-end fiscal stress</span></td>
-              <td class="col-current">~5.33</td><td>5.24</td><td>~5.18</td><td>~5.04</td><td>~4.98</td><td>~4.72</td><td>~4.78</td><td>~4.78</td><td class="col-divider">~4.97</td>
+              <td class="col-current">5.26</td><td>~5.33</td><td>5.24</td><td>~5.18</td><td>~5.04</td><td>~4.98</td><td>~4.72</td><td>~4.78</td><td>~4.78</td><td class="col-divider">~4.97</td>
               <td>~4.77</td><td>~4.56</td><td>~4.64</td><td>~4.44</td><td>~4.42</td><td>~4.76</td><td>~4.72</td><td>~4.82</td><td>~4.58</td><td>~4.63</td><td>~4.59</td><td>~4.82</td>
             </tr>
                         <!-- METRIC: UST 10Y yield (%)
@@ -2694,7 +2694,7 @@
               Notes  : Used to calculate the 30Y–10Y spread for the RFI bear-steepener bonus condition. -->
 <tr class="row-fx">
               <td>UST 10Y (%)<span class="mds-dir bear">↓ lower = silver +ve</span></td>
-              <td class="col-current">~5.00</td><td>~4.70</td><td>4.75</td><td>4.52</td><td>4.48</td><td>4.28</td><td>4.36</td><td>4.42</td><td class="col-divider">4.58</td>
+              <td class="col-current">4.88</td><td>~5.00</td><td>~4.70</td><td>4.75</td><td>4.52</td><td>4.48</td><td>4.28</td><td>4.36</td><td>4.42</td><td class="col-divider">4.58</td>
               <td>4.36</td><td>4.18</td><td>4.28</td><td>4.06</td><td>4.06</td><td>4.43</td><td>4.36</td><td>4.40</td><td>4.17</td><td>4.21</td><td>4.24</td><td>4.53</td>
             </tr>
                         <!-- METRIC: UST 3Y yield (%)
@@ -2705,7 +2705,7 @@
               Notes  : Primarily a Fed policy signal. Compare to 10Y and 30Y for yield-curve shape context. -->
 <tr class="row-fx">
               <td>UST 3Y (%)<span class="mds-dir bear">↓ lower = silver +ve</span></td>
-              <td class="col-current">~4.70</td><td>~4.30</td><td>4.32</td><td>4.18</td><td>4.12</td><td>4.00</td><td>3.86</td><td>4.22</td><td class="col-divider">4.35</td>
+              <td class="col-current">4.58</td><td>~4.70</td><td>~4.30</td><td>4.32</td><td>4.18</td><td>4.12</td><td>4.00</td><td>3.86</td><td>4.22</td><td class="col-divider">4.35</td>
               <td>4.11</td><td>4.00</td><td>4.05</td><td>3.86</td><td>3.85</td><td>4.01</td><td>3.95</td><td>4.05</td><td>3.92</td><td>3.98</td><td>4.05</td><td>4.27</td>
             </tr>
                         <!-- METRIC: Fed Funds Rate (%)
@@ -2724,11 +2724,11 @@
                        NEVER extrapolate between meetings — rate is a step function, not a ramp. -->
 <tr class="row-fx">
               <td>Fed Funds Rate (%)<span class="mds-dir bear">&#8593; higher = tighter policy &middot; warn &#8805;4.50 &middot; alarm &#8805;5.00</span></td>
-              <td class="col-current">4.00</td><td>4.00</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td class="col-divider">3.75</td>
+              <td class="col-current">4.00</td><td>4.00</td><td>4.00</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td>3.75</td><td class="col-divider">3.75</td>
               <td>~4.00</td><td>~4.00</td><td>~4.00</td><td>~4.00</td><td>~4.25</td><td>~4.25</td><td>~4.25</td><td>~4.25</td><td>~4.50</td><td>~4.50</td><td>~4.50</td><td>4.50</td>
             </tr>
             <!-- Silver -->
-            <tr class="row-group"><td colspan="23">Silver</td></tr>
+            <tr class="row-group"><td colspan="24">Silver</td></tr>
                         <!-- METRIC: Silver COMEX ($/oz)
               Source : CME Group front-month silver futures (symbol SI) settlement price — cmegroup.com
                        Or Investing.com/TradingView historical for confirmed month-end close.
@@ -2738,7 +2738,7 @@
                        This is the primary price reference for all derived metrics (G/S ratio, MCX premium calc). -->
 <tr class="row-ag">
               <td>Silver COMEX ($/oz)<span class="mds-dir bull">↑ higher = bull thesis</span></td>
-              <td class="col-current">~52.0</td><td>~61.2</td><td>~70</td><td>~58.5</td><td>~61.0</td><td>~68.0</td><td>~75.0</td><td>~75.0</td><td>~83.0</td><td class="col-divider">~94.0</td>
+              <td class="col-current">~52.4</td><td>~52.0</td><td>~61.2</td><td>~70</td><td>~58.5</td><td>~61.0</td><td>~68.0</td><td>~75.0</td><td>~75.0</td><td>~83.0</td><td class="col-divider">~94.0</td>
               <td>~79.0</td><td>~60.0</td><td>~47.0</td><td>41.7</td><td>41.7</td><td>39.2</td><td>36.5</td><td>32.8</td><td>32.0</td><td>34.4</td><td>31.1</td><td>31.3</td>
             </tr>
                         <!-- METRIC: Silver Shanghai ($/oz)
@@ -2751,11 +2751,11 @@
               Notes  : Never remove ~ even if CNY price is confirmed — FX conversion always introduces estimation error. -->
 <tr class="row-ag">
               <td>Silver Shanghai ($/oz)<span class="mds-dir bull">↑ premium = physical tightness</span></td>
-              <td class="col-current">~54.6</td><td>~69.0</td><td>~73.5</td><td>~61.7</td><td>~64.4</td><td>~71.8</td><td>~79.1</td><td>~79.1</td><td>~87.5</td><td class="col-divider">~99.2</td>
+              <td class="col-current">~55.0</td><td>~54.6</td><td>~69.0</td><td>~73.5</td><td>~61.7</td><td>~64.4</td><td>~71.8</td><td>~79.1</td><td>~79.1</td><td>~87.5</td><td class="col-divider">~99.2</td>
               <td>~83.3</td><td>~63.2</td><td>~49.5</td><td>~43.9</td><td>~43.9</td><td>~41.3</td><td>~38.5</td><td>~34.6</td><td>~33.8</td><td>~36.3</td><td>~32.8</td><td>~33.0</td>
             </tr>
             <!-- Gold -->
-            <tr class="row-group"><td colspan="23">Gold</td></tr>
+            <tr class="row-group"><td colspan="24">Gold</td></tr>
                         <!-- METRIC: Gold COMEX ($/oz)
               Source : CME Group front-month gold futures (symbol GC) settlement — cmegroup.com
                        Or Investing.com/TradingView for confirmed month-end close.
@@ -2764,7 +2764,7 @@
               Notes  : Use front-month (GC) settlement. Used to calculate Gold/Silver ratio in Derived Signals. -->
 <tr class="row-au">
               <td>Gold COMEX ($/oz)<span class="mds-dir bull">↑ higher = monetary stress</span></td>
-              <td class="col-current">~4,033</td><td>~4,168</td><td>~4,650</td><td>4,033</td><td>4,066</td><td>4,150</td><td>4,100</td><td>4,280</td><td>4,620</td><td class="col-divider">4,900</td>
+              <td class="col-current">~4,050</td><td>~4,033</td><td>~4,168</td><td>~4,650</td><td>4,033</td><td>4,066</td><td>4,150</td><td>4,100</td><td>4,280</td><td>4,620</td><td class="col-divider">4,900</td>
               <td>3,920</td><td>4,531</td><td>4,200</td><td>3,620</td><td>3,440</td><td>3,300</td><td>3,260</td><td>3,320</td><td>3,280</td><td>3,100</td><td>2,900</td><td>2,835</td>
             </tr>
                         <!-- METRIC: Gold Shanghai ($/oz)
@@ -2775,11 +2775,11 @@
               Notes  : Au9999 is the liquid benchmark on SGE. Always ~. Check SGE monthly reports for confirmation. -->
 <tr class="row-au">
               <td>Gold Shanghai ($/oz)<span class="mds-dir bull">↑ higher = monetary stress</span></td>
-              <td class="col-current">~4,114</td><td>~4,248</td><td>~4,743</td><td>4,114</td><td>4,147</td><td>4,233</td><td>4,182</td><td>4,366</td><td>4,712</td><td class="col-divider">4,998</td>
+              <td class="col-current">~4,131</td><td>~4,114</td><td>~4,248</td><td>~4,743</td><td>4,114</td><td>4,147</td><td>4,233</td><td>4,182</td><td>4,366</td><td>4,712</td><td class="col-divider">4,998</td>
               <td>3,998</td><td>4,622</td><td>4,284</td><td>3,692</td><td>3,509</td><td>3,366</td><td>3,325</td><td>3,386</td><td>3,346</td><td>3,162</td><td>2,958</td><td>2,892</td>
             </tr>
             <!-- Premiums & Market Stress -->
-            <tr class="row-group"><td colspan="23">Premiums &amp; Market Stress</td></tr>
+            <tr class="row-group"><td colspan="24">Premiums &amp; Market Stress</td></tr>
                         <!-- METRIC: Silver net premium (%)
               Source : CALCULATED — ((Silver Shanghai − Silver COMEX) ÷ Silver COMEX) × 100.
                        Both inputs are already in this table. Never fetch this value externally.
@@ -2790,7 +2790,7 @@
               Notes  : Always derived; never look up externally. Inherits ~ from Shanghai inputs. -->
 <tr class="row-prem">
               <td>Silver net premium (%)<span class="mds-dir bull">↑ above 0% = demand above VAT floor</span></td>
-              <td class="col-current">~5%</td><td>~0%</td><td>~0%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td class="col-divider">~5%</td>
+              <td class="col-current">~5%</td><td>~5%</td><td>~0%</td><td>~0%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td>~5%</td><td class="col-divider">~5%</td>
               <td>~10%</td><td>~5%</td><td>~3%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td><td>~2%</td>
             </tr>
                         <!-- METRIC: Silver backwardation
@@ -2804,7 +2804,7 @@
                        If CME settlement data unavailable, check DS tab Spot–3M structure row for the current ¢/oz figure. -->
 <tr class="row-sig">
               <td>Silver backwardation<span class="mds-dir bull">↑ present = near-term physical scarcity</span></td>
-              <td class="col-current"><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td class="col-divider"><span class="sig-stress">yes</span></td>
+              <td class="col-current"><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td><span class="sig-stress">yes</span></td><td class="col-divider"><span class="sig-stress">yes</span></td>
               <td><span class="sig-stress">yes</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td>
             </tr>
                         <!-- METRIC: Gold net premium (%)
@@ -2816,7 +2816,7 @@
               Notes  : Always derived; inherits ~ from Gold Shanghai. Compare to silver net premium for cross-asset read. -->
 <tr class="row-prem">
               <td>Gold net premium (%)<span class="mds-dir bull">↑ above 0% = China physical demand above logistics floor</span></td>
-              <td class="col-current">~2%</td><td>~0%</td><td>~0%</td><td>~0%</td><td>~1%</td><td>~1%</td><td>~2%</td><td>~2%</td><td class="col-divider">~2%</td>
+              <td class="col-current">~2%</td><td>~2%</td><td>~0%</td><td>~0%</td><td>~0%</td><td>~1%</td><td>~1%</td><td>~2%</td><td>~2%</td><td class="col-divider">~2%</td>
               <td>~2%</td><td>~2%</td><td>~2%</td><td>~1%</td><td>~1%</td><td>~0%</td><td>~0%</td><td>~1%</td><td>~1%</td><td>~1%</td><td>~1%</td><td>~1%</td>
             </tr>
                         <!-- METRIC: Gold backwardation
@@ -2828,11 +2828,11 @@
               Notes  : Gold backwardation is much rarer than silver backwardation. When present, it is a strong signal. -->
 <tr class="row-sig">
               <td>Gold backwardation<span class="mds-dir bull">↑ present = physical demand floor forming</span></td>
-              <td class="col-current"><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td class="col-divider"><span class="sig-mild">mild</span></td>
+              <td class="col-current"><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td class="col-divider"><span class="sig-mild">mild</span></td>
               <td><span class="sig-mild">mild</span></td><td><span class="sig-mild">mild</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td><td><span class="sig-none">—</span></td>
             </tr>
             <!-- Inventories -->
-            <tr class="row-group"><td colspan="23">Inventories</td></tr>
+            <tr class="row-group"><td colspan="24">Inventories</td></tr>
                         <!-- METRIC: COMEX Registered (moz)
               Source : CME Group daily CME Warehouse Stock Report via goldsilver.ai or thevaultreport.com
                        Registered = silver that has been warranted and is in CME-approved vaults, immediately deliverable.
@@ -2843,7 +2843,7 @@
                        Do not confuse with COMEX Eligible (a separate, larger pool). -->
 <tr class="row-inv">
               <td>COMEX Registered (moz)<span class="mds-dir bear">↓ lower = supply squeeze</span></td>
-              <td class="col-current">~101.4</td><td>~96.3</td><td>~100</td><td>~96</td><td>~82</td><td>~79</td><td>77</td><td>~77</td><td>~85</td><td class="col-divider">~103</td>
+              <td class="col-current">101.6</td><td>~101.4</td><td>~96.3</td><td>~100</td><td>~96</td><td>~82</td><td>~79</td><td>77</td><td>~77</td><td>~85</td><td class="col-divider">~103</td>
               <td>128</td><td>~148</td><td>168</td><td>~158</td><td>~150</td><td>~142</td><td>~130</td><td>~118</td><td>~105</td><td>~95</td><td>~82</td><td>~73</td>
             </tr>
                         <!-- METRIC: SHFE Silver (moz)
@@ -2856,11 +2856,11 @@
                        Always convert from tonnes; never enter a tonnes value directly. Also updated independently in DS tab — update BOTH. -->
 <tr class="row-inv">
               <td>SHFE Silver (moz)<span class="mds-dir bear">↓ lower = supply squeeze</span></td>
-              <td class="col-current">~45.3</td><td>~45.3</td><td>~27.5</td><td>27.8</td><td>27.9</td><td>27.7</td><td>27.9</td><td>28.0</td><td>28.1</td><td class="col-divider">28.4</td>
+              <td class="col-current">~45.3</td><td>~45.3</td><td>~45.3</td><td>~27.5</td><td>27.8</td><td>27.9</td><td>27.7</td><td>27.9</td><td>28.0</td><td>28.1</td><td class="col-divider">28.4</td>
               <td>28.8</td><td>29.5</td><td>30.5</td><td>32.0</td><td>33.0</td><td>36.0</td><td>40.0</td><td>50.0</td><td>58.0</td><td>65.0</td><td>72.0</td><td>80.0</td>
             </tr>
             <!-- Macro & Monetary -->
-            <tr class="row-group"><td colspan="23">Macro &amp; Monetary</td></tr>
+            <tr class="row-group"><td colspan="24">Macro &amp; Monetary</td></tr>
                         <!-- METRIC: WTI Crude ($/bbl)
               Source : CME/NYMEX front-month light crude (CL) futures settlement — cmegroup.com
                        or EIA weekly petroleum report — eia.gov/dnav/pet/hist/LeafHandler.ashx
@@ -2871,7 +2871,7 @@
                        inflation (hike risk) and India duty pressure simultaneously. -->
 <tr class="row-fx">
               <td>WTI Crude ($/bbl)<span class="mds-dir bear">↑ higher = India forex pressure → duty hike risk</span></td>
-              <td class="col-current">~101</td><td>~93</td><td>~85</td><td>~75</td><td>~82</td><td>~88</td><td>~100</td><td>~90</td><td>64</td><td class="col-divider">60</td>
+              <td class="col-current">~85</td><td>~101</td><td>~93</td><td>~85</td><td>~75</td><td>~82</td><td>~88</td><td>~100</td><td>~90</td><td>64</td><td class="col-divider">60</td>
               <td>58</td><td>60</td><td>61</td><td>~68</td><td>65</td><td>~65</td><td>~65</td><td>~61</td><td>~61</td><td>~69</td><td>~71</td><td>~74</td>
             </tr>
                         <!-- METRIC: DXY (USD Index)
@@ -2883,7 +2883,7 @@
               Notes  : DXY is a blunt measure — USD/JPY and USD/INR are more relevant for thesis-specific drivers. -->
 <tr class="row-fx">
               <td>DXY (USD Index)<span class="mds-dir bear">↓ lower = silver +ve (weaker dollar)</span></td>
-              <td class="col-current">~102.0</td><td>~101.1</td><td>101</td><td>~100</td><td>~100</td><td>~98</td><td>~99</td><td>~103</td><td>~100</td><td class="col-divider">~97</td>
+              <td class="col-current">~102.3</td><td>~102.0</td><td>~101.1</td><td>101</td><td>~100</td><td>~100</td><td>~98</td><td>~99</td><td>~103</td><td>~100</td><td class="col-divider">~97</td>
               <td>~108</td><td>~107</td><td>~104</td><td>~100</td><td>~101</td><td>~98</td><td>~97</td><td>~99</td><td>~100</td><td>~104</td><td>~107</td><td>~108</td>
             </tr>
                         <!-- METRIC: US 10Y Real yield / TIPS (%)
@@ -2896,7 +2896,7 @@
                        This is the most theoretically important rate for silver's monetary premium component. -->
 <tr class="row-fx">
               <td>US 10Y Real (TIPS %)<span class="mds-dir bear">↓ lower / negative = silver monetary premium ↑</span></td>
-              <td class="col-current">~2.64</td><td>2.85</td><td>~2.10</td><td>~2.10</td><td>~1.90</td><td>~1.95</td><td>~1.96</td><td>2.06</td><td>~2.00</td><td class="col-divider">~2.10</td>
+              <td class="col-current">2.66</td><td>~2.64</td><td>2.85</td><td>~2.10</td><td>~2.10</td><td>~1.90</td><td>~1.95</td><td>~1.96</td><td>2.06</td><td>~2.00</td><td class="col-divider">~2.10</td>
               <td>~2.05</td><td>~1.90</td><td>~1.80</td><td>~1.75</td><td>~1.75</td><td>~2.00</td><td>~1.90</td><td>~2.00</td><td>~2.20</td><td>~2.00</td><td>~2.00</td><td>~2.10</td>
             </tr>
                         <!-- METRIC: US M2 ($tn)
@@ -2910,11 +2910,11 @@
                        prior month with ~ prefix. Annual growth rate context: M2 was −0.6% in 2023, +0.4% in 2024, running ~3% in 2025. -->
 <tr class="row-ag">
               <td>US M2 ($tn)<span class="mds-dir bull">↑ higher = more liquidity → monetary premium for silver</span></td>
-              <td class="col-current">~23.34</td><td>~23.2</td><td>~23.3</td><td>~23.2</td><td>23.16</td><td>~22.9</td><td>~22.8</td><td>~22.7</td><td>22.67</td><td class="col-divider">22.44</td>
+              <td class="col-current">~23.34</td><td>~23.34</td><td>~23.2</td><td>~23.3</td><td>~23.2</td><td>23.16</td><td>~22.9</td><td>~22.8</td><td>~22.7</td><td>22.67</td><td class="col-divider">22.44</td>
               <td>22.41</td><td>~22.3</td><td>22.21</td><td>~21.9</td><td>~21.8</td><td>~21.7</td><td>~21.7</td><td>~21.6</td><td>~21.6</td><td>~21.5</td><td>~21.5</td><td>~21.4</td>
             </tr>
             <!-- Derived Signals -->
-            <tr class="row-group"><td colspan="23">Derived Signals</td></tr>
+            <tr class="row-group"><td colspan="24">Derived Signals</td></tr>
                         <!-- METRIC: Gold / Silver ratio
               Source : CALCULATED — Gold COMEX ($/oz) ÷ Silver COMEX ($/oz). Already in this table. Never fetch externally.
               Format : Dimensionless ratio, round to nearest integer. Mark ~ if either input is ~estimated.
@@ -2924,11 +2924,11 @@
                        Current Sep 26: ~70x. Peak Apr 2025 tariff panic: ~107x. -->
 <tr class="row-prem">
               <td>Gold / Silver ratio<span class="mds-dir bear">↓ lower = silver outperforming → thesis compressing</span></td>
-              <td class="col-current">~78</td><td>~68</td><td>~66</td><td>~69</td><td>~67</td><td>~61</td><td>~55</td><td>~57</td><td>~56</td><td class="col-divider">~52</td>
+              <td class="col-current">~77</td><td>~78</td><td>~68</td><td>~66</td><td>~69</td><td>~67</td><td>~61</td><td>~55</td><td>~57</td><td>~56</td><td class="col-divider">~52</td>
               <td>~50</td><td>~75</td><td>~89</td><td>~87</td><td>~82</td><td>~84</td><td>~89</td><td>~103</td><td>~107</td><td>~91</td><td>~93</td><td>~90</td>
             </tr>
             <!-- India -->
-            <tr class="row-group"><td colspan="23">India</td></tr>
+            <tr class="row-group"><td colspan="24">India</td></tr>
                         <!-- METRIC: USD/INR
               Source : RBI Reference Rate — rbi.org.in/scripts/ReferenceRateArchive.aspx (daily official rate)
                        or Federal Reserve H.10 Foreign Exchange Rates — federalreserve.gov/releases/h10
@@ -2939,7 +2939,7 @@
                        the domestic duty impact. A 1% INR depreciation adds ~₹2,300/kg to MCX silver cost. -->
 <tr class="row-india">
               <td>USD/INR<span class="mds-dir bear">↑ higher (weaker rupee) = more duty pressure on imports</span></td>
-              <td class="col-current">~95.2</td><td>~96.0</td><td>~91</td><td>~92.0</td><td>~95.0</td><td>~90.0</td><td>~85.0</td><td>~87.5</td><td>~87.0</td><td class="col-divider">~86.5</td>
+              <td class="col-current">~93.9</td><td>~95.2</td><td>~96.0</td><td>~91</td><td>~92.0</td><td>~95.0</td><td>~90.0</td><td>~85.0</td><td>~87.5</td><td>~87.0</td><td class="col-divider">~86.5</td>
               <td>~84.7</td><td>~84.4</td><td>~84.1</td><td>~84.0</td><td>~84.1</td><td>~84.0</td><td>~84.5</td><td>~84.0</td><td>~83.5</td><td>~86.5</td><td>~87.0</td><td>~86.6</td>
             </tr>
                         <!-- METRIC: India FX Reserves ($bn)
@@ -2952,7 +2952,7 @@
               Notes  : Week ended Sep 18 2026: $765.9bn (per RBI WSS published Sep 25; down $14.9bn from Sep 11 $780.8bn and $785.7bn prior record, as RBI defended rupee post-FOMC hike). At ~$766bn, BOP pressure is rising but still far from constraint levels. Duty-reversal trigger remains political/fiscal. Publication lag: ~1 week. -->
 <tr class="row-india">
               <td>India FX Reserves ($bn)<span class="mds-dir bull">↓ lower = duty hike / import curb pressure</span></td>
-              <td class="col-current">721.0</td><td>765.9</td><td>~693</td><td>693</td><td>~668</td><td>~560</td><td>~590</td><td>~620</td><td>~635</td><td class="col-divider">701</td>
+              <td class="col-current">~721.0</td><td>721.0</td><td>765.9</td><td>~693</td><td>693</td><td>~668</td><td>~560</td><td>~590</td><td>~620</td><td>~635</td><td class="col-divider">701</td>
               <td>640</td><td>~657</td><td>~672</td><td>~705</td><td>~673</td><td>698</td><td>~658</td><td>~655</td><td>~648</td><td>~655</td><td>~638</td><td>626</td>
             </tr>
             <!-- METRIC: MCX Silver (₹000/kg)
@@ -2966,11 +2966,11 @@
                        Subtract duty-adjusted import parity cost to get net premium (~$1.6/oz after duty). -->
             <tr class="row-india">
               <td>MCX Silver (₹000/kg)<span class="mds-dir bull">↑ higher = domestic premium / SILVERCASE +ve</span></td>
-              <td class="col-current">~188</td><td>~226</td><td>~242</td><td>~204</td><td>~221</td><td>~234</td><td>~222</td><td>~229</td><td>~252</td><td class="col-divider">~285</td>
+              <td class="col-current">~187</td><td>~188</td><td>~226</td><td>~242</td><td>~204</td><td>~221</td><td>~234</td><td>~222</td><td>~229</td><td>~252</td><td class="col-divider">~285</td>
               <td>~233</td><td>~177</td><td>~138</td><td>~123</td><td>~123</td><td>~115</td><td>~109</td><td>~97</td><td>~94</td><td>~104</td><td>~95</td><td>~94</td>
             </tr>
             <!-- Private Credit Stress -->
-            <tr class="row-group"><td colspan="23">Private Credit Stress — Early Warning Indicators</td></tr>
+            <tr class="row-group"><td colspan="24">Private Credit Stress — Early Warning Indicators</td></tr>
                         <!-- METRIC: BDC sector Price/NAV (x)
               Source : VanEck MVIS US BDC Income ETF (BIZD) market price vs most recently reported NAV.
                        vaneck.com/us/en/investments/bdc-income-etf-bizd/ (daily price and reported NAV).
@@ -2983,7 +2983,7 @@
                        the market doubts the accuracy of the book values — often precedes formal write-downs by 1–2 quarters. -->
 <tr class="row-pc">
               <td>BDC sector Price/NAV (x)<span class="mds-dir bear">↓ OK ≥0.88x; Watch 0.78–0.88x; Warning 0.70–0.78x; Alarm <0.70x</span></td>
-              <td class="col-current"><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.82</span></td><td><span class="pc-watch">0.81</span></td><td><span class="pc-watch">0.80</span></td><td><span class="pc-watch">0.78</span></td><td><span class="pc-watch">0.80</span></td><td><span class="pc-watch">0.83</span></td><td class="col-divider"><span class="pc-watch">0.82</span></td>
+              <td class="col-current"><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.83</span></td><td><span class="pc-watch">~0.82</span></td><td><span class="pc-watch">0.81</span></td><td><span class="pc-watch">0.80</span></td><td><span class="pc-watch">0.78</span></td><td><span class="pc-watch">0.80</span></td><td><span class="pc-watch">0.83</span></td><td class="col-divider"><span class="pc-watch">0.82</span></td>
               <td><span class="pc-watch">0.82</span></td><td><span class="pc-watch">0.82</span></td><td><span class="pc-watch">0.83</span></td><td><span class="pc-watch">0.85</span></td><td><span class="pc-watch">0.85</span></td><td><span class="pc-watch">~0.87</span></td><td>~0.93</td><td>~0.93</td><td>~0.90</td><td>~0.93</td><td>~0.95</td><td>~0.97</td>
             </tr>
                         <!-- METRIC: % of BDCs by AUM trading below 0.65x NAV (companion to M1)
@@ -2998,7 +2998,7 @@
                        not yet established. Flag for review when % exceeds 25% by AUM. -->
 <tr class="row-pc">
               <td>% of BDCs by AUM below 0.65x NAV<span class="mds-dir bear">↑ any non-zero = Watch (companion to M1; dispersion signal; threshold not yet calibrated)</span></td>
-              <td class="col-current"><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~8%</span></td><td><span class="pc-watch">~9%</span></td><td><span class="pc-watch">~11%</span></td><td><span class="pc-watch">~15%</span></td><td><span class="pc-watch">~11%</span></td><td><span class="pc-watch">~7%</span></td><td class="col-divider"><span class="pc-watch">~8%</span></td>
+              <td class="col-current"><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~8%</span></td><td><span class="pc-watch">~9%</span></td><td><span class="pc-watch">~11%</span></td><td><span class="pc-watch">~15%</span></td><td><span class="pc-watch">~11%</span></td><td><span class="pc-watch">~7%</span></td><td class="col-divider"><span class="pc-watch">~8%</span></td>
               <td><span class="pc-watch">~8%</span></td><td><span class="pc-watch">~8%</span></td><td><span class="pc-watch">~7%</span></td><td><span class="pc-watch">~4%</span></td><td><span class="pc-watch">~4%</span></td><td><span class="pc-watch">~2%</span></td><td>~0%</td><td>~0%</td><td><span class="pc-watch">~2%</span></td><td>~0%</td><td>~0%</td><td>~0%</td>
             </tr>
                         <!-- METRIC: LSTA distress ratio (% loans <80¢)
@@ -3013,7 +3013,7 @@
                        private/illiquid loans, not yet transmitted to public credit markets. This divergence is a key signal. -->
 <tr class="row-pc">
               <td>LSTA distress ratio (% loans &lt;80¢)<span class="mds-dir bear">↑ OK <3.5%; Watch 3.5–5%; Warning 5–10%; Alarm 10–18%; Crisis >18%</span></td>
-              <td class="col-current"><span class="pc-warn">~6.0</span></td><td><span class="pc-warn">~6.0</span></td><td><span class="pc-warn">6.50</span></td><td><span class="pc-warn">6.89</span></td><td><span class="pc-warn">6.87</span></td><td><span class="pc-warn">6.53</span></td><td><span class="pc-warn">6.83</span></td><td><span class="pc-warn">7.23</span></td><td><span class="pc-warn">6.4</span></td><td class="col-divider"><span class="pc-warn">~5.0</span></td>
+              <td class="col-current"><span class="pc-warn">~6.0</span></td><td><span class="pc-warn">~6.0</span></td><td><span class="pc-warn">~6.0</span></td><td><span class="pc-warn">6.50</span></td><td><span class="pc-warn">6.89</span></td><td><span class="pc-warn">6.87</span></td><td><span class="pc-warn">6.53</span></td><td><span class="pc-warn">6.83</span></td><td><span class="pc-warn">7.23</span></td><td><span class="pc-warn">6.4</span></td><td class="col-divider"><span class="pc-warn">~5.0</span></td>
               <td><span class="pc-watch">4.34</span></td><td><span class="pc-watch">~3.5</span></td><td>~3.0</td><td>2.59</td><td>~2.7</td><td>2.83</td><td>~3.0</td><td>3.23</td><td><span class="pc-warn">~5.0</span></td><td>~3.0</td><td>~3.2</td><td><span class="pc-watch">~3.5</span></td>
             </tr>
                         <!-- METRIC: HY OAS — ICE BofA (bps)
@@ -3027,7 +3027,7 @@
                        Apr 2025 tariff panic spike: 461bps (briefly warn-level). Watch for sustained move above 300bps. -->
 <tr class="row-pc">
               <td>HY OAS — ICE BofA (bps)<span class="mds-dir bear">↑ OK <300bps; Watch 300–400bps; Warning 400–600bps; Alarm 600–900bps; Crisis >900bps</span></td>
-              <td class="col-current"><span class="pc-watch">327</span></td><td>280</td><td>271</td><td>281</td><td>~285</td><td><span class="pc-watch">~300</span></td><td><span class="pc-watch">~310</span></td><td><span class="pc-watch">~330</span></td><td>~290</td><td class="col-divider">~280</td>
+              <td class="col-current"><span class="pc-watch">~327</span></td><td><span class="pc-watch">327</span></td><td>280</td><td>271</td><td>281</td><td>~285</td><td><span class="pc-watch">~300</span></td><td><span class="pc-watch">~310</span></td><td><span class="pc-watch">~330</span></td><td>~290</td><td class="col-divider">~280</td>
               <td>275</td><td>~280</td><td>~275</td><td>~270</td><td>~280</td><td>~290</td><td><span class="pc-watch">~310</span></td><td><span class="pc-watch">~350</span></td><td><span class="pc-warn">461</span></td><td>~280</td><td>~270</td><td>259</td>
             </tr>
                         <!-- METRIC: Private-credit non-accruals (% of portfolio at cost)
@@ -3067,7 +3067,7 @@
                        Current Sep 26 estimate: ~3.7% = alarm territory. Q3 2026 filings (Oct–Nov) are next confirmation. -->
 <tr class="row-pc">
               <td>Private-credit non-accruals (% of portfolio at cost)<span class="mds-dir bear">↑ OK <2%; Warning 2–3%; Alarm 3–5%; Crisis >5%</span></td>
-              <td class="col-current"><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.6</span></td><td><span class="pc-stress">~3.5</span></td><td><span class="pc-stress">~3.3</span></td><td><span class="pc-stress">~3.2</span></td><td><span class="pc-stress">~3.1</span></td><td><span class="pc-stress">~3.0</span></td><td><span class="pc-warn">~2.9</span></td><td class="col-divider"><span class="pc-warn">~2.9</span></td>
+              <td class="col-current"><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.7</span></td><td><span class="pc-stress">~3.6</span></td><td><span class="pc-stress">~3.5</span></td><td><span class="pc-stress">~3.3</span></td><td><span class="pc-stress">~3.2</span></td><td><span class="pc-stress">~3.1</span></td><td><span class="pc-stress">~3.0</span></td><td><span class="pc-warn">~2.9</span></td><td class="col-divider"><span class="pc-warn">~2.9</span></td>
               <td><span class="pc-warn">~2.8</span></td><td><span class="pc-warn">~2.7</span></td><td><span class="pc-warn">~2.6</span></td><td><span class="pc-warn">~2.5</span></td><td><span class="pc-warn">~2.4</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.3</span></td><td><span class="pc-warn">~2.2</span></td><td><span class="pc-warn">~2.1</span></td><td><span class="pc-warn">~2.1</span></td><td><span class="pc-warn">~2.0</span></td><td><span class="pc-warn">~2.0</span></td>
             </tr>
                         <!-- METRIC: Leveraged-loan dual-track default rate (%, T12M)
@@ -3089,7 +3089,7 @@
                        Peaked at ~4.2% in late 2025; declining through 2026. -->
 <tr class="row-pc">
               <td>Leveraged-loan dual-track default rate (%, T12M)<span class="mds-dir bear">↑ OK <3%; Watch 3–4.5%; Warning 4.5–6%; Alarm 6–10%; Crisis >10%. PitchBook LCD dual-track. Payment-only Aug 26: 0.87%; dual-track Aug 26: ~2.87%. Declined from 2025 peak ~4.2%.</span></td>
-              <td class="col-current">~2.9</td><td>~2.9</td><td>~2.9</td><td><span class="pc-watch">~3.0</span></td><td><span class="pc-watch">~3.2</span></td><td><span class="pc-watch">~3.3</span></td><td><span class="pc-watch">~3.5</span></td><td><span class="pc-watch">~3.7</span></td><td><span class="pc-watch">~3.8</span></td><td class="col-divider"><span class="pc-watch">~3.9</span></td>
+              <td class="col-current">~2.9</td><td>~2.9</td><td>~2.9</td><td>~2.9</td><td><span class="pc-watch">~3.0</span></td><td><span class="pc-watch">~3.2</span></td><td><span class="pc-watch">~3.3</span></td><td><span class="pc-watch">~3.5</span></td><td><span class="pc-watch">~3.7</span></td><td><span class="pc-watch">~3.8</span></td><td class="col-divider"><span class="pc-watch">~3.9</span></td>
               <td><span class="pc-watch">~4.2</span></td><td><span class="pc-watch">~4.0</span></td><td><span class="pc-watch">~3.8</span></td><td><span class="pc-watch">~3.6</span></td><td><span class="pc-watch">~3.5</span></td><td><span class="pc-watch">~3.4</span></td><td><span class="pc-watch">~3.3</span></td><td><span class="pc-watch">~3.2</span></td><td><span class="pc-watch">~3.0</span></td><td>~2.8</td><td>~2.6</td><td>~2.5</td>
             </tr>
                         <!-- METRIC: HY distress ratio (% bonds trading >1000bps OAS)
@@ -3106,7 +3106,7 @@
                        to public markets. Read M7 and M3 together — divergence is the actionable signal. -->
 <tr class="row-pc">
               <td>HY distress ratio (% bonds trading >1000bps OAS)<span class="mds-dir bear">↑ provisional: warning ≥8%; alarm ≥12%. Primary use: dispersion cross-check vs HY OAS (M3)</span></td>
-              <td class="col-current">~5.4</td><td>~5.3</td><td>~5.2</td><td>~5.4</td><td>~5.7</td><td>~5.9</td><td>~6.2</td><td>~5.8</td><td>~4.5</td><td class="col-divider">~4.2</td>
+              <td class="col-current">~5.4</td><td>~5.4</td><td>~5.3</td><td>~5.2</td><td>~5.4</td><td>~5.7</td><td>~5.9</td><td>~6.2</td><td>~5.8</td><td>~4.5</td><td class="col-divider">~4.2</td>
               <td>~4.0</td><td>~4.1</td><td>~4.0</td><td>~4.2</td><td>~4.5</td><td>~4.8</td><td>~5.2</td><td>~6.0</td><td><span class="pc-warn">~8.5</span></td><td>~3.4</td><td>~3.2</td><td>~3.5</td>
             </tr>
                         <!-- METRIC: Avg leveraged loan bid (cents on $)
@@ -3121,7 +3121,7 @@
                        A sustained move below 95¢ would signal systemic re-pricing of private credit risk. -->
 <tr class="row-pc">
               <td>Avg leveraged loan bid (cents on $)<span class="mds-dir bear">↓ OK ≥97¢; Watch 94–97¢; Warning 87–94¢; Alarm 76–87¢; Crisis <76¢</span></td>
-              <td class="col-current"><span class="pc-watch">~96.4</span></td><td><span class="pc-watch">~96.5</span></td><td><span class="pc-watch">~96.5</span></td><td><span class="pc-watch">~96.4</span></td><td><span class="pc-watch">~96.2</span></td><td><span class="pc-watch">~96.0</span></td><td><span class="pc-watch">~95.8</span></td><td><span class="pc-watch">~96.2</span></td><td><span class="pc-watch">~96.8</span></td><td class="col-divider">~97.0</td>
+              <td class="col-current"><span class="pc-watch">~96.4</span></td><td><span class="pc-watch">~96.4</span></td><td><span class="pc-watch">~96.5</span></td><td><span class="pc-watch">~96.5</span></td><td><span class="pc-watch">~96.4</span></td><td><span class="pc-watch">~96.2</span></td><td><span class="pc-watch">~96.0</span></td><td><span class="pc-watch">~95.8</span></td><td><span class="pc-watch">~96.2</span></td><td><span class="pc-watch">~96.8</span></td><td class="col-divider">~97.0</td>
               <td>~97.2</td><td>~97.5</td><td>~97.8</td><td>~98.2</td><td>~98.0</td><td>~97.8</td><td>~97.5</td><td>~97.2</td><td><span class="pc-watch">~96.5</span></td><td>~97.8</td><td>~98.2</td><td>~98.5</td>
             </tr>
                         <!-- METRIC: CLO equity trailing 12M return (%)
@@ -3136,7 +3136,7 @@
                        leveraged loan market stress since CLO equity investors are first to feel losses. -->
 <tr class="row-pc">
               <td>CLO equity trailing 12M return (%)<span class="mds-dir bear">↓ OK ≥10%; Watch 5–10%; Warning 0–5%; Alarm -16–0%; Crisis <-16%</span></td>
-              <td class="col-current"><span class="pc-watch">~5</span></td><td><span class="pc-watch">~5</span></td><td><span class="pc-watch">~5</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~3</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-watch">~5</span></td><td class="col-divider"><span class="pc-watch">~5</span></td>
+              <td class="col-current"><span class="pc-watch">~5</span></td><td><span class="pc-watch">~5</span></td><td><span class="pc-watch">~5</span></td><td><span class="pc-watch">~5</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-warn">~3</span></td><td><span class="pc-warn">~4</span></td><td><span class="pc-watch">~5</span></td><td class="col-divider"><span class="pc-watch">~5</span></td>
               <td><span class="pc-watch">~6</span></td><td><span class="pc-watch">~6</span></td><td><span class="pc-watch">~7</span></td><td><span class="pc-watch">~7</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~7</span></td><td><span class="pc-watch">~6</span></td><td><span class="pc-watch">~8</span></td><td><span class="pc-watch">~9</span></td><td>~10</td>
             </tr>
                         <!-- METRIC: Lev-loan refinancing volumes ($bn, monthly)
@@ -3153,7 +3153,7 @@
                        A sustained move below 50% signals the 2027 maturity wall becoming problematic. -->
 <tr class="row-pc">
               <td>Lev-loan refinancing volumes ($bn, monthly)<span class="mds-dir bear">↓ OK ≥80%; Watch 50–80%; Warning 30–50%; Alarm 15–30%; Crisis <15% (ratio to T12M avg). Collapse signals refi wall stress</span></td>
-              <td class="col-current">~97%</td><td>~97%</td><td>~109%</td><td>~97%</td><td>~87%</td><td><span class="pc-watch">~66%</span></td><td><span class="pc-watch">~61%</span></td><td><span class="pc-watch">~73%</span></td><td>~92%</td><td class="col-divider"><span class="pc-watch">~79%</span></td>
+              <td class="col-current">~97%</td><td>~97%</td><td>~97%</td><td>~109%</td><td>~97%</td><td>~87%</td><td><span class="pc-watch">~66%</span></td><td><span class="pc-watch">~61%</span></td><td><span class="pc-watch">~73%</span></td><td>~92%</td><td class="col-divider"><span class="pc-watch">~79%</span></td>
               <td><span class="pc-watch">~70%</span></td><td>~82%</td><td>~102%</td><td>~94%</td><td>~107%</td><td>~129%</td><td>~123%</td><td>~89%</td><td><span class="pc-watch">~50%</span></td><td>~100%</td><td>~110%</td><td>~93%</td>
             </tr>
                         <!-- METRIC: PIK toggle + amend-and-extend ($bn, monthly est.)
@@ -3195,7 +3195,7 @@
                        Leading indicator: A&E volume today → non-accruals in 1–2 quarters when maturities come due. -->
 <tr class="row-pc">
               <td>PIK toggle + A&amp;E (% of mkt/yr, prov.)<span class="mds-dir bear">↑ provisional: &lt;4%=OK; 4–6%=Watch; 6–8%=Warn; ≥8%=Alarm. Flow rate, not countdown. See Notes.</span></td>
-              <td class="col-current"><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-warn">~7.3%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-warn">~6.7%</span></td><td class="col-divider"><span class="pc-warn">~6.7%</span></td>
+              <td class="col-current"><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-stress">~8.0%</span></td><td><span class="pc-warn">~7.3%</span></td><td><span class="pc-stress">~8.7%</span></td><td><span class="pc-warn">~6.7%</span></td><td class="col-divider"><span class="pc-warn">~6.7%</span></td>
               <td><span class="pc-warn">~6.0%</span></td><td><span class="pc-watch">~5.3%</span></td><td><span class="pc-watch">~4.7%</span></td><td><span class="pc-watch">~4.0%</span></td><td><span class="pc-watch">~4.0%</span></td><td>~3.3%</td><td>~3.3%</td><td><span class="pc-watch">~4.0%</span></td><td><span class="pc-warn">~6.0%</span></td><td>~3.3%</td><td>~2.7%</td><td>~2.7%</td>
             </tr>
           </tbody>
